@@ -3,9 +3,6 @@ from pandas import DataFrame
 import sqlite3
 from pathlib import Path #pathlib will allow us to figure out the extension of a file
 
-#####  This module will be used to read files
-# It has to be abe to read: .csv, .Excel and .SQLite
-
 class FormatError(Exception):
     "Custom error if the user chooses an unsuported file format"
     pass
@@ -33,11 +30,11 @@ class FileReader():
 
                 df = pd.read_csv(file_name)
 
-            elif extension in {'.xls', '.xlsx'}: #read excel files
+            elif extension == '.xls' or extension == '.xlsx': #read excel files
 
                 df = pd.read_excel(file_name)
 
-            elif extension in {'.db', '.sqlite'}: 
+            elif extension == '.db' or extension == '.sqlite': 
 
                 conn = sqlite3.connect(file_name) #stabllish connection with the database (SQLite)
                 query = "SELECT name FROM sqlite_master WHERE type='table';" #We write this query to obtain the table name
@@ -69,10 +66,3 @@ if __name__ == "__main__":
     file_name = file_name = input('Enter a file name (supported formats: csv, Excel and SQLite):  ')
     reader = FileReader()
     data_frame = reader.parse_file(file_name=file_name)
-
-
-
-    
-
-
-    
