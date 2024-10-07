@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Entorno virtual
+venv/
+.env
+
+# Archivos de configuración de entornos de desarrollo (IDE)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+
+# Archivos de bases de datos temporales o de desarrollo
+*.sqlite3
+
+# Archivos temporales de testeo
+*.tmp
+*.temp
+*.out
+*.pid
+
+# Documentación generada automáticamente
+docs/_build/
+
+# Dependencias instaladas
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
