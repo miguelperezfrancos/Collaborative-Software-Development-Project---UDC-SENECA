@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (
     QSpacerItem,
     QSizePolicy
 )
-from PySide6.QtCore import Qt
 
 class FileExplorer(QWidget):
     
