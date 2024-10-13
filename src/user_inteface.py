@@ -7,28 +7,27 @@ from PySide6.QtWidgets import (
     QLabel,
     QFileDialog,
     QSpacerItem,
-    QSizePolicy
+    QSizePolicy,
+    QTableWidget,
+    QTableWidgetItem,
+    QMessageBox
 )
 from PySide6.QtCore import Qt
+from file_reader import FileReader
+import pandas as pd  
 
 class FileExplorer(QWidget):
     
     def __init__(self):
         super().__init__()
 
-        # Set the window title and size
         self.setWindowTitle("File Explorer")
-        self.setGeometry(100, 100, 400, 250)
+        self.setGeometry(100, 100, 600, 400)
 
-        # Create a vertical box layout
         self.layout = QVBoxLayout()
-
-        # Create a button for opening the file dialog
         self.open_button = QPushButton("Open File Explorer")
-        # Connect the button click event to the file dialog function
         self.open_button.clicked.connect(self.open_file_dialog)
 
-        # Set the style for the button
         self.open_button.setStyleSheet(""" 
             QPushButton {
                 background-color: #007BFF;  
@@ -50,13 +49,9 @@ class FileExplorer(QWidget):
             }
         """)
 
-        # Add the button to the layout
         self.layout.addWidget(self.open_button)
-
-        # Create a label to display the selected file path
         self.file_path_label = QLabel("Ruta del archivo: ")
         
-        # Set the style for the label
         self.file_path_label.setStyleSheet(""" 
             QLabel {
                 background-color: #FFFDD0;  
@@ -70,32 +65,57 @@ class FileExplorer(QWidget):
             }
         """)
         
-        # Set minimum size policy for the label to prevent it from expanding too much
         self.file_path_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        # Add the label to the layout
         self.layout.addWidget(self.file_path_label)
+        
+        self.table_widget = QTableWidget()
+        self.layout.addWidget(self.table_widget)
 
-        # Add a spacer item to take up the remaining vertical space
         self.layout.addItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
-        # Set the layout for the main widget
         self.setLayout(self.layout)
 
     def open_file_dialog(self):
-        # Open a file dialog for selecting a file
         options = QFileDialog.Options()
-        # Define allowed file extensions
         allowed_extensions = "Archivos compatibles (*.csv *.xlsx *.xls *.sqlite *.db)"
-        # Get the selected file path
-        file_path, _ = QFileDialog.getOpenFileName(self, "Selecione el archivo: ", "", allowed_extensions, options=options)
-        # If a file is selected, update the label with the file path
+        file_path, _ = QFileDialog.getOpenFileName(self, "Seleccione el archivo: ", "", allowed_extensions, options=options)
+        
         if file_path:
             self.file_path_label.setText(f"Ruta del archivo seleccionado: {file_path}")
+            self.load_file(file_path)
+
+    def load_file(self, file_path):
+        reader = FileReader()
+        try:
+            df = reader.parse_file(file_path)
+
+            self.table_widget.setRowCount(0)
+            self.table_widget.setColumnCount(0)
+
+            # Verificar si el DataFrame está vacío
+            if df is None or (df.shape[0] == 0 and df.shape[1] == 0):
+                raise ValueError("File Not Containing Data.")
+
+            if df.shape[0] > 0 and df.shape[1] > 0:
+                self.table_widget.setRowCount(df.shape[0])
+                self.table_widget.setColumnCount(df.shape[1])
+                self.table_widget.setHorizontalHeaderLabels(df.columns)
+
+                for i in range(df.shape[0]):
+                    for j in range(df.shape[1]):
+                        self.table_widget.setItem(i, j, QTableWidgetItem(str(df.iat[i, j])))
+            else:
+                raise ValueError("Reading Error.")
+
+        except (pd.errors.EmptyDataError, pd.errors.ParserError) as e:
+            self.show_error_message("Error Processing the File: " + str(e))
+        except Exception as e:
+            self.show_error_message("Unknown Error")
+
+    def show_error_message(self, message):
+        QMessageBox.critical(self, "Error", message, QMessageBox.Ok)
 
 if __name__ == "__main__":
-    # Create the application and the main window
     app = QApplication(sys.argv)
     explorer = FileExplorer()
-    explorer.show()  # Show the file explorer window
-    sys.exit(app.exec())  # Execute the application
+    explorer.show()
+    sys.exit(app.exec())
