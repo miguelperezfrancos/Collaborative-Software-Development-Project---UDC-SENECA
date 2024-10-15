@@ -9,16 +9,39 @@ class FormatError(Exception):
 
 class FileReader():
 
+    """
+    This class parses a file and converts it into a Pandas dataframe
+    """
+
     def __init__(self):
 
+        #we declare the permitted extensions 
         self._allowed_extensions = {'.csv', '.xlsx', '.xls', '.db', '.sqlite'}
 
-    def _check_format(self, extension):
+    def _check_format(self, extension: str):
+
+        """
+        Make sure the choosen file is in one of the allowed formats, if not, we raise a Format Error
+
+        parameters:
+            extension (str): file extension
+        """
 
         if extension not in self._allowed_extensions:
             raise FormatError 
         
     def parse_file(self, file_name: str) -> DataFrame:
+
+        """
+        This method parses the choosen file and cathces any erro that may occour 
+        during the process.
+
+        Parameters:
+            file_name (str): name of file that is going to be parsed.
+        
+        Returns:
+            df (pandas DataFrame): data frame containing all of the information parsed
+        """
 
         extension = Path(file_name).suffix #get the extension of the file
 
@@ -60,9 +83,3 @@ class FileReader():
             print('ERROR: file not found')
         except: #catching any other errors
             print('ERROR: unknown error')            
-
-if __name__ == "__main__":
-
-    file_name = file_name = input('Enter a file name (supported formats: csv, Excel and SQLite):  ')
-    reader = FileReader()
-    data_frame = reader.parse_file(file_name=file_name)

@@ -17,7 +17,13 @@ Thank you for taking part of this project! Below, you will find specific guideli
 
         git checkout -b your-feature-branch
 
-    - Use descriptive branch names related to the feature or fix (e.g., feature/auth-system or bugfix/issue-123).
+    - Branch name will be as the following: 'your name_feature_feature that you are working on'
+
+3. If rep is already cloned and you want to bring to your local machine the lastest changes:
+
+    - Locally, stay on your developing branch (created on step two):
+
+            git pull origin <name of the branch you want to pull: main/other developer's branch>
 
 ### Writing Clean Code 
 
