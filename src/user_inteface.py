@@ -7,33 +7,33 @@ from PySide6.QtWidgets import (
     QPushButton,
     QLabel,
     QFileDialog,
-    QSpacerItem,
     QSizePolicy,
     QTableWidget,
     QTableWidgetItem,
-    QMessageBox
+    QMessageBox,
+    QComboBox
 )
 from PySide6.QtCore import Qt
 from file_reader import FileReader
-import pandas as pd  
+import pandas as pd
 
 class FileExplorer(QWidget):
     
     def __init__(self):
         super().__init__()
 
-        # Set the window title and size
+        # Window settings
         self.setWindowTitle("File Explorer")
         self.setGeometry(100, 100, 600, 400)
 
-        # Main layout to hold the components
+        # Main vertical layout
         self.layout = QVBoxLayout()
 
-        # Horizontal layout for the label and button 
+        # Horizontal layout for file path label and open button
         self.h_layout = QHBoxLayout()
 
-        # Label for displaying the selected file path
-        self.file_path_label = QLabel("Ruta del archivo: ")
+        # Label to display selected file path
+        self.file_path_label = QLabel("File_path: ")
         self.file_path_label.setStyleSheet(""" 
             QLabel {
                 background-color: #FFFDD0;  
@@ -46,11 +46,26 @@ class FileExplorer(QWidget):
                 margin-top: 5px;          
             }
         """)
-        self.file_path_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.file_path_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
 
-        # Button to open the file explorer dialog
+        self.file_path_label2 = QLabel("")
+        self.file_path_label2.setStyleSheet(""" 
+            QLabel {
+                background-color: #FFFDD0;  
+                color: #333;                
+                font-size: 14px;           
+                font-weight: bold;         
+                border: 1px solid #d1d1d1; 
+                border-radius: 7px;      
+                padding: 8px;             
+                margin-top: 5px;          
+            }
+        """)
+        self.file_path_label2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)  
+
+        # Button to open file explorer dialog
         self.open_button = QPushButton("Open File Explorer")
-        self.open_button.clicked.connect(self.open_file_dialog)  # Connect button click to file dialog method
+        self.open_button.clicked.connect(self.open_file_dialog)  # Connect button click to open dialog
         self.open_button.setStyleSheet(""" 
             QPushButton {
                 background-color: #007BFF;  
@@ -72,45 +87,77 @@ class FileExplorer(QWidget):
             }
         """)
 
-        # Add the label and button to the horizontal layout
+        # Add label and button to the horizontal layout
         self.h_layout.addWidget(self.file_path_label)
+        self.h_layout.addWidget(self.file_path_label2)
         self.h_layout.addWidget(self.open_button)
 
         # Add the horizontal layout to the main vertical layout
         self.layout.addLayout(self.h_layout)
 
-        # Table widget to display the file content (initialized empty)
+        # Table to display file content
         self.table_widget = QTableWidget()
+        self.table_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  # Set size policy to expanding
         self.layout.addWidget(self.table_widget)
 
-        # Set the main layout for the widget
+        # Horizontal layout for combo boxes
+        self.h2_layout = QHBoxLayout()
+
+        # Combo box 1 for selecting a column
+        self.combo_box1 = QComboBox()
+        self.combo_box1.setStyleSheet(""" 
+            QComboBox {
+                padding: 8px;
+                font-size: 14px;
+            }
+        """)
+        self.combo_box1.addItem("Select a column")  # Default item
+        self.h2_layout.addWidget(self.combo_box1)
+
+        # Combo box 2 for selecting a column
+        self.combo_box2 = QComboBox()
+        self.combo_box2.setStyleSheet(""" 
+            QComboBox {
+                padding: 8px;
+                font-size: 14px;
+            }
+        """)
+        self.combo_box2.addItem("Select a column")  # Default item
+        self.h2_layout.addWidget(self.combo_box2)
+
+        # Add combo box layout to the main layout
+        self.layout.addLayout(self.h2_layout)
+
+        # Set main layout
         self.setLayout(self.layout)
 
+        # Set stretch for the table to expand
+        self.layout.setStretch(1, 10)  # 10: the table has more space to expand
+        self.layout.setStretch(2, 1)  # 1: the combo box layout takes less space
+
+
     def open_file_dialog(self):
+        # File dialog settings
         options = QFileDialog.Options()
         allowed_extensions = "Archivos compatibles (*.csv *.xlsx *.xls *.sqlite *.db)"
         file_path, _ = QFileDialog.getOpenFileName(self, "Seleccione el archivo: ", "", allowed_extensions, options=options)
         
-        # If a file is selected, update the label and load the file into the table
+        # If a file is selected, load it into the table
         if file_path:
-            self.file_path_label.setText(f"Ruta del archivo seleccionado: {file_path}")
+            self.file_path_label2.setText(f"{file_path}")
             self.load_file(file_path)
 
     def load_file(self, file_path):
         reader = FileReader()
         try:
-            df = reader.parse_file(file_path)  
+            df = reader.parse_file(file_path)
 
             self.table_widget.setRowCount(0)
             self.table_widget.setColumnCount(0)
 
-            # Check if the DataFrame is empty
-            if df is None or (df.shape[0] == 0 and df.shape[1] == 0):
-                raise ValueError("File Not Containing Data.")
-
-            # If the DataFrame has content, populate the table
+            # If DataFrame has content, populate the table and combo boxes
             if df.shape[0] > 0 and df.shape[1] > 0:
-                self.table_widget.setRowCount(df.shape[0])  
+                self.table_widget.setRowCount(df.shape[0])
                 self.table_widget.setColumnCount(df.shape[1])
                 self.table_widget.setHorizontalHeaderLabels(df.columns)
 
@@ -118,15 +165,23 @@ class FileExplorer(QWidget):
                 for i in range(df.shape[0]):
                     for j in range(df.shape[1]):
                         self.table_widget.setItem(i, j, QTableWidgetItem(str(df.iat[i, j])))
+
+                # Populate combo boxes with column names
+                self.combo_box1.clear()
+                self.combo_box1.addItem("Select a column")
+                self.combo_box1.addItems(df.columns)
+
+                self.combo_box2.clear()
+                self.combo_box2.addItem("Select a column")
+                self.combo_box2.addItems(df.columns)
             else:
                 raise ValueError("Reading Error.")
 
         except (pd.errors.EmptyDataError, pd.errors.ParserError) as e:
             self.show_error_message("Error Processing the File: " + str(e))
-        
-        # Catch any other unexpected errors
         except Exception as e:
             self.show_error_message("Unknown Error")
+
 
     def show_error_message(self, message):
         QMessageBox.critical(self, "Error", message, QMessageBox.Ok)
