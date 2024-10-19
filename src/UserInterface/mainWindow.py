@@ -1,22 +1,18 @@
 import sys
+
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QPushButton,
-    QLabel,
     QFileDialog,
-    QSizePolicy,
     QMessageBox,
-    QComboBox,
-    QHeaderView
 )
 
 from PySide6.QtCore import Qt
-from fileReader import FileReader, FormatError
+from dataManagement.fileReader import FileReader
 import pandas as pd  
-import sqlite3
-from VirtualTable import VirtualTableView, VirtualTableModel
+import UserInterface.widgetBuilder as builder
+from UserInterface.VirtualTable import VirtualTableView, VirtualTableModel
 
 class MainWindow(QWidget):
     
@@ -34,122 +30,47 @@ class MainWindow(QWidget):
         self._input_column = None
         self._output_column = None
 
+        #set window dimensions
         self.setWindowTitle("File Explorer")
         self.setGeometry(100, 100, 600, 400)
 
-        self._layout = QVBoxLayout() # Main layout
-        self._h_layout = QHBoxLayout() # Horizontal layout for file path label and open button       
-        self._h2_layout = QHBoxLayout()  # Horizontal layout for combo boxes and confirm button
+        #declare layouts
+        self._main_layout = QVBoxLayout()
+        self._hor_1 = QHBoxLayout()
+        self._hor_2 = QHBoxLayout()
 
-        self._create_widgets()
-        self._set_up_layout()
-        self.setLayout(self._layout)
+        #declare widgets
+        self._file_indicator = builder.create_label(text="File path: ")
+        self._path_label = builder.create_label(text="")
+        self._open_file_button = builder.create_button(text="Open File Explorer", event=self.open_file_dialog)
+        self._input_menu = builder.create_combo_box(default_item= "Select an input column", event=self.on_combo_box1_changed)
+        self._output_menu = builder.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
+        self._confirm_cols_button = builder.create_button(text="Confirm Selection", event=self.on_confirm_selection)
+        self._table = builder.create_virtual_table()
 
+        #set up layouts
+        self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
+        self._set_layout(layout = self._hor_2, items=[self._input_menu, self._output_menu, self._confirm_cols_button])
+        self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
+
+        self._hor_2.setStretch(1, 10)  # Table expands
+        self._hor_2.setStretch(2, 1)   # Combo box layout takes less space
+
+        self.setLayout(self._main_layout)
         self.original_colors = {}
 
 
-    def _create_widgets(self):
+    def _set_layout(self, layout, items: list):
 
-        self.file_path_label = self._create_label("File path: ")
-        self.file_path_label2 = self._create_label("")
-
-        self.open_button = self._create_button("Open File Explorer", self.open_file_dialog)
+        """
+        Authomatically adds widget or layout to another layout.
+        """
         
-        self.combo_box1 = self._create_combo_box("Select an input column", self.on_combo_box1_changed)
-        self.combo_box2 = self._create_combo_box("Select an output column", self.on_combo_box2_changed)
-
-        self.confirm_button = self._create_button("Confirm Selection", self.on_confirm_selection)
-
-        self.table_widget = VirtualTableView(VirtualTableModel())
-        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
-    def _create_label(self, text):
-
-        label = QLabel(text)
-
-        label.setStyleSheet("""
-            QLabel {
-                background-color: #FFFDD0;  
-                color: #333;                
-                font-size: 14px;           
-                font-weight: bold;         
-                border: 1px solid #d1d1d1; 
-                border-radius: 7px;      
-                padding: 8px;             
-                margin-top: 5px;          
-            }
-        """)
-
-        label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        return label
-        
-    def _create_button(self, text, event):
-
-        button = QPushButton(text)
-        button.clicked.connect(event)
-
-        button.setStyleSheet("""
-            QPushButton {
-                background-color: #007BFF;  
-                color: white;                
-                font-size: 18px;            
-                font-weight: bold;          
-                border: none;               
-                border-radius: 20px;        
-                padding: 12px 30px;         
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
-                transition: background-color 0.3s ease;   
-            }
-            QPushButton:hover {
-                background-color: #0056b3;  
-            }
-            QPushButton:pressed {
-                background-color: #003d80;   
-                box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
-            }
-        """)
-        return button
-        
-    def _create_combo_box(self, default_item, event):
-
-        combo_box = QComboBox()
-        combo_box.setStyleSheet("""
-            QComboBox {
-                padding: 8px;
-                font-size: 14px;
-            }
-        """)
-        combo_box.addItem(default_item)
-        combo_box.currentIndexChanged.connect(event)
-        return combo_box
-
-    def _set_up_layout(self):
-
-        self._h_layout.addWidget(self.file_path_label)
-        self._h_layout.addWidget(self.file_path_label2)
-        self._h_layout.addWidget(self.open_button)
-
-        self._layout.addLayout(self._h_layout)
-        self._layout.addWidget(self.table_widget)
-
-        self._h2_layout.addWidget(self.combo_box1)
-        self._h2_layout.addWidget(self.combo_box2)
-        self._h2_layout.addWidget(self.confirm_button)
-
-        self._layout.addLayout(self._h2_layout)
-        self._layout.setStretch(1, 10)  # Table expands
-        self._layout.setStretch(2, 1)   # Combo box layout takes less space
-
-
-        
-
-
-
-
-
-
-
-
+        for i in items:
+            if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout):
+                layout.addLayout(i)
+            else:
+                layout.addWidget(i)
 
 
     def open_file_dialog(self):
@@ -171,7 +92,7 @@ class MainWindow(QWidget):
 
             try:
                 self.load_file(file_path)
-                self.file_path_label2.setText(f"{file_path}")
+                self._path_label.setText(f"{file_path}")
             except:
                 pass
             
@@ -187,7 +108,7 @@ class MainWindow(QWidget):
         reader = FileReader()
         try:
             df = reader.parse_file(file_path)
-            self.table_widget.model().setDataFrame(df)
+            self._table.model().setDataFrame(df)
 
         except:  # Catch any other unknown errors
             self.show_error_message('ERROR: Unknown error')    
