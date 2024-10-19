@@ -4,9 +4,6 @@ import sqlite3
 from pathlib import Path #pathlib will allow us to figure out the extension of a file
 import time
 
-def nanoseconds():
-    return time.perf_counter_ns()
-
 
 class FormatError(Exception):
     "Custom error if the user chooses an unsuported file format"
@@ -48,8 +45,6 @@ class FileReader():
             df (pandas DataFrame): data frame containing all of the information parsed
         """
 
-        t0 = nanoseconds()
-
         extension = Path(file_name).suffix #get the extension of the file
 
         try: #We use try/except to catch any errors that may occour while parsing files
@@ -58,15 +53,11 @@ class FileReader():
 
             if extension == '.csv':  #read csv files
 
-                tp0 = nanoseconds()
                 df = pd.read_csv(file_name)
-                tpf = nanoseconds()
-                print(f'Pandas reading time: {(tpf-tp0) / 1000000} miliseconds')
 
             elif extension == '.xls' or extension == '.xlsx': #read excel files
 
                 df = pd.read_excel(file_name)
-                print('hey')
 
             elif extension == '.db' or extension == '.sqlite': 
 
@@ -75,11 +66,6 @@ class FileReader():
                 table_name = pd.read_sql(query, conn).iloc[0,0] #we execute that query and store it in the varibale table_name
                 df = pd.read_sql(f'SELECT * FROM {table_name};', conn) #we sleect everything from that table and store it in a dataframe
                 conn.close() #we close connection with our database
-
-            tf = nanoseconds()
-
-            print(f'reading time: {(tf-t0) / 1000000} miliseconds')
-
            
             return df
 

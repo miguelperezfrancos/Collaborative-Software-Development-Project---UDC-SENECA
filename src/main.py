@@ -1,6 +1,6 @@
 from userInterface import MainWindow
 import sys
-from PySide6 import QApplication
+from PySide6.QtWidgets import QApplication
 
 """
 This is the main module of the application.
@@ -11,7 +11,7 @@ def main():
     # Main entry point of the application
     app = QApplication(sys.argv)
 
-    # Create and show the FileExplorer widget
+    # Create and show the main window
     interface = MainWindow()
     interface.show()
 
@@ -20,4 +20,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

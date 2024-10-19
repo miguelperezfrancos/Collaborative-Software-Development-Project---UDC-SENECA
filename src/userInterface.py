@@ -1,6 +1,5 @@
 import sys
 from PySide6.QtWidgets import (
-    QApplication,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -13,7 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from PySide6.QtCore import Qt
-from file_reader import FileReader, FormatError, nanoseconds
+from fileReader import FileReader, FormatError
 import pandas as pd  
 import sqlite3
 from VirtualTable import VirtualTableView, VirtualTableModel
@@ -197,8 +196,10 @@ class MainWindow(QWidget):
 
         """
         This function defines the events that will take place
-        if user clicks Opne File button.
+        if user clicks Open File button.
         """
+
+        #Gestión de errores: el archivo no se puede abrir o está corrupto
 
         # File dialog settings
         options = QFileDialog.Options()
@@ -207,8 +208,13 @@ class MainWindow(QWidget):
 
         # If a file is selected, load it into the table
         if file_path:
-            self.file_path_label2.setText(f"{file_path}")
-            self.load_file(file_path)
+
+            try:
+                self.load_file(file_path)
+                self.file_path_label2.setText(f"{file_path}")
+            except:
+                pass
+            
 
     def load_file(self, file_path):
         """
@@ -222,27 +228,9 @@ class MainWindow(QWidget):
         reader = FileReader()
         try:
 
-            # Attempt to read the file using the FileReader
-            t0 = nanoseconds() #meaure displaying time
             df = reader.parse_file(file_path)
             self.table_widget.model().setDataFrame(df)
-            tf = nanoseconds()
-            print('display')
 
-
-        # Catch specific errors and display error messages
-        except FormatError:
-            self.show_error_message('ERROR: Unsupported file format')
-        except pd.errors.EmptyDataError:
-            self.show_error_message('ERROR: This file might be empty or corrupted')
-        except pd.errors.ParserError:
-            self.show_error_message('ERROR: This file could not be parsed')
-        except sqlite3.DatabaseError:
-            self.show_error_message("ERROR: An error occurred with your database")
-        except sqlite3.OperationalError:
-            self.show_error_message('ERROR: Could not access the database')
-        except FileNotFoundError:
-            self.show_error_message('ERROR: File not found')
         except:  # Catch any other unknown errors
             self.show_error_message('ERROR: Unknown error')    
 
@@ -303,17 +291,3 @@ class MainWindow(QWidget):
             QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self.input_column + 1}, Output Column: {self.output_column + 1}")
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
-
-
-
-
-if __name__ == "__main__":
-    # Main entry point of the application
-    app = QApplication(sys.argv)
-
-    # Create and show the FileExplorer widget
-    interface = MainWindow()
-    interface.show()
-
-    # Start the application's event loop
-    sys.exit(app.exec())
