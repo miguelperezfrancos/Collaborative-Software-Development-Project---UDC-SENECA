@@ -59,7 +59,6 @@ class MainWindow(QWidget):
         self.setLayout(self._main_layout)
         self.original_colors = {}
 
-
     def _set_layout(self, layout, items: list):
 
         """
@@ -72,31 +71,16 @@ class MainWindow(QWidget):
             else:
                 layout.addWidget(i)
 
-
-    def open_file_dialog(self):
-
+    def _show_error_message(self, message):
         """
-        This function defines the events that will take place
-        if user clicks Open File button.
+        Displays an error message dialog.
+
+        Parameters:
+            message (str): The error message to display.
         """
+        QMessageBox.critical(self, "Error", message, QMessageBox.Ok)
 
-        #Gestión de errores: el archivo no se puede abrir o está corrupto
-
-        # File dialog settings
-        options = QFileDialog.Options()
-        allowed_extensions = "Compatible files (*.csv *.xlsx *.xls *.sqlite *.db)"
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select File: ", "", allowed_extensions, options=options)
-
-        # If a file is selected, load it into the table
-        if file_path:
-
-            try:
-                self.load_file(file_path)
-                self._path_label.setText(f"{file_path}")
-            except:
-                pass
-            
-    def load_file(self, file_path):
+    def _load_file(self, file_path):
 
         """
         Loads the content of the file at the given path into the table widget.
@@ -113,7 +97,7 @@ class MainWindow(QWidget):
             self._table.model().setDataFrame(df)
 
         except:  # Catch any other unknown errors
-            self.show_error_message('ERROR: Unknown error')    
+            self._show_error_message('ERROR: Unknown error')    
 
 
         # Update regression entry menu
@@ -133,15 +117,29 @@ class MainWindow(QWidget):
         menu.addItem(default_msg)
         menu.addItems(items)
 
-    def show_error_message(self, message):
-        """
-        Displays an error message dialog.
+    def open_file_dialog(self):
 
-        Parameters:
-            message (str): The error message to display.
         """
-        QMessageBox.critical(self, "Error", message, QMessageBox.Ok)
+        This function defines the events that will take place
+        if user clicks Open File button.
+        """
 
+        #Gestión de errores: el archivo no se puede abrir o está corrupto
+
+        # File dialog settings
+        options = QFileDialog.Options()
+        allowed_extensions = "Compatible files (*.csv *.xlsx *.xls *.sqlite *.db)"
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select File: ", "", allowed_extensions, options=options)
+
+        # If a file is selected, load it into the table
+        if file_path:
+
+            try:
+                self._load_file(file_path)
+                self._path_label.setText(f"{file_path}")
+            except:
+                pass
+            
     def on_combo_box1_changed(self, index):
 
         if index > 0:  # Ensure valid input column is selected
@@ -166,26 +164,6 @@ class MainWindow(QWidget):
                 self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
             else:
                 self._output_column = column
-                print(self._output_column)
-
-    def highlight_column(self, previous_column, new_column, color):
-        # Reset previous column to original colors
-        if previous_column is not None:
-
-            for row in range(self._table.rowCount()):
-                item = self._table.item(row, previous_column)
-                if item:
-                    original_background, original_foreground = self.original_colors[(row, previous_column)]
-                    item.setBackground(original_background)
-                    item.setForeground(original_foreground)
-
-        # Highlight new column
-        if new_column is not None:
-            for row in range(self._table.rowCount()):
-                item = self._table.item(row, new_column)
-                if item:
-                    item.setBackground(color)
-                    item.setForeground(Qt.black)
 
     def on_confirm_selection(self):
 
