@@ -158,9 +158,7 @@ class MainWindow(QWidget):
 
         if index > 0:  # Ensure valid output column is selected
 
-            print(index)
             column = index - 1
-            print(column)
 
             # Check if column is the same as combo_box1
             if column == self._input_column:
@@ -192,7 +190,7 @@ class MainWindow(QWidget):
     def on_confirm_selection(self):
 
         # Perform the action you want after confirming the selection
-        if self._input_column is not None and self.output_column is not None:
+        if self._input_column is not None and self._output_column is not None:
             QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self._input_column + 1}, Output Column: {self._output_column + 1}")
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
