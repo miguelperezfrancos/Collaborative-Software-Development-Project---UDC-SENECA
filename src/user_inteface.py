@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QMessageBox
 )
 from PySide6.QtCore import Qt
-from file_reader import FileReader, FormatError
+from file_reader import FileReader, FormatError, nanoseconds
 import pandas as pd  
 import sqlite3
 
@@ -125,7 +125,10 @@ class FileExplorer(QWidget):
         reader = FileReader()
         try:
             # Attempt to read the file using the FileReader
+            t0 = nanoseconds() #meaure displaying time
             df = reader.parse_file(file_path)
+
+
 
             self.table_widget.setRowCount(0)
             self.table_widget.setColumnCount(0)
@@ -146,6 +149,9 @@ class FileExplorer(QWidget):
                         self.table_widget.setItem(i, j, QTableWidgetItem(str(df.iat[i, j])))
             else:
                 raise ValueError("Reading Error.")
+            
+            tf = nanoseconds()
+            print(f'displaying time: {(tf-t0) / 1000000} miliseconds')
 
         # Catch specific errors and display error messages
         except FormatError:
