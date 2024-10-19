@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QFileDialog,
     QMessageBox,
+    QComboBox
 )
 
 from PySide6.QtCore import Qt
@@ -97,6 +98,7 @@ class MainWindow(QWidget):
                 pass
             
     def load_file(self, file_path):
+
         """
         Loads the content of the file at the given path into the table widget.
         Handles different file formats (e.g., CSV, Excel, SQLite) and errors
@@ -105,6 +107,7 @@ class MainWindow(QWidget):
         Parameters:
             file_path (str): The path to the file to be loaded.
         """
+
         reader = FileReader()
         try:
             df = reader.parse_file(file_path)
@@ -112,6 +115,26 @@ class MainWindow(QWidget):
 
         except:  # Catch any other unknown errors
             self.show_error_message('ERROR: Unknown error')    
+
+
+        # Update regression entry menu
+        self._change_column_selection(menu=self._input_menu, items=df.columns,
+                                      default_msg='Select an input column')
+        
+        self._change_column_selection(menu=self._output_menu, items=df.columns, 
+                                      default_msg='Select an output column')
+
+        # Reset previously selected columns
+        self.input_column = None
+        self.output_column = None
+
+
+    def _change_column_selection(self, menu: QComboBox, items, default_msg: str):
+
+        menu.clear()
+        menu.addItem(default_msg)
+        menu.addItems(items)
+
 
     def show_error_message(self, message):
         """
