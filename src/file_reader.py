@@ -58,7 +58,10 @@ class FileReader():
 
             if extension == '.csv':  #read csv files
 
+                tp0 = nanoseconds()
                 df = pd.read_csv(file_name)
+                tpf = nanoseconds()
+                print(f'Pandas reading time: {(tpf-tp0) / 1000000} miliseconds')
 
             elif extension == '.xls' or extension == '.xlsx': #read excel files
 
@@ -93,5 +96,5 @@ class FileReader():
             print('ERROR: could not access to your database')
         except FileNotFoundError:
             print('ERROR: file not found')
-        except: #catching any other errors
-            print('ERROR: unknown error')            
+        except Exception as e: #catching any other errors
+            print(f'ERROR: unknown error {e}')            
