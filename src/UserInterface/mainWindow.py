@@ -13,7 +13,6 @@ from PySide6.QtCore import Qt
 from dataManagement.fileReader import FileReader
 import pandas as pd  
 import UserInterface.widgetBuilder as builder
-from UserInterface.VirtualTable import VirtualTableView, VirtualTableModel
 
 class MainWindow(QWidget):
     
@@ -128,13 +127,11 @@ class MainWindow(QWidget):
         self.input_column = None
         self.output_column = None
 
-
     def _change_column_selection(self, menu: QComboBox, items, default_msg: str):
 
         menu.clear()
         menu.addItem(default_msg)
         menu.addItems(items)
-
 
     def show_error_message(self, message):
         """
@@ -146,34 +143,39 @@ class MainWindow(QWidget):
         QMessageBox.critical(self, "Error", message, QMessageBox.Ok)
 
     def on_combo_box1_changed(self, index):
+
         if index > 0:  # Ensure valid input column is selected
             column = index - 1
 
             # Check if column is the same as combo_box2
             if column == self.output_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
-                self.combo_box1.setCurrentIndex(0)  # Reset combo_box1 selection
+                self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
-                self.highlight_column(self.input_column, column, Qt.yellow)
-                self.input_column = column
+                self._input_column = column
 
     def on_combo_box2_changed(self, index):
+
         if index > 0:  # Ensure valid output column is selected
+
+            print(index)
             column = index - 1
+            print(column)
 
             # Check if column is the same as combo_box1
-            if column == self.input_column:
+            if column == self._input_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
-                self.combo_box2.setCurrentIndex(0)  # Reset combo_box2 selection
+                self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
             else:
-                self.highlight_column(self.output_column, column, Qt.cyan)
-                self.output_column = column
+                self._output_column = column
+                print(self._output_column)
 
     def highlight_column(self, previous_column, new_column, color):
         # Reset previous column to original colors
         if previous_column is not None:
-            for row in range(self.table_widget.rowCount()):
-                item = self.table_widget.item(row, previous_column)
+
+            for row in range(self._table.rowCount()):
+                item = self._table.item(row, previous_column)
                 if item:
                     original_background, original_foreground = self.original_colors[(row, previous_column)]
                     item.setBackground(original_background)
@@ -181,8 +183,8 @@ class MainWindow(QWidget):
 
         # Highlight new column
         if new_column is not None:
-            for row in range(self.table_widget.rowCount()):
-                item = self.table_widget.item(row, new_column)
+            for row in range(self._table.rowCount()):
+                item = self._table.item(row, new_column)
                 if item:
                     item.setBackground(color)
                     item.setForeground(Qt.black)
