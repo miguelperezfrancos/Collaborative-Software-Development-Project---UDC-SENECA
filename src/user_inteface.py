@@ -8,18 +8,17 @@ from PySide6.QtWidgets import (
     QLabel,
     QFileDialog,
     QSizePolicy,
-    QTableWidget,
-    QTableWidgetItem,
     QMessageBox,
     QComboBox,
-    QHeaderView  # Necessary import for handling column size
 )
+
 from PySide6.QtCore import Qt
 from file_reader import FileReader, FormatError, nanoseconds
 import pandas as pd  
 import sqlite3
+from VirtualTable import VirtualTableView, VirtualTableModel
 
-class FileExplorer(QWidget):
+class MainWindow(QWidget):
     
     """
     FileExplorer class represents a graphical user interface (GUI) that allows
@@ -34,10 +33,18 @@ class FileExplorer(QWidget):
         """
         super().__init__()
 
+        """
+        This section of the init constains the varibales that will be used to manage data
+        manipulation
+        """
         # Store the selected columns
         self.input_column = None
         self.output_column = None
 
+
+        """
+        This section of the init builds the layout or the user interface with its corresponding widgets
+        """
         # Dictionary to store the original colors of each cell
         self.original_colors = {}
 
@@ -84,7 +91,7 @@ class FileExplorer(QWidget):
 
         # Button to open file explorer dialog
         self.open_button = QPushButton("Open File Explorer")
-        self.open_button.clicked.connect(self.open_file_dialog)  # Connect button click to open dialog
+        self.open_button.clicked.connect(self.open_file_dialog)  # Connect button click to open dialog event
         self.open_button.setStyleSheet(""" 
             QPushButton {
                 background-color: #007BFF;  
@@ -115,12 +122,12 @@ class FileExplorer(QWidget):
         self.layout.addLayout(self.h_layout)
 
         # Table to display file content
-        self.table_widget = QTableWidget()
-        self.table_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  # Set size policy to expanding
+        self.table_widget = VirtualTableView(VirtualTableModel())
+        """self.table_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  # Set size policy to expanding
 
         # Make columns stretch to fit the table width
         self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # Here we make the columns take the full width
-
+"""
         self.layout.addWidget(self.table_widget)
 
         # Horizontal layout for combo boxes and confirm button
@@ -185,7 +192,14 @@ class FileExplorer(QWidget):
         self.layout.setStretch(1, 10)  # 10: the table has more space to expand
         self.layout.setStretch(2, 1)  # 1: the combo box layout takes less space
 
+
     def open_file_dialog(self):
+
+        """
+        This function defines the events that will take place
+        if user clicks Opne File button.
+        """
+
         # File dialog settings
         options = QFileDialog.Options()
         allowed_extensions = "Compatible files (*.csv *.xlsx *.xls *.sqlite *.db)"
@@ -207,53 +221,14 @@ class FileExplorer(QWidget):
         """
         reader = FileReader()
         try:
+
             # Attempt to read the file using the FileReader
             t0 = nanoseconds() #meaure displaying time
             df = reader.parse_file(file_path)
-
-            self.table_widget.setRowCount(0)
-            self.table_widget.setColumnCount(0)
-
-            # Check if the DataFrame is empty
-            if df is None or (df.shape[0] == 0 and df.shape[1] == 0):
-                raise ValueError("Empty File")
-            
-            # Reset the dictionary of original colors
-            self.original_colors = {}
-
-            # If DataFrame has content, populate the table and combo boxes
-            if df.shape[0] > 0 and df.shape[1] > 0:
-                # Populate the table with the data from the DataFrame
-                self.table_widget.setRowCount(df.shape[0])
-                self.table_widget.setColumnCount(df.shape[1])
-                self.table_widget.setHorizontalHeaderLabels(df.columns)
-
-                # Fill the table with the DataFrame content and store the original colors
-                for i in range(df.shape[0]):
-                    for j in range(df.shape[1]):
-                        item = QTableWidgetItem(str(df.iat[i, j]))
-                        self.table_widget.setItem(i, j, item)
-
-                        # Store original background and foreground colors
-                        self.original_colors[(i, j)] = (item.background(), item.foreground())
-
-                # Populate combo boxes with column names
-                self.combo_box1.clear()
-                self.combo_box1.addItem("Select an input column")
-                self.combo_box1.addItems(df.columns)
-
-                self.combo_box2.clear()
-                self.combo_box2.addItem("Select an output column")
-                self.combo_box2.addItems(df.columns)
-
-                # Reset previously selected columns
-                self.input_column = None
-                self.output_column = None
-            else:
-                raise ValueError("Reading Error.")
-            
+            self.table_widget.model().setDataFrame(df)
             tf = nanoseconds()
-            print(f'displaying time: {(tf-t0) / 1000000} miliseconds')
+            print('display')
+
 
         # Catch specific errors and display error messages
         except FormatError:
@@ -330,13 +305,15 @@ class FileExplorer(QWidget):
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
 
 
+
+
 if __name__ == "__main__":
     # Main entry point of the application
     app = QApplication(sys.argv)
 
     # Create and show the FileExplorer widget
-    explorer = FileExplorer()
-    explorer.show()
+    interface = MainWindow()
+    interface.show()
 
     # Start the application's event loop
     sys.exit(app.exec())
