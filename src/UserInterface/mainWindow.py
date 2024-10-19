@@ -11,8 +11,10 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Qt
 from dataManagement.fileReader import FileReader
+from dataManagement.dataManager import DataManager
 import pandas as pd  
 import UserInterface.widgetBuilder as builder
+
 
 class MainWindow(QWidget):
     
@@ -25,6 +27,8 @@ class MainWindow(QWidget):
     def __init__(self):
         
         super().__init__()
+
+        self._dmanager = DataManager()
 
         # Store the selected columns
         self._input_column = None
