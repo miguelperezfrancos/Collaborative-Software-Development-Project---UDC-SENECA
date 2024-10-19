@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QMessageBox,
     QComboBox,
+    QHeaderView
 )
 
 from PySide6.QtCore import Qt
@@ -26,40 +27,47 @@ class MainWindow(QWidget):
     """
     
     def __init__(self):
-        """
-        Initializes the FileExplorer widget, setting up the layout and components
-        such as the file explorer button, file path label, and table widget.
-        """
+        
         super().__init__()
 
-        """
-        This section of the init constains the varibales that will be used to manage data
-        manipulation
-        """
         # Store the selected columns
-        self.input_column = None
-        self.output_column = None
+        self._input_column = None
+        self._output_column = None
 
-
-        """
-        This section of the init builds the layout or the user interface with its corresponding widgets
-        """
-        # Dictionary to store the original colors of each cell
-        self.original_colors = {}
-
-        # Window settings
         self.setWindowTitle("File Explorer")
         self.setGeometry(100, 100, 600, 400)
 
-        # Main vertical layout
-        self.layout = QVBoxLayout()
+        self._layout = QVBoxLayout() # Main layout
+        self._h_layout = QHBoxLayout() # Horizontal layout for file path label and open button       
+        self._h2_layout = QHBoxLayout()  # Horizontal layout for combo boxes and confirm button
 
-        # Horizontal layout for file path label and open button
-        self.h_layout = QHBoxLayout()
+        self._create_widgets()
+        self._set_up_layout()
+        self.setLayout(self._layout)
 
-        # Label to display selected file path
-        self.file_path_label = QLabel("File path: ")
-        self.file_path_label.setStyleSheet(""" 
+        self.original_colors = {}
+
+
+    def _create_widgets(self):
+
+        self.file_path_label = self._create_label("File path: ")
+        self.file_path_label2 = self._create_label("")
+
+        self.open_button = self._create_button("Open File Explorer", self.open_file_dialog)
+        
+        self.combo_box1 = self._create_combo_box("Select an input column", self.on_combo_box1_changed)
+        self.combo_box2 = self._create_combo_box("Select an output column", self.on_combo_box2_changed)
+
+        self.confirm_button = self._create_button("Confirm Selection", self.on_confirm_selection)
+
+        self.table_widget = VirtualTableView(VirtualTableModel())
+        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+    def _create_label(self, text):
+
+        label = QLabel(text)
+
+        label.setStyleSheet("""
             QLabel {
                 background-color: #FFFDD0;  
                 color: #333;                
@@ -71,27 +79,16 @@ class MainWindow(QWidget):
                 margin-top: 5px;          
             }
         """)
-        self.file_path_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
 
-        self.file_path_label2 = QLabel("")
-        self.file_path_label2.setStyleSheet(""" 
-            QLabel {
-                background-color: #FFFDD0;  
-                color: #333;                
-                font-size: 14px;           
-                font-weight: bold;         
-                border: 1px solid #d1d1d1; 
-                border-radius: 7px;      
-                padding: 8px;             
-                margin-top: 5px;          
-            }
-        """)
-        self.file_path_label2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        return label
+        
+    def _create_button(self, text, event):
 
-        # Button to open file explorer dialog
-        self.open_button = QPushButton("Open File Explorer")
-        self.open_button.clicked.connect(self.open_file_dialog)  # Connect button click to open dialog event
-        self.open_button.setStyleSheet(""" 
+        button = QPushButton(text)
+        button.clicked.connect(event)
+
+        button.setStyleSheet("""
             QPushButton {
                 background-color: #007BFF;  
                 color: white;                
@@ -111,85 +108,48 @@ class MainWindow(QWidget):
                 box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
             }
         """)
+        return button
+        
+    def _create_combo_box(self, default_item, event):
 
-        # Add label and button to the horizontal layout
-        self.h_layout.addWidget(self.file_path_label)
-        self.h_layout.addWidget(self.file_path_label2)
-        self.h_layout.addWidget(self.open_button)
-
-        # Add the horizontal layout to the main vertical layout
-        self.layout.addLayout(self.h_layout)
-
-        # Table to display file content
-        self.table_widget = VirtualTableView(VirtualTableModel())
-        """self.table_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  # Set size policy to expanding
-
-        # Make columns stretch to fit the table width
-        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # Here we make the columns take the full width
-"""
-        self.layout.addWidget(self.table_widget)
-
-        # Horizontal layout for combo boxes and confirm button
-        self.h2_layout = QHBoxLayout()
-
-        # Combo box 1 for selecting an input column
-        self.combo_box1 = QComboBox()
-        self.combo_box1.setStyleSheet(""" 
+        combo_box = QComboBox()
+        combo_box.setStyleSheet("""
             QComboBox {
                 padding: 8px;
                 font-size: 14px;
             }
         """)
-        self.combo_box1.addItem("Select an input column")  # Default item
-        self.combo_box1.currentIndexChanged.connect(self.on_combo_box1_changed)  # Connect change event
-        self.h2_layout.addWidget(self.combo_box1)
+        combo_box.addItem(default_item)
+        combo_box.currentIndexChanged.connect(event)
+        return combo_box
 
-        # Combo box 2 for selecting an output column
-        self.combo_box2 = QComboBox()
-        self.combo_box2.setStyleSheet(""" 
-            QComboBox {
-                padding: 8px;
-                font-size: 14px;
-            }
-        """)
-        self.combo_box2.addItem("Select an output column")  # Default item
-        self.combo_box2.currentIndexChanged.connect(self.on_combo_box2_changed)  # Connect change event
-        self.h2_layout.addWidget(self.combo_box2)
+    def _set_up_layout(self):
 
-        # Confirm selection button
-        self.confirm_button = QPushButton("Confirm Selection")
-        self.confirm_button.clicked.connect(self.on_confirm_selection)  # Connect button click to confirm action
-        self.confirm_button.setStyleSheet(""" 
-            QPushButton {
-                background-color: #28A745;  
-                color: white;                
-                font-size: 16px;            
-                font-weight: bold;          
-                border: none;               
-                border-radius: 15px;        
-                padding: 8px 20px;         
-                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);  
-                transition: background-color 0.3s ease;   
-            }
-            QPushButton:hover {
-                background-color: #218838;  
-            }
-            QPushButton:pressed {
-                background-color: #1e7e34;   
-                box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); 
-            }
-        """)
-        self.h2_layout.addWidget(self.confirm_button)
+        self._h_layout.addWidget(self.file_path_label)
+        self._h_layout.addWidget(self.file_path_label2)
+        self._h_layout.addWidget(self.open_button)
 
-        # Add combo box layout to the main layout
-        self.layout.addLayout(self.h2_layout)
+        self._layout.addLayout(self._h_layout)
+        self._layout.addWidget(self.table_widget)
 
-        # Set main layout
-        self.setLayout(self.layout)
+        self._h2_layout.addWidget(self.combo_box1)
+        self._h2_layout.addWidget(self.combo_box2)
+        self._h2_layout.addWidget(self.confirm_button)
 
-        # Set stretch for the table to expand
-        self.layout.setStretch(1, 10)  # 10: the table has more space to expand
-        self.layout.setStretch(2, 1)  # 1: the combo box layout takes less space
+        self._layout.addLayout(self._h2_layout)
+        self._layout.setStretch(1, 10)  # Table expands
+        self._layout.setStretch(2, 1)   # Combo box layout takes less space
+
+
+        
+
+
+
+
+
+
+
+
 
 
     def open_file_dialog(self):
@@ -215,7 +175,6 @@ class MainWindow(QWidget):
             except:
                 pass
             
-
     def load_file(self, file_path):
         """
         Loads the content of the file at the given path into the table widget.
@@ -227,7 +186,6 @@ class MainWindow(QWidget):
         """
         reader = FileReader()
         try:
-
             df = reader.parse_file(file_path)
             self.table_widget.model().setDataFrame(df)
 
@@ -286,8 +244,9 @@ class MainWindow(QWidget):
                     item.setForeground(Qt.black)
 
     def on_confirm_selection(self):
+
         # Perform the action you want after confirming the selection
-        if self.input_column is not None and self.output_column is not None:
-            QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self.input_column + 1}, Output Column: {self.output_column + 1}")
+        if self._input_column is not None and self.output_column is not None:
+            QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self._input_column + 1}, Output Column: {self._output_column + 1}")
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
