@@ -190,6 +190,9 @@ class MainWindow(QWidget):
                 self._input_column = col_name
                 self._raise_nan_message(col_name=self._input_column)
 
+        else:
+            self._input_column = None
+
 
     def on_combo_box2_changed(self, index):
 
@@ -205,6 +208,10 @@ class MainWindow(QWidget):
             else:
                 self._output_column = col_name
                 self._raise_nan_message(col_name=self._output_column)
+
+        else:
+
+            self._output_column = None
 
     def on_confirm_selection(self):
 
