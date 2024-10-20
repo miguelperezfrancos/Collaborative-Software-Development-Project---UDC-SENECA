@@ -145,9 +145,8 @@ class MainWindow(QWidget):
         menu.addItems(items)
 
 
-    def _raise_nan_message(self, col_index: int):
+    def _raise_nan_message(self, col_name: str):
 
-        col_name = self._dmanager.get_colums(index=col_index)
         num_nan = self._dmanager.detect(column=col_name)
 
         if num_nan > 0:
@@ -180,30 +179,32 @@ class MainWindow(QWidget):
     def on_combo_box1_changed(self, index):
 
         if index > 0:  # Ensure valid input column is selected
-            column = index - 1
+            col_index = index - 1
+            col_name = self._dmanager.get_colums(index=col_index)
 
             # Check if column is the same as combo_box2
-            if column == self.output_column:
+            if col_name == self.output_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
-                self._input_column = self._dmanager.get_colums(index=column)
-                self._raise_nan_message(col_index=column)
+                self._input_column = col_name
+                self._raise_nan_message(col_name=self._input_column)
 
 
     def on_combo_box2_changed(self, index):
 
         if index > 0:  # Ensure valid output column is selected
 
-            column = index - 1
+            col_index = index - 1
+            col_name = self._dmanager.get_colums(index=col_index)
 
             # Check if column is the same as combo_box1
-            if column == self._input_column:
+            if col_name == self._input_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
             else:
-                self._output_column = self._dmanager.get_colums(index=column)
-                self._raise_nan_message(col_index=column)
+                self._output_column = col_name
+                self._raise_nan_message(col_name=self._output_column)
 
     def on_confirm_selection(self):
 
@@ -221,18 +222,23 @@ class MainWindow(QWidget):
         """
 
         choice = self._preprocessing_opts.checkedButton()
-        indexes = [x for x in [self._input_column, self._output_column] if x is not None]
+        columns = [x for x in [self._input_column, self._output_column] if x is not None]
+        print(columns)
 
-        if len(indexes) > 0:
+        if len(columns) > 0:
 
             if choice is self._remove_option:
-                print('remove rows')
+                self._dmanager.delete(columns=columns)
             elif choice is self._constant_option:
                 print('replace with a number')
             elif choice is self._mean_option:
-                print('replace with the mean')
+                self._dmanager.replace(columns=columns)
             elif choice is self._median_option:
-                print('replace with the median')
+                self._dmanager.replace(columns=columns, value='median')
+
+            self._table.model().setDataFrame(self._dmanager.data)
+
+
 
 
             
