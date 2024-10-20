@@ -15,7 +15,7 @@ from dataManagement.fileReader import FileReader
 from dataManagement.dataManager import DataManager as dm
 import pandas as pd  
 import UserInterface.widgetBuilder as builder
-
+from UserInterface.constantMessageBox import InputDialog as cmbox
 
 class MainWindow(QWidget):
     
@@ -237,17 +237,17 @@ class MainWindow(QWidget):
             if choice is self._remove_option:
                 self._dmanager.delete(columns=columns)
             elif choice is self._constant_option:
-                print('replace with a number')
+
+                dialog = cmbox()
+                if dialog.exec():
+
+                    constant_value = dialog.entered_value
+                    print(f"Constante introducida: {constant_value}")
+                    self._dmanager.replace(columns=columns, value = float(constant_value))
+               
             elif choice is self._mean_option:
                 self._dmanager.replace(columns=columns)
             elif choice is self._median_option:
                 self._dmanager.replace(columns=columns, value='median')
 
             self._table.model().setDataFrame(self._dmanager.data)
-
-
-
-
-            
-
-    

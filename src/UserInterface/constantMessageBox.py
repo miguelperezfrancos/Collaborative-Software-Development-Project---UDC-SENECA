@@ -39,6 +39,6 @@ class InputDialog(QDialog):
 
     def enter_value(self):
         # Acción para el botón "Enter"
-        entered_value = self.input_field.text()
-        print(f"Valor introducido: {entered_value}")
+        self.entered_value = self.input_field.text()
+        print(f"Valor introducido: {self.entered_value}")
         self.accept()  # Cierra el diálogo con resultado 'aceptado'
