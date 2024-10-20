@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Qt
 from dataManagement.fileReader import FileReader
-from dataManagement.dataManager import DataManager
+from dataManagement.dataManager import DataManager as dm
 import pandas as pd  
 import UserInterface.widgetBuilder as builder
 
@@ -29,7 +29,7 @@ class MainWindow(QWidget):
         
         super().__init__()
 
-        self._dmanager = DataManager()
+        self._dmanager = dm()
 
         # Store the selected columns
         self._input_column = None
@@ -109,6 +109,8 @@ class MainWindow(QWidget):
         reader = FileReader()
         try:
             df = reader.parse_file(file_path)
+            # 'send' the dataFrame to the data manager
+            self._dmanager.data = df
             self._table.model().setDataFrame(df)
 
         except:  # Catch any other unknown errors
@@ -166,6 +168,8 @@ class MainWindow(QWidget):
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
                 self._input_column = column
+                self._raise_nan_message(col_index=column)
+
 
     def on_combo_box2_changed(self, index):
 
@@ -179,6 +183,7 @@ class MainWindow(QWidget):
                 self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
             else:
                 self._output_column = column
+                self._raise_nan_message(col_index=column)
 
     def on_confirm_selection(self):
 
@@ -187,3 +192,11 @@ class MainWindow(QWidget):
             QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self._input_column + 1}, Output Column: {self._output_column + 1}")
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
+
+    def _raise_nan_message(self, col_index: int):
+
+        col_name = self._dmanager.get_colums(index=col_index)
+        num_nan = self._dmanager.detect(column=col_name)
+
+        if num_nan > 0:
+            QMessageBox.information(self, "Unknown Values", f'{col_name} has {num_nan} unknown values, you might want to pre-process your data.')

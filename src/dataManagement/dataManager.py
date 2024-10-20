@@ -32,14 +32,14 @@ class DataManager():
         
     def detect(self, column: str):
         """
-        This function detects the rows with NaN values.
+        This function detects the number of rows with NaN values.
         """
-        nan_sum = self._data[column].isna().sum()
-        nan_indices = self._data[self._data[column].isna()].index
-
-        print(nan_indices)
-        print(nan_sum)
         
+        nan_sum = self._data[column].isna().sum()
+
+        print(nan_sum)
+        return nan_sum
+
 
     def delete(self, column:str):
         """
