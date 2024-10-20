@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 from dataManager import DataManager as dm
 
+"""
+Module created to ensure data pre-processing is working
+"""
+
 if __name__ == '__main__':
 
     # Set a random seed for reproducibility
@@ -25,4 +29,3 @@ if __name__ == '__main__':
 
     print('')
     print(mydm.data)
-
