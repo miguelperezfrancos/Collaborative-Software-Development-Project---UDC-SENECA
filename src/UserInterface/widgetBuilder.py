@@ -9,7 +9,8 @@ from  PySide6.QtWidgets import (
     QLabel,
     QSizePolicy,
     QComboBox,
-    QHeaderView
+    QHeaderView,
+    QRadioButton
 )
 
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
@@ -79,3 +80,8 @@ def create_virtual_table():
     table = VirtualTableView(VirtualTableModel())
     table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
     return table
+
+def create_radio_button(text:str, event=None) -> QRadioButton:
+
+    radio_button = QRadioButton(text)
+    return radio_button

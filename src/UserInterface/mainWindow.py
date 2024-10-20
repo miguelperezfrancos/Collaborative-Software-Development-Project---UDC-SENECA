@@ -6,7 +6,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QFileDialog,
     QMessageBox,
-    QComboBox
+    QComboBox,
+    QButtonGroup
 )
 
 from PySide6.QtCore import Qt
@@ -43,6 +44,10 @@ class MainWindow(QWidget):
         self._hor_1 = QHBoxLayout()
         self._hor_2 = QHBoxLayout()
 
+        #Creación de un layout para radio button
+        self._vert_cc_lay = QVBoxLayout()
+        self._vert_prep = QVBoxLayout()
+
         #declare widgets
         self._file_indicator = builder.create_label(text="File path: ")
         self._path_label = builder.create_label(text="")
@@ -51,11 +56,18 @@ class MainWindow(QWidget):
         self._output_menu = builder.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
         self._confirm_cols_button = builder.create_button(text="Confirm Selection", event=self.on_confirm_selection)
         self._table = builder.create_virtual_table()
+        
+        self._constant_option = builder.create_radio_button(text='Replace with a number')
+        self._mean_option = builder.create_radio_button(text='Replace with mean')
+        self._median_option = builder.create_radio_button(text='Replace with median')
 
         #set up layouts
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
-        self._set_layout(layout = self._hor_2, items=[self._input_menu, self._output_menu, self._confirm_cols_button])
+        self._set_layout(layout = self._vert_cc_lay, items=[self._input_menu, self._output_menu, self._confirm_cols_button]) # Vertical choose column layout
+        self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option]) # Vertical layout with radio buttons
+        self._set_layout(layout = self._hor_2, items = [self._vert_cc_lay, self._vert_prep])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
+        
 
         self.setLayout(self._main_layout)
         self._main_layout.setStretch(1, 10)  # Table expands

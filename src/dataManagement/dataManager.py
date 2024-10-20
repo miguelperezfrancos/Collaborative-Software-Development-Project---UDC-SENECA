@@ -64,4 +64,4 @@ class DataManager():
 
         elif isinstance(value, int) or isinstance(value, float):
             self._data.fillna({column: value}, inplace = True)
-        
+
