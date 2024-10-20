@@ -41,27 +41,32 @@ class DataManager():
         return nan_sum
 
 
-    def delete(self, column:str):
+    def delete(self, columns:list):
         """
         This function deletes the rows containing NaN values.
         """
-        self._data.dropna(subset=column, inplace=True)
-        return self._data 
+        new_df = self._data.dropna(subset=columns)
+        new_df.reset_index(drop=True, inplace=True)
+        self._data = new_df
+        return self._data
 
-    def replace(self, column: str, value = 'mean'):
+    def replace(self, columns: list, value = 'mean'):
         """
         This function replaces NaN values with a constant, mean our median values.
         """
-
-        print(column)
+        nan_cols = [c for c in columns if self.detect(c) > 0]
 
         if value == 'mean':
-            print('hey')
-            self._data.fillna({column: self._data[column].mean()}, inplace = True)
-
+            nan_values = [self._data[c].mean() for c in nan_cols]
+            
         elif value == 'median':
-            self._data.fillna({column: self._data[column].median()}, inplace = True)
+            nan_values = [self._data[c].median() for c in nan_cols]
 
         elif isinstance(value, int) or isinstance(value, float):
-            self._data.fillna({column: value}, inplace = True)
+            nan_values = [value for _ in nan_cols]
+
+
+        c_v_dict = dict(zip(nan_cols, nan_values))
+        self._data.fillna(c_v_dict, inplace = True)
+
 

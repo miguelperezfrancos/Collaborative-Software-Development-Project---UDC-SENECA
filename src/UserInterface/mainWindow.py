@@ -54,17 +54,27 @@ class MainWindow(QWidget):
         self._open_file_button = builder.create_button(text="Open File Explorer", event=self.open_file_dialog)
         self._input_menu = builder.create_combo_box(default_item= "Select an input column", event=self.on_combo_box1_changed)
         self._output_menu = builder.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
-        self._confirm_cols_button = builder.create_button(text="Confirm Selection", event=self.on_confirm_selection)
+        self._confirm_cols_button = builder.create_button(text="Generate model", event=self.on_confirm_selection)
         self._table = builder.create_virtual_table()
-        
+
+        self._remove_option = builder.create_radio_button(text='Remove row')
         self._constant_option = builder.create_radio_button(text='Replace with a number')
         self._mean_option = builder.create_radio_button(text='Replace with mean')
         self._median_option = builder.create_radio_button(text='Replace with median')
 
+        self._preprocessing_opts = QButtonGroup()
+        self._preprocessing_opts.addButton(self._remove_option)
+        self._preprocessing_opts.addButton(self._constant_option)
+        self._preprocessing_opts.addButton(self._mean_option)
+        self._preprocessing_opts.addButton(self._median_option)
+
+        self._apply_prep_button = builder.create_button(text='Apply', event=self.on_apply_button)
+
         #set up layouts
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
         self._set_layout(layout = self._vert_cc_lay, items=[self._input_menu, self._output_menu, self._confirm_cols_button]) # Vertical choose column layout
-        self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option]) # Vertical layout with radio buttons
+        self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option, self._remove_option,
+                                                          self._apply_prep_button]) # Vertical layout with radio buttons
         self._set_layout(layout = self._hor_2, items = [self._vert_cc_lay, self._vert_prep])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
         
@@ -134,6 +144,16 @@ class MainWindow(QWidget):
         menu.addItem(default_msg)
         menu.addItems(items)
 
+
+    def _raise_nan_message(self, col_index: int):
+
+        col_name = self._dmanager.get_colums(index=col_index)
+        num_nan = self._dmanager.detect(column=col_name)
+
+        if num_nan > 0:
+            QMessageBox.information(self, "Unknown Values", f'{col_name} has {num_nan} unknown values, you might want to pre-process your data.')
+
+
     def open_file_dialog(self):
 
         """
@@ -167,7 +187,7 @@ class MainWindow(QWidget):
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
-                self._input_column = column
+                self._input_column = self._dmanager.get_colums(index=column)
                 self._raise_nan_message(col_index=column)
 
 
@@ -182,7 +202,7 @@ class MainWindow(QWidget):
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
             else:
-                self._output_column = column
+                self._output_column = self._dmanager.get_colums(index=column)
                 self._raise_nan_message(col_index=column)
 
     def on_confirm_selection(self):
@@ -193,10 +213,28 @@ class MainWindow(QWidget):
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
 
-    def _raise_nan_message(self, col_index: int):
+    def on_apply_button(self):
 
-        col_name = self._dmanager.get_colums(index=col_index)
-        num_nan = self._dmanager.detect(column=col_name)
+        """
+        This function is the 'event' that takes place when the user apply changes
+        on preprocessing option.
+        """
 
-        if num_nan > 0:
-            QMessageBox.information(self, "Unknown Values", f'{col_name} has {num_nan} unknown values, you might want to pre-process your data.')
+        choice = self._preprocessing_opts.checkedButton()
+        indexes = [x for x in [self._input_column, self._output_column] if x is not None]
+
+        if len(indexes) > 0:
+
+            if choice is self._remove_option:
+                print('remove rows')
+            elif choice is self._constant_option:
+                print('replace with a number')
+            elif choice is self._mean_option:
+                print('replace with the mean')
+            elif choice is self._median_option:
+                print('replace with the median')
+
+
+            
+
+    

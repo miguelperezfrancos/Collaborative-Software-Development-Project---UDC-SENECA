@@ -19,11 +19,9 @@ if __name__ == '__main__':
 
     mydm = dm()
     mydm.data = df
-    
-    column = mydm.get_colums(index=3)
-    mydm.detect(column=column)
-    mydm.replace(column=column, value=0.60989)
-    #mydm.delete(column=column)
+
+    #mydm.replace(columns=['E', 'D'], value='median')
+    mydm.delete(columns=['C', 'D'])
 
     print('')
     print(mydm.data)
