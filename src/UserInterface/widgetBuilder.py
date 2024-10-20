@@ -79,5 +79,3 @@ def create_virtual_table():
     table = VirtualTableView(VirtualTableModel())
     table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
     return table
-
-

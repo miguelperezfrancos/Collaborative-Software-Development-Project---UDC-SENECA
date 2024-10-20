@@ -53,11 +53,14 @@ class DataManager():
         This function replaces NaN values with a constant, mean our median values.
         """
 
+        print(column)
+
         if value == 'mean':
-            self._data.fillna({column: self._data.mean()}, inplace = True)
+            print('hey')
+            self._data.fillna({column: self._data[column].mean()}, inplace = True)
 
         elif value == 'median':
-            self._data.fillna({column: self._data.median()}, inplace = True)
+            self._data.fillna({column: self._data[column].median()}, inplace = True)
 
         elif isinstance(value, int) or isinstance(value, float):
             self._data.fillna({column: value}, inplace = True)

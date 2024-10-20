@@ -22,7 +22,7 @@ if __name__ == '__main__':
     
     column = mydm.get_colums(index=3)
     mydm.detect(column=column)
-    mydm.replace(column=column)
+    mydm.replace(column=column, value=0.60989)
     #mydm.delete(column=column)
 
     print('')
