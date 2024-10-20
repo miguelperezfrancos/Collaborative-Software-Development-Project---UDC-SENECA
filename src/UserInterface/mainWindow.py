@@ -57,10 +57,9 @@ class MainWindow(QWidget):
         self._set_layout(layout = self._hor_2, items=[self._input_menu, self._output_menu, self._confirm_cols_button])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
 
-        self._hor_2.setStretch(1, 10)  # Table expands
-        self._hor_2.setStretch(2, 1)   # Combo box layout takes less space
-
         self.setLayout(self._main_layout)
+        self._main_layout.setStretch(1, 10)  # Table expands
+        self._main_layout.setStretch(2, 1)   # Combo box layout takes less space
         self.original_colors = {}
 
     def _set_layout(self, layout, items: list):
