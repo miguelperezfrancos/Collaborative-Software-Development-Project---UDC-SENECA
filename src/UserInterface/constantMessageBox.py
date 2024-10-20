@@ -1,44 +1,51 @@
-from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 
 class InputDialog(QDialog):
+
+    """
+    This class creates a dialog interface that allows user to 
+    introduce a constant to fill nan values on the selcted columns.
+    """
+
     def __init__(self):
         super().__init__()
         
-        # Configuración del diálogo
-        self.setWindowTitle("Introducir Constante")
+        self.setWindowTitle("Introduce a value")
         
-        # Crear el layout
+        # Create layout
         layout = QVBoxLayout()
 
-        # Etiqueta para instrucciones
-        self.label = QLabel("Introduce una constante para preprocesar los datos:")
+        self.label = QLabel("Choose a value:")
         layout.addWidget(self.label)
 
-        # Barra de entrada de texto (QLineEdit)
+        # create text input box
         self.input_field = QLineEdit(self)
         layout.addWidget(self.input_field)
         
-        # Botones: Back y Enter
+        # create buttons
         self.back_button = QPushButton("Back", self)
         self.enter_button = QPushButton("Enter", self)
-        
-        # Añadir botones al layout
         layout.addWidget(self.back_button)
         layout.addWidget(self.enter_button)
         
-        # Conectar los botones a sus funciones
+        # Add events to the buttons
         self.back_button.clicked.connect(self.go_back)
         self.enter_button.clicked.connect(self.enter_value)
         
-        # Configurar el layout del diálogo
         self.setLayout(layout)
 
     def go_back(self):
-        # Acción para el botón "Back"
-        self.reject()  # Cierra el diálogo con resultado 'rechazado'
+        """
+        This function is the event for pressing back button.
+        It will close the dialog
+        """
+        self.reject() 
 
     def enter_value(self):
-        # Acción para el botón "Enter"
+        """
+        This function is the event for pressing eneter button.
+        It will store the entered value and then closed with
+        sccepted result.
+        """
         self.entered_value = self.input_field.text()
-        print(f"Valor introducido: {self.entered_value}")
-        self.accept()  # Cierra el diálogo con resultado 'aceptado'
+        self.accept()  
