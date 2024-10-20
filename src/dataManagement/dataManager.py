@@ -22,18 +22,24 @@ class DataManager():
         else:
             raise ValueError('This should be a pandas data frame')
         
-    def get_colums(self):
+    def get_colums(self, index: int):
         """
         This funciton gets the columns where linear
         regression is going to be applied.
         """
-        pass
+        column = self._data.columns
+        return column[index]
         
-    def detect(self):
+    def detect(self, column: str):
         """
         This function detects the rows with NaN values.
         """
-        pass
+        nan_sum = self._data[column].isna().sum()
+        nan_indices = self._data[self._data[column].isna()].index
+
+        print(nan_indices)
+        print(nan_sum)
+        
 
     def delete(self):
         """
