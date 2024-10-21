@@ -289,7 +289,6 @@ class MainWindow(QWidget):
                 self._dmanager.replace(columns=columns)
             elif choice is self._median_option:
                 self._dmanager.replace(columns=columns, value='median')
-                self._dmanager.replace
 
             # Reset table model to processed data
             self._table.model().setDataFrame(self._dmanager.data)
