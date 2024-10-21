@@ -208,7 +208,7 @@ class MainWindow(QWidget):
             col_name = self._dmanager.get_colums(index=col_index)
 
             # Check if column is the same as combo_box2
-            if col_name == self.output_column:
+            if col_name == self._output_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
