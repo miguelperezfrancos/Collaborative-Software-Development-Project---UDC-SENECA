@@ -2,6 +2,8 @@ import pandas as pd #pandas will be used to read the files and transfer it to a 
 from pandas import DataFrame
 import sqlite3
 from pathlib import Path #pathlib will allow us to figure out the extension of a file
+import time
+
 
 class FormatError(Exception):
     "Custom error if the user chooses an unsuported file format"
@@ -64,8 +66,7 @@ class FileReader():
                 table_name = pd.read_sql(query, conn).iloc[0,0] #we execute that query and store it in the varibale table_name
                 df = pd.read_sql(f'SELECT * FROM {table_name};', conn) #we sleect everything from that table and store it in a dataframe
                 conn.close() #we close connection with our database
-
-            print(f'\n{df.head(10)}')
+           
             return df
 
         #Trying to catch specific errors
@@ -81,5 +82,5 @@ class FileReader():
             print('ERROR: could not access to your database')
         except FileNotFoundError:
             print('ERROR: file not found')
-        except: #catching any other errors
-            print('ERROR: unknown error')            
+        except Exception as e: #catching any other errors
+            print(f'ERROR: unknown error {e}')            
