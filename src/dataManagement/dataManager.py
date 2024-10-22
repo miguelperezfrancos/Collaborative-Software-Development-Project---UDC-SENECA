@@ -67,11 +67,14 @@ class DataManager():
         Parameters:
             columns (str): name of columns whoose nan rows are going to be removed.
         """
-        
+
+ 
         new_df = self._data.dropna(subset=columns)
         new_df.reset_index(drop=True, inplace=True)
         self._data = new_df
-  
+
+
+
     def replace(self, columns: list, value = 'mean'):
 
         """
@@ -86,17 +89,17 @@ class DataManager():
         """
         nan_cols = [c for c in columns if self.detect(c) > 0]
 
+    
         if value == 'mean':
-            nan_values = [self._data[c].mean() for c in nan_cols]
+            sust_values = [self._data[c].mean() for c in nan_cols]
             
         elif value == 'median':
-            nan_values = [self._data[c].median() for c in nan_cols]
+            sust_values = [self._data[c].median() for c in nan_cols]
 
         elif isinstance(value, int) or isinstance(value, float):
-            nan_values = [value for _ in nan_cols]
+            sust_values = [value for _ in nan_cols]
 
 
-        c_v_dict = dict(zip(nan_cols, nan_values))
-        self._data.fillna(c_v_dict, inplace = True)
-
-
+        c_v_dict = dict(zip(nan_cols, sust_values))
+        new_df = self._data.fillna(c_v_dict)
+        self._data = new_df
