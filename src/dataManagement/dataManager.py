@@ -101,5 +101,9 @@ class DataManager():
 
 
         c_v_dict = dict(zip(nan_cols, sust_values))
-        new_df = self._data.fillna(c_v_dict)
-        self._data = new_df
+
+        try:
+            new_df = self._data.fillna(c_v_dict)
+            self._data = new_df
+        except:
+            self._data = self._data

@@ -274,30 +274,37 @@ class MainWindow(QWidget):
         """
 
         choice = self._preprocessing_opts.checkedButton()
-        columns = [x for x in [self._input_column, self._output_column] if x is not None]
+        columns = [self._input_column, self._output_column]
         print(columns)
 
         if len(columns) > 0:
 
-            if choice is self._remove_option:
-                self._dmanager.delete(columns=columns)
-            elif choice is self._constant_option:
+            try:
 
-                """
-                If user chooses to enter a custom value to fill NaN values
-                a dialog will be opened that allows him/her to enter his choice.
-                """
-                constant_value = self._input_number.text()
-                print(f"Constante introducida: {constant_value}")
-                self._dmanager.replace(columns=columns, value = float(constant_value))
-               
-            elif choice is self._mean_option:
-                self._dmanager.replace(columns=columns)
-            elif choice is self._median_option:
-                self._dmanager.replace(columns=columns, value='median')
+                if choice is self._remove_option:
+                    self._dmanager.delete(columns=columns)
+                elif choice is self._constant_option:
 
-            # Reset table model to processed data
-            self._table.model().setDataFrame(self._dmanager.data)
+                    """
+                    If user chooses to enter a custom value to fill NaN values
+                    a dialog will be opened that allows him/her to enter his choice.
+                    """
+                    constant_value = self._input_number.text()
+                    print(f"Constante introducida: {constant_value}")
+                    self._dmanager.replace(columns=columns, value = float(constant_value))
+                
+                elif choice is self._mean_option:
+                    self._dmanager.replace(columns=columns)
+                elif choice is self._median_option:
+                    self._dmanager.replace(columns=columns, value='median')
+
+                # Reset table model to processed data
+                self._table.model().setDataFrame(self._dmanager.data)
+                QMessageBox.information(self, "Succesfull preprocess", f"{self._input_column} and {self._output_column} no longer have null values")
+
+            except:
+                self._show_error_message("ERROR: pre-process could not be completed")
+
 
 
     def _change_widget_status(self, layout):
