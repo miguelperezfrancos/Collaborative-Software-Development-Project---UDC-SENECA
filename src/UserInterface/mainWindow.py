@@ -5,7 +5,9 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
     QComboBox,
-    QButtonGroup
+    QButtonGroup,
+    QSpacerItem,
+    QSizePolicy
 )
 
 from PySide6.QtCore import Qt
@@ -47,6 +49,7 @@ class MainWindow(QWidget):
         self._hor_2 = QHBoxLayout()
 
         self._vert_cc_lay = QVBoxLayout() # vertical layou for column choosing menu
+        self._hor_choose_value = QHBoxLayout() # Horizontal Layout for choosing value
         self._vert_prep = QVBoxLayout() # vertical layout for choosing pre-processing method 
 
         #declare widgets
@@ -69,16 +72,20 @@ class MainWindow(QWidget):
         self._preprocessing_opts.addButton(self._mean_option)
         self._preprocessing_opts.addButton(self._median_option)
 
+        self._input_number = builder.create_text_box()
         self._apply_prep_button = builder.create_button(text='Apply', event=self.on_apply_button)
         self._apply_prep_button.setEnabled(False)
 
         #set up layouts
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
         self._set_layout(layout = self._vert_cc_lay, items=[self._input_menu, self._output_menu, self._confirm_cols_button]) # Vertical choose column layout
-        self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option, self._remove_option,
+        self._set_layout(layout = self._hor_choose_value, items = [self._constant_option, self._input_number])
+        self._set_layout(layout= self._vert_prep, items= [self._hor_choose_value, self._mean_option, self._median_option, self._remove_option,
                                                           self._apply_prep_button]) # Vertical layout with radio buttons
         self._set_layout(layout = self._hor_2, items = [self._vert_cc_lay, self._vert_prep])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
+
+        self._hor_choose_value.addItem(QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum))
         
 
         self.setLayout(self._main_layout)
@@ -215,11 +222,11 @@ class MainWindow(QWidget):
             else:
                 self._input_column = col_name
                 self._raise_nan_message(col_name=self._input_column)
-                self._activate_radio_buttons()
 
         else:
             self._input_column = None
-            self._deactivate_radio_buttons()
+        
+        self._change_widget_status(layout = self._vert_prep)
 
 
     def on_combo_box2_changed(self, index):
@@ -240,11 +247,10 @@ class MainWindow(QWidget):
             else:
                 self._output_column = col_name
                 self._raise_nan_message(col_name=self._output_column)
-                self._activate_radio_buttons()
-
         else:
             self._output_column = None
-            self._deactivate_radio_buttons()
+            
+        self._change_widget_status(layout= self._vert_prep)
 
     def on_confirm_selection(self):
 
@@ -281,13 +287,9 @@ class MainWindow(QWidget):
                 If user chooses to enter a custom value to fill NaN values
                 a dialog will be opened that allows him/her to enter his choice.
                 """
-
-                dialog = cmbox()
-                if dialog.exec():
-
-                    constant_value = dialog.entered_value
-                    print(f"Constante introducida: {constant_value}")
-                    self._dmanager.replace(columns=columns, value = float(constant_value))
+                constant_value = self._input_number.text()
+                print(f"Constante introducida: {constant_value}")
+                self._dmanager.replace(columns=columns, value = float(constant_value))
                
             elif choice is self._mean_option:
                 self._dmanager.replace(columns=columns)
@@ -298,30 +300,28 @@ class MainWindow(QWidget):
             self._table.model().setDataFrame(self._dmanager.data)
 
 
-    def _activate_radio_buttons(self):
+    def _change_widget_status(self, layout):
 
         """
-        This function activates preprocessing options when X and Y are
-        selected for linear regression.
+        This function activates pre-processing menu when both input and output are selected,
+        if not, menu will be deactivated.
         """
 
         if self._input_column is not None and self._output_column is not None:
-            
-            for b in self._preprocessing_opts.buttons():
-                b.setEnabled(True)
+            enabled = True
+        else:
+            enabled = False
 
-            self._apply_prep_button.setEnabled(True)
+        # Iterar sobre todos los widgets del layout
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
 
-    def _deactivate_radio_buttons(self):
+            # Si el item es un widget, lo activamos/desactivamos
+            widget = item.widget()
+            if widget:
+                widget.setEnabled(enabled)
 
-        """
-        This function deactivates preprocessing options when user has not selected
-        X and Y for the linear regression.
-        """
-
-        if self._input_column is None or self._output_column is None:
-
-            for b in self._preprocessing_opts.buttons():
-                b.setEnabled(False)
-
-            self._apply_prep_button.setEnabled(False)
+            # Si el item es un layout, llamamos recursivamente
+            inner_layout = item.layout()
+            if inner_layout:
+                self._change_widget_status(inner_layout)

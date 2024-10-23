@@ -10,7 +10,8 @@ from  PySide6.QtWidgets import (
     QSizePolicy,
     QComboBox,
     QHeaderView,
-    QRadioButton
+    QRadioButton,
+    QLineEdit
 )
 
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
@@ -86,3 +87,10 @@ def create_radio_button(text:str, event=None) -> QRadioButton:
     radio_button = QRadioButton(text)
     radio_button.setEnabled(False)
     return radio_button
+
+def create_text_box() -> QLineEdit:
+
+    text_box = QLineEdit()
+    text_box.setEnabled(False)
+    text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    return text_box
