@@ -84,4 +84,5 @@ def create_virtual_table():
 def create_radio_button(text:str, event=None) -> QRadioButton:
 
     radio_button = QRadioButton(text)
+    radio_button.setEnabled(False)
     return radio_button

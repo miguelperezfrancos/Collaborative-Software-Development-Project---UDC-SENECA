@@ -70,6 +70,7 @@ class MainWindow(QWidget):
         self._preprocessing_opts.addButton(self._median_option)
 
         self._apply_prep_button = builder.create_button(text='Apply', event=self.on_apply_button)
+        self._apply_prep_button.setEnabled(False)
 
         #set up layouts
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
@@ -214,9 +215,11 @@ class MainWindow(QWidget):
             else:
                 self._input_column = col_name
                 self._raise_nan_message(col_name=self._input_column)
+                self._activate_radio_buttons()
 
         else:
             self._input_column = None
+            self._deactivate_radio_buttons()
 
 
     def on_combo_box2_changed(self, index):
@@ -237,10 +240,11 @@ class MainWindow(QWidget):
             else:
                 self._output_column = col_name
                 self._raise_nan_message(col_name=self._output_column)
+                self._activate_radio_buttons()
 
         else:
-
             self._output_column = None
+            self._deactivate_radio_buttons()
 
     def on_confirm_selection(self):
 
@@ -292,3 +296,32 @@ class MainWindow(QWidget):
 
             # Reset table model to processed data
             self._table.model().setDataFrame(self._dmanager.data)
+
+
+    def _activate_radio_buttons(self):
+
+        """
+        This function activates preprocessing options when X and Y are
+        selected for linear regression.
+        """
+
+        if self._input_column is not None and self._output_column is not None:
+            
+            for b in self._preprocessing_opts.buttons():
+                b.setEnabled(True)
+
+            self._apply_prep_button.setEnabled(True)
+
+    def _deactivate_radio_buttons(self):
+
+        """
+        This function deactivates preprocessing options when user has not selected
+        X and Y for the linear regression.
+        """
+
+        if self._input_column is None or self._output_column is None:
+
+            for b in self._preprocessing_opts.buttons():
+                b.setEnabled(False)
+
+            self._apply_prep_button.setEnabled(False)
