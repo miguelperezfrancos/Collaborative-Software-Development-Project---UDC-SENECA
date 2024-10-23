@@ -15,7 +15,6 @@ from dataManagement.fileReader import FileReader
 from dataManagement.dataManager import DataManager as dm
 import pandas as pd  
 import UserInterface.widgetBuilder as builder
-from UserInterface.constantMessageBox import InputDialog as cmbox
 
 class MainWindow(QWidget):
     
