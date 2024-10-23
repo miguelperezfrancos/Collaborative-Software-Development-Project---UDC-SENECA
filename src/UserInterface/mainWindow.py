@@ -9,11 +9,11 @@ from PySide6.QtWidgets import (
 )
 
 from PySide6.QtCore import Qt
-from dataManagement.fileReader import FileReader
-from dataManagement.dataManager import DataManager as dm
+from fileReader import FileReader
+from dataManager import DataManager as dm
 import pandas as pd  
-import UserInterface.widgetBuilder as builder
-from UserInterface.constantMessageBox import InputDialog as cmbox
+import widgetBuilder as builder
+from constantMessageBox import InputDialog as cmbox
 
 class MainWindow(QWidget):
     
@@ -39,7 +39,7 @@ class MainWindow(QWidget):
 
         #set window dimensions and name
         self.setWindowTitle("File Explorer")
-        self.setGeometry(100, 100, 600, 400)
+        self.setGeometry(100, 100, 800, 600)
 
         #declare layouts
         self._main_layout = QVBoxLayout()
@@ -52,6 +52,7 @@ class MainWindow(QWidget):
         #declare widgets
         self._file_indicator = builder.create_label(text="File path: ")
         self._path_label = builder.create_label(text="")
+        self._columns_selected = builder.create_label(text = "Selected Coluumns(Input, Output): None") #Label which indicates output and input column selection
         self._open_file_button = builder.create_button(text="Open File Explorer", event=self.open_file_dialog)
         self._input_menu = builder.create_combo_box(default_item= "Select an input column", event=self.on_combo_box1_changed)
         self._output_menu = builder.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
@@ -63,11 +64,19 @@ class MainWindow(QWidget):
         self._mean_option = builder.create_radio_button(text='Replace with mean')
         self._median_option = builder.create_radio_button(text='Replace with median')
 
+        #Deactivated until columns are selected
+        self._remove_option.setEnabled(False)
+        self._constant_option.setEnabled(False)
+        self._mean_option.setEnabled(False)
+        self._median_option.setEnabled(False)
+
         self._preprocessing_opts = QButtonGroup() # group radio buttons in the same 'button group', then add them
         self._preprocessing_opts.addButton(self._remove_option)
         self._preprocessing_opts.addButton(self._constant_option)
         self._preprocessing_opts.addButton(self._mean_option)
         self._preprocessing_opts.addButton(self._median_option)
+
+        
 
         self._apply_prep_button = builder.create_button(text='Apply', event=self.on_apply_button)
 
@@ -75,14 +84,20 @@ class MainWindow(QWidget):
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
         self._set_layout(layout = self._vert_cc_lay, items=[self._input_menu, self._output_menu, self._confirm_cols_button]) # Vertical choose column layout
         self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option, self._remove_option,
-                                                          self._apply_prep_button]) # Vertical layout with radio buttons
+                                                          self._apply_prep_button, self._columns_selected]) # Vertical layout with radio buttons
         self._set_layout(layout = self._hor_2, items = [self._vert_cc_lay, self._vert_prep])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
         
 
+        #self.setLayout(self._main_layout)
+        #self._main_layout.setStretch(1, 10)  # Table expands
+        #self._main_layout.setStretch(2, 1)   # Combo box layout takes less space
+        #self.original_colors = {}
+
         self.setLayout(self._main_layout)
-        self._main_layout.setStretch(1, 10)  # Table expands
-        self._main_layout.setStretch(2, 1)   # Combo box layout takes less space
+        self._main_layout.setStretch(0, 1)  # Adjust the stretch for the top layout
+        self._main_layout.setStretch(1, 8)  # Increase the stretch for the table layout
+        self._main_layout.setStretch(2, 1)  # Keep the bottom layout stretch
         self.original_colors = {}
 
     def _set_layout(self, layout, items: list):
@@ -202,31 +217,31 @@ class MainWindow(QWidget):
                 pass
             
     def on_combo_box1_changed(self, index):
-
         if index > 0:  # Ensure valid input column is selected
             col_index = index - 1
             col_name = self._dmanager.get_colums(index=col_index)
 
             # Check if column is the same as combo_box2
-            if col_name == self.output_column:
+            if col_name == self._output_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
+
             else:
                 self._input_column = col_name
                 self._raise_nan_message(col_name=self._input_column)
+                
 
         else:
             self._input_column = None
 
 
-    def on_combo_box2_changed(self, index):
 
+    def on_combo_box2_changed(self, index):
         """
-        This column acts as 
+        This column acts as the output column for the data processing.
         """
 
         if index > 0:  # Ensure valid output column is selected
-
             col_index = index - 1
             col_name = self._dmanager.get_colums(index=col_index)
 
@@ -234,13 +249,15 @@ class MainWindow(QWidget):
             if col_name == self._input_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._output_menu.setCurrentIndex(0)  # Reset combo_box2 selection
+               
             else:
                 self._output_column = col_name
                 self._raise_nan_message(col_name=self._output_column)
+                
 
         else:
-
             self._output_column = None
+
 
     def on_confirm_selection(self):
 
@@ -266,6 +283,11 @@ class MainWindow(QWidget):
         choice = self._preprocessing_opts.checkedButton()
         columns = [x for x in [self._input_column, self._output_column] if x is not None]
         print(columns)
+        
+        self._remove_option.setEnabled(True)
+        self._constant_option.setEnabled(True)
+        self._mean_option.setEnabled(True)
+        self._median_option.setEnabled(True)
 
         if len(columns) > 0:
 
@@ -293,3 +315,17 @@ class MainWindow(QWidget):
 
             # Reset table model to processed data
             self._table.model().setDataFrame(self._dmanager.data)
+            self._columns_selected.setText(f"Selected Columns(Input, Output): : {', '.join(columns)}")
+        else:
+            self._columns_selected.setText("Selected Columns(Input, Output): None")
+
+
+    def _on_button_click(self):
+        # Desactivar el botón
+        self.button.setEnabled(False)
+
+    def _enable_button(self):
+        # Habilitar el botón de nuevo
+        self.button.setEnabled(True)
+        print("Botón habilitado de nuevo")
+
