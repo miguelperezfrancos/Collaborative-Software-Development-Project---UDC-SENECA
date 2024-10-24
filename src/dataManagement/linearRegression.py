@@ -3,24 +3,73 @@ This module will create a linear regression using scikit learn
 """
 
 import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import r2_score
 
 class Regression():
 
-    def __init__():
-        pass
+    def __init__(self):
 
-    def make_model(self, input_col, output_col):
+        self._model = None
+        self._pred_line = None
+        self._y_name = None
+        self._x_name = None
+        self._independent_value = None
+        self._target_value = None
+        
+
+    def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
+
+        """
+        This function creates a linear regression model.
+
+        Parameters:
+            data (pandas DataFrame): data used for the regression.
+            input-col (str): feature variable.
+            output_col (str): target variable.
+        """
+
+        # set the variable names for our model
+        self._x_name = input_col
+        self._y_name = output_col
 
         # set the target and feature values
-        x = df[['median_income']]
-        y = df['median_house_value']
+        self._independent_value = data[[input_col]]
+        self._target_value = data[output_col]
 
         # create and fit the model
-        model = LinearRegression()
-        model.fit(x, y)
-        y_pred = model.predict(X=x)
+        r_model = LinearRegression()
+        r_model.fit(self._independent_value, self._target_value)
+        y_pred = r_model.predict(X=self._independent_value)
 
+        # asign the model to teh class variables
+        self._model = r_model
+        self._pred_line = y_pred
+
+
+    def get_regression_line(self):
+
+        """
+        This fucntion returns the regression line definition as a string.
+
+        Returns:
+            model_line (str): string containing the regression model line
+        """
+        slope = self._model.coef_[0]
+        intercept = self._model.intercept_
+
+        model_line = f'{self._y_name} = {slope:.2f} * {self._x_name} + {intercept:.2f}'
+
+        return model_line
+        
+
+    def get_r_squared(self):
+
+        """
+        This funciton returns the R² measure of our regression model.
+
+        Returns:
+            r_squared
+        """
+        r2 = r2_score(self._target_value, self._pred_line)
+        return r2
