@@ -284,10 +284,6 @@ class MainWindow(QWidget):
                     self._dmanager.delete(columns=columns)
                 elif choice is self._constant_option:
 
-                    """
-                    If user chooses to enter a custom value to fill NaN values
-                    a dialog will be opened that allows him/her to enter his choice.
-                    """
                     constant_value = self._input_number.text()
                     print(f"Constante introducida: {constant_value}")
                     self._dmanager.replace(columns=columns, value = float(constant_value))
