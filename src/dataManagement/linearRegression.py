@@ -110,7 +110,7 @@ class Regression():
         plt.legend()
 
         # Display formula and metrics
-        formula = f"{y} = {model.coef_[0][0]:.2f}{x} + {model.intercept_[0]:.2f}"
+        formula = f"{y} = {model.coef_[0][0]:.2f}{X} + {model.intercept_[0]:.2f}"
         metrics = f"Mean Squared Error: {MSE:.2f}\nR² Score: {r2:.2f}"
         plt.text(0.05, 0.95, formula, transform=plt.gca().transAxes, 
                 verticalalignment='top', fontsize=10)
