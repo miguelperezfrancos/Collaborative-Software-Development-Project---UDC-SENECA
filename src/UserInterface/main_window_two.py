@@ -10,6 +10,7 @@ from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 import UserInterface.UIHelpers as helper
 from UserInterface.chooseColumn import ChooseColumn
 from UserInterface.prepMenu import PrepMenu
+from PySide6.QtCore import Signal, Slot
 
 
 class MainWindow(QMainWindow):
@@ -52,7 +53,7 @@ class MainWindow(QMainWindow):
         self._main_layout.setStretch(2, 1)   # Combo box layout takes less space
 
 
-        # connect dignals and slots
+        # connect signals and slots
         self._choose_file_menu.file_selected.connect(self._table.set_data)
         self._choose_file_menu.file_selected.connect(self._select_cols.update_selection)
         self._select_cols.selected.connect(self._preprocess.activate_menu)

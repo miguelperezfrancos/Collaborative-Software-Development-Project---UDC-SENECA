@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
-    QFileDialog,
+    QFileDialog
 )
 
 from PySide6.QtCore import Signal
