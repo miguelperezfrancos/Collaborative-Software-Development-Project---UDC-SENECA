@@ -4,8 +4,9 @@ This module will create a linear regression using scikit learn
 
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, mean_squared_error 
+from sklearn.metrics import r2_score, mean_squared_error
 import matplotlib.pyplot as plt
+
 
 class Regression():
 
@@ -18,10 +19,7 @@ class Regression():
         self._independent_value = None
         self._target_value = None
 
-        
-
     def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
-
         """
         This function creates a linear regression model.
 
@@ -36,7 +34,7 @@ class Regression():
         self._y_name = output_col
 
         # set the target and feature values
-        self._independent_value = data[input_col]
+        self._independent_value = data[[input_col]]
         self._target_value = data[output_col]
 
         # create and fit the model
@@ -48,9 +46,7 @@ class Regression():
         self._model = r_model
         self._pred_line = y_pred
 
-
     def get_regression_line(self):
-
         """
         This function returns the regression line definition as a string.
 
@@ -63,10 +59,8 @@ class Regression():
         model_line = f'{self._y_name} = {slope:.2f} * {self._x_name} + {intercept:.2f}'
 
         return model_line
-        
 
     def get_r_squared(self):
-
         """
         This funciton returns the R² measure of our regression model.
 
@@ -75,8 +69,6 @@ class Regression():
         """
         r2 = r2_score(self._target_value, self._pred_line)
         return r2
-
-
 
     def get_MSE(self):
         """
@@ -87,9 +79,8 @@ class Regression():
         """
         MSE = mean_squared_error(self._target_value, self._pred_line)
         return MSE
-    
 
-    def plot_regression(self, X, y, model, MSE, r2):
+    def plot_regression(self, X: str, y: str, model, MSE, r2):
         """
         Plot the regression results.
 
@@ -102,8 +93,10 @@ class Regression():
         """
 
         plt.figure(figsize=(10, 6))
-        plt.scatter(self._independent_value, self._target_value, color='blue', alpha=0.5, label='Data')
-        plt.plot(self._independent_value, model.predict(self._independent_value), color='red', label='Regression Line')
+        plt.scatter(self._independent_value, self._target_value,
+                    color='blue', alpha=0.5, label='Data')
+        plt.plot(self._independent_value, model.predict(
+            self._independent_value), color='red', label='Regression Line')
         plt.xlabel(f'{X}')
         plt.ylabel(f'{y}')
         plt.title('Linear Regression Model')
@@ -112,10 +105,10 @@ class Regression():
         # Display formula and metrics
         formula = f"{y} = {model.coef_[0][0]:.2f}{X} + {model.intercept_[0]:.2f}"
         metrics = f"Mean Squared Error: {MSE:.2f}\nR² Score: {r2:.2f}"
-        plt.text(0.05, 0.95, formula, transform=plt.gca().transAxes, 
-                verticalalignment='top', fontsize=10)
-        plt.text(0.05, 0.85, metrics, transform=plt.gca().transAxes, 
-                verticalalignment='top', fontsize=10)
+        plt.text(0.05, 0.95, formula, transform=plt.gca().transAxes,
+                 verticalalignment='top', fontsize=10)
+        plt.text(0.05, 0.85, metrics, transform=plt.gca().transAxes,
+                 verticalalignment='top', fontsize=10)
 
         plt.tight_layout()
         plt.show()

@@ -14,7 +14,7 @@ from  PySide6.QtWidgets import (
     QLineEdit
 )
 
-from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
+from src.UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
 
