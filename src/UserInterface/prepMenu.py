@@ -13,14 +13,12 @@ from PySide6.QtCore import Signal, Slot
 
 import UserInterface.UIHelpers as helper
 
-class Prepmenu(QWidget):
+class PrepMenu(QWidget):
 
     def __init__(self):
 
-        super.__init__()
+        super().__init__()
         self._manager = DataManager()
-
-        self._container = QWidget()
 
         # Declare layouts
         self._main_layout = QVBoxLayout()
@@ -50,8 +48,11 @@ class Prepmenu(QWidget):
             self._remove_option,
             self._apply_button
         ])
+
+        # set container
+        self.setLayout(self._main_layout)
     
-    
+
     @Slot(bool)
     def activate_menu(self, enabled: bool):
 
