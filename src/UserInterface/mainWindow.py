@@ -18,7 +18,7 @@ from src.dataManagement.fileReader import FileReader
 from src.dataManagement.dataManager import DataManager as dm
 from src.dataManagement.linearRegression import Regression
 import pandas as pd  
-import src.UserInterface.widgetBuilder as builder
+import UserInterface.UIHelpers as builder
 
 
 import matplotlib.pyplot as plt
@@ -101,7 +101,6 @@ class MainWindow(QWidget):
         self.setLayout(self._main_layout)
         self._main_layout.setStretch(1, 10)  # Table expands
         self._main_layout.setStretch(2, 1)   # Combo box layout takes less space
-        self.original_colors = {}
 
     def _set_layout(self, layout, items: list):
 
@@ -338,44 +337,6 @@ class MainWindow(QWidget):
             inner_layout = item.layout()
             if inner_layout:
                 self._change_widget_status(inner_layout)
-
-
-    def perform_linear_regression(self):
-        if self._input_column is None or self._output_column is None:
-            self._show_error_message("Please select input and output columns first.")
-            return
-
-        regression = Regression()
-        regression.make_model(self._dmanager.data, self._input_column, self._output_column)
-
-        r2 = regression.get_r_squared()
-        mse = regression.get_MSE()
-        model_line = regression.get_regression_line()
-
-        # Create a new widget to display the plot
-        plot_widget = QWidget()
-        plot_layout = QVBoxLayout()
-        plot_widget.setLayout(plot_layout)
-
-        # Create the plot
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.scatter(self._dmanager.data[self._input_column], self._dmanager.data[self._output_column], color='blue', alpha=0.5)
-        ax.plot(self._dmanager.data[self._input_column], regression._pred_line, color='red')
-        ax.set_xlabel(self._input_column)
-        ax.set_ylabel(self._output_column)
-        ax.set_title('Linear Regression')
-
-        # Add text with model information
-        text = f"Model: {model_line}\nR² = {r2:.4f}\nMSE = {mse:.4f}"
-        ax.text(0.05, 0.95, text, transform=ax.transAxes, verticalalignment='top', fontsize=10, bbox=dict(facecolor='white', alpha=0.8))
-
-        # Create a canvas for the plot and add it to the layout
-        canvas = FigureCanvas(fig)
-        plot_layout.addWidget(canvas)
-
-        # Add the plot widget to the main layout
-        self._main_layout.addWidget(plot_widget)
-
 
 
 

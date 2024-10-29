@@ -74,4 +74,4 @@ class VirtualTableView(QTableView):
 
     @Slot(pd.DataFrame)
     def set_data(self, data):
-        self.model.setDataFrame(data)
+        self.model().setDataFrame(data)

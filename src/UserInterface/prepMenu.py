@@ -56,28 +56,12 @@ class PrepMenu(QWidget):
     @Slot(bool)
     def activate_menu(self, enabled: bool):
 
-        layout = self._main_layout
-
-        for i in range(layout.count()):
-
-            item = layout.itemAt(i)
-
-            # Si el item es un widget, lo activamos/desactivamos
-            widget = item.widget()
-            if widget:
-                widget.setEnabled(enabled)
-
-            # Si el item es un layout, llamamos recursivamente
-            inner_layout = item.layout()
-            if inner_layout:
-                self.activate_menu(inner_layout)
-        
+        self._constant_option.setEnabled(enabled)
+        self._mean_option.setEnabled(enabled)
+        self._median_option.setEnabled(enabled)
+        self._remove_option.setEnabled(enabled)
+        self._apply_button.setEnabled(enabled)
 
     
     def on_apply_button(self):
         pass
-
-
-
-
-

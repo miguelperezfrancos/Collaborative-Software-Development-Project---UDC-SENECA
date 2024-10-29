@@ -68,14 +68,14 @@ class ChooseColumn(QWidget):
 
     def on_combo_box1_changed(self, index):
 
-        if index != 0:
+        if index != 0 and self._output_menu.currentIndex() != 0:
             self.check_selection() # Revisar selección si se ha seleccionado una columna
-        else:
+        else :
             self.selected.emit(False) # Emitir False si se ha seleccionado la opción por defecto
 
     def on_combo_box2_changed(self, index):
 
-        if index != 0:
+        if index != 0 and self._input_menu.currentIndex() != 0:
             self.check_selection() # revisar seleccion si se ha mandado una columna
         else:
             self.selected.emit(False) # emitir False si se ha seleccionado la opción por defecto
