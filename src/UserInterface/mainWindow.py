@@ -5,15 +5,27 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
     QComboBox,
-    QButtonGroup
+    QButtonGroup,
+    QSpacerItem,
+    QSizePolicy
 )
-
+import sys
+import os
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.append(repo_root)
 from PySide6.QtCore import Qt
-from dataManagement.fileReader import FileReader
-from dataManagement.dataManager import DataManager as dm
+from src.dataManagement.fileReader import FileReader
+from src.dataManagement.dataManager import DataManager as dm
+from src.dataManagement.linearRegression import Regression
 import pandas as pd  
-import UserInterface.widgetBuilder as builder
-from UserInterface.constantMessageBox import InputDialog as cmbox
+import src.UserInterface.widgetBuilder as builder
+
+
+import matplotlib.pyplot as plt
+from PySide6.QtWidgets import QVBoxLayout, QWidget
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
+
 
 class MainWindow(QWidget):
     
@@ -47,6 +59,7 @@ class MainWindow(QWidget):
         self._hor_2 = QHBoxLayout()
 
         self._vert_cc_lay = QVBoxLayout() # vertical layou for column choosing menu
+        self._hor_choose_value = QHBoxLayout() # Horizontal Layout for choosing value
         self._vert_prep = QVBoxLayout() # vertical layout for choosing pre-processing method 
 
         #declare widgets
@@ -69,15 +82,20 @@ class MainWindow(QWidget):
         self._preprocessing_opts.addButton(self._mean_option)
         self._preprocessing_opts.addButton(self._median_option)
 
+        self._input_number = builder.create_text_box()
         self._apply_prep_button = builder.create_button(text='Apply', event=self.on_apply_button)
+        self._apply_prep_button.setEnabled(False)
 
         #set up layouts
         self._set_layout(layout = self._hor_1, items=[self._file_indicator, self._path_label, self._open_file_button])
         self._set_layout(layout = self._vert_cc_lay, items=[self._input_menu, self._output_menu, self._confirm_cols_button]) # Vertical choose column layout
-        self._set_layout(layout= self._vert_prep, items= [self._constant_option, self._mean_option, self._median_option, self._remove_option,
+        self._set_layout(layout = self._hor_choose_value, items = [self._constant_option, self._input_number])
+        self._set_layout(layout= self._vert_prep, items= [self._hor_choose_value, self._mean_option, self._median_option, self._remove_option,
                                                           self._apply_prep_button]) # Vertical layout with radio buttons
         self._set_layout(layout = self._hor_2, items = [self._vert_cc_lay, self._vert_prep])
         self._set_layout(layout = self._main_layout, items=[self._hor_1, self._table, self._hor_2])
+
+        self._hor_choose_value.addItem(QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum))
         
 
         self.setLayout(self._main_layout)
@@ -88,7 +106,7 @@ class MainWindow(QWidget):
     def _set_layout(self, layout, items: list):
 
         """
-        Authomatically adds widget or layout to another layout.
+        Automatically adds widget or layout to another layout.
 
         Parameters:
             layout: layout that will contain the widgets or another layouts.
@@ -208,7 +226,7 @@ class MainWindow(QWidget):
             col_name = self._dmanager.get_colums(index=col_index)
 
             # Check if column is the same as combo_box2
-            if col_name == self.output_column:
+            if col_name == self._output_column:
                 QMessageBox.warning(self, "Error", "You cannot select the same column.")
                 self._input_menu.setCurrentIndex(0)  # Reset combo_box1 selection
             else:
@@ -217,6 +235,8 @@ class MainWindow(QWidget):
 
         else:
             self._input_column = None
+        
+        self._change_widget_status(layout = self._vert_prep)
 
 
     def on_combo_box2_changed(self, index):
@@ -237,10 +257,10 @@ class MainWindow(QWidget):
             else:
                 self._output_column = col_name
                 self._raise_nan_message(col_name=self._output_column)
-
         else:
-
             self._output_column = None
+            
+        self._change_widget_status(layout= self._vert_prep)
 
     def on_confirm_selection(self):
 
@@ -251,7 +271,7 @@ class MainWindow(QWidget):
 
         # Inform user about his choice
         if self._input_column is not None and self._output_column is not None:
-            QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self._input_column + 1}, Output Column: {self._output_column + 1}")
+            QMessageBox.information(self, "Selection Confirmed", f"Input Column: {self._input_column}, Output Column: {self._output_column}")
         # Request user to choose two differetn columns 
         else:
             QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
@@ -264,32 +284,148 @@ class MainWindow(QWidget):
         """
 
         choice = self._preprocessing_opts.checkedButton()
-        columns = [x for x in [self._input_column, self._output_column] if x is not None]
+        columns = [self._input_column, self._output_column]
         print(columns)
 
         if len(columns) > 0:
 
-            if choice is self._remove_option:
-                self._dmanager.delete(columns=columns)
-            elif choice is self._constant_option:
+            try:
 
-                """
-                If user chooses to enter a custom value to fill NaN values
-                a dialog will be opened that allows him/her to enter his choice.
-                """
+                if choice is self._remove_option:
+                    self._dmanager.delete(columns=columns)
+                elif choice is self._constant_option:
 
-                dialog = cmbox()
-                if dialog.exec():
-
-                    constant_value = dialog.entered_value
+                    constant_value = self._input_number.text()
                     print(f"Constante introducida: {constant_value}")
                     self._dmanager.replace(columns=columns, value = float(constant_value))
-               
-            elif choice is self._mean_option:
-                self._dmanager.replace(columns=columns)
-            elif choice is self._median_option:
-                self._dmanager.replace(columns=columns, value='median')
-                self._dmanager.replace
+                
+                elif choice is self._mean_option:
+                    self._dmanager.replace(columns=columns)
+                elif choice is self._median_option:
+                    self._dmanager.replace(columns=columns, value='median')
 
-            # Reset table model to processed data
-            self._table.model().setDataFrame(self._dmanager.data)
+                # Reset table model to processed data
+                self._table.model().setDataFrame(self._dmanager.data)
+                QMessageBox.information(self, "Succesfull preprocess", f"{self._input_column} and {self._output_column} no longer have null values")
+
+            except:
+                self._show_error_message("ERROR: pre-process could not be completed")
+
+
+
+    def _change_widget_status(self, layout):
+
+        """
+        This function activates pre-processing menu when both input and output are selected,
+        if not, menu will be deactivated.
+        """
+
+        if self._input_column is not None and self._output_column is not None:
+            enabled = True
+        else:
+            enabled = False
+
+        # Iterar sobre todos los widgets del layout
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+
+            # Si el item es un widget, lo activamos/desactivamos
+            widget = item.widget()
+            if widget:
+                widget.setEnabled(enabled)
+
+            # Si el item es un layout, llamamos recursivamente
+            inner_layout = item.layout()
+            if inner_layout:
+                self._change_widget_status(inner_layout)
+
+
+    def perform_linear_regression(self):
+        if self._input_column is None or self._output_column is None:
+            self._show_error_message("Please select input and output columns first.")
+            return
+
+        regression = Regression()
+        regression.make_model(self._dmanager.data, self._input_column, self._output_column)
+
+        r2 = regression.get_r_squared()
+        mse = regression.get_MSE()
+        model_line = regression.get_regression_line()
+
+        # Create a new widget to display the plot
+        plot_widget = QWidget()
+        plot_layout = QVBoxLayout()
+        plot_widget.setLayout(plot_layout)
+
+        # Create the plot
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.scatter(self._dmanager.data[self._input_column], self._dmanager.data[self._output_column], color='blue', alpha=0.5)
+        ax.plot(self._dmanager.data[self._input_column], regression._pred_line, color='red')
+        ax.set_xlabel(self._input_column)
+        ax.set_ylabel(self._output_column)
+        ax.set_title('Linear Regression')
+
+        # Add text with model information
+        text = f"Model: {model_line}\nR² = {r2:.4f}\nMSE = {mse:.4f}"
+        ax.text(0.05, 0.95, text, transform=ax.transAxes, verticalalignment='top', fontsize=10, bbox=dict(facecolor='white', alpha=0.8))
+
+        # Create a canvas for the plot and add it to the layout
+        canvas = FigureCanvas(fig)
+        plot_layout.addWidget(canvas)
+
+        # Add the plot widget to the main layout
+        self._main_layout.addWidget(plot_widget)
+
+
+
+
+
+    def on_confirm_selection(self):
+        """
+        This function acts as the event for pressing the confirm selection button (choosing input and output)
+        values for linear regression model.
+        """
+        if self._input_column is not None and self._output_column is not None:
+            try:
+                regression = Regression()
+                regression.make_model(self._dmanager.data, self._input_column, self._output_column)
+
+                r2 = regression.get_r_squared()
+                mse = regression.get_MSE()
+                model_line = regression.get_regression_line()
+
+                # Create a new widget to display the plot
+                plot_widget = QWidget()
+                plot_layout = QVBoxLayout()
+                plot_widget.setLayout(plot_layout)
+
+                # Create the plot
+                fig, ax = plt.subplots(figsize=(8, 6))
+                ax.scatter(self._dmanager.data[self._input_column], self._dmanager.data[self._output_column], color='blue', alpha=0.5)
+                ax.plot(self._dmanager.data[self._input_column], regression._pred_line, color='red')
+                ax.set_xlabel(self._input_column)
+                ax.set_ylabel(self._output_column)
+                ax.set_title('Linear Regression')
+
+                # Add text with model information
+                text = f"Model: {model_line}\nR² = {r2:.4f}\nMSE = {mse:.4f}"
+                ax.text(0.05, 0.95, text, transform=ax.transAxes, verticalalignment='top', fontsize=10, bbox=dict(facecolor='white', alpha=0.8))
+
+                # Create a canvas for the plot and add it to the layout
+                canvas = FigureCanvas(fig)
+                plot_layout.addWidget(canvas)
+
+                # Remove any existing plot widget
+                for i in reversed(range(self._main_layout.count())): 
+                    widget = self._main_layout.itemAt(i).widget()
+                    if isinstance(widget, QWidget) and widget != self:
+                        widget.setParent(None)
+
+                # Add the plot widget to the main layout
+                self._main_layout.addWidget(plot_widget)
+
+                QMessageBox.information(self, "Model Generated", f"Linear regression model has been generated and plotted.")
+            except Exception as e:
+                self._show_error_message(f"Error generating model: {str(e)}")
+        else:
+            QMessageBox.warning(self, "Selection Error", "Please select two different columns before confirming.")
