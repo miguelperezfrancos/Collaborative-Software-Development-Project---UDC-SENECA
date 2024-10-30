@@ -10,10 +10,13 @@ from PySide6.QtWidgets import (
 )
 
 from PySide6.QtCore import Signal, Slot
-
+import pandas as pd
 import UserInterface.UIHelpers as helper
 
 class PrepMenu(QWidget):
+
+    preprocess_request = Signal()
+    processed_data = Signal(pd.DataFrame)
 
     def __init__(self):
 
@@ -64,4 +67,34 @@ class PrepMenu(QWidget):
 
     
     def on_apply_button(self):
-        pass
+        #emit request to handle preprocess
+        self.preprocess_request.emit()
+
+
+    def apply_preprocess(self, columns, manager):
+
+        choice = self._preprocessing_opts.checkedButton()
+        
+        try:
+
+            if choice is self._remove_option:
+                manager.delete(columns=columns)
+
+            elif choice is self._mean_option:
+                manager.replace(columns=columns)
+
+            elif choice is self._median_option:
+                manager.replace(columns=columns, value='median')
+            
+            elif choice is self._constant_option:
+                constant_value = self._input_number.text()
+                print(f"Constante introducida: {constant_value}")
+                manager.replace(columns=columns, value = float(constant_value))
+
+            self.processed_data.emit(manager.data)
+            QMessageBox.information(self, "Succesfull preprocess", f"{columns[0]} and {columns[1]} no longer have null values")
+
+        except:
+            self._show_error_message("ERROR: pre-process could not be completed")
+
+    

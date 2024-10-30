@@ -60,10 +60,17 @@ class ChooseColumn(QWidget):
 
         else:
             # Si no son iguales emitimos que la selcción es válida y las columnas seleccionadas
-
-            selection = [self._input_menu.currentText(), self._output_menu.currentText()]
-            self.send_selection.emit(selection)
             self.selected.emit(True)
+
+    def selection(self):
+
+        """
+        This function send column selection when
+        preprocessing button is pressed
+        """
+
+        selection = [self._input_menu.currentText(), self._output_menu.currentText()]
+        return selection
 
 
     def on_combo_box1_changed(self, index):
