@@ -39,8 +39,12 @@ class PrepMenu(QWidget):
         self._preprocessing_opts.addButton(self._median_option)
 
         self._input_number = helper.create_text_box()
+        self._input_number.setVisible(False)
         self._apply_button = helper.create_button(text='Apply', event=self.on_apply_button)
         self._apply_button.setEnabled(False)
+
+        # Connect signals
+        self._constant_option.toggled.connect(self.toggle_input)
 
         # build layouts
         helper.set_layout(layout=self._constant_layout, items = [self._constant_option, self._input_number])
@@ -64,6 +68,18 @@ class PrepMenu(QWidget):
         self._median_option.setEnabled(enabled)
         self._remove_option.setEnabled(enabled)
         self._apply_button.setEnabled(enabled)
+
+
+    @Slot(bool)
+    def toggle_input(self, checked: bool):
+
+        """
+        Enable and set visible the input field only if the 'Replace with a number' 
+        option is selected.
+        """
+
+        self._input_number.setEnabled(checked)
+        self._input_number.setVisible(checked)
 
     
     def on_apply_button(self):
@@ -96,5 +112,3 @@ class PrepMenu(QWidget):
 
         except:
             self._show_error_message("ERROR: pre-process could not be completed")
-
-    

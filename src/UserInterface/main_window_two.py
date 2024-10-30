@@ -2,7 +2,8 @@ from PySide6.QtWidgets import(
     QMainWindow, 
     QWidget, 
     QVBoxLayout,
-    QHBoxLayout    
+    QHBoxLayout,
+    QMessageBox    
 )
 
 from UserInterface.openFile import ChooseFile
@@ -63,7 +64,10 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.file_selected.connect(self.get_data) # poner los datos en el data manager
         self._choose_file_menu.file_selected.connect(self._table.set_data) # se envían los datos a la tabla
         self._choose_file_menu.file_selected.connect(self._select_cols.update_selection) # se envian los datos al menu de seleccion de columnas
+
+        self._select_cols.send_selection.connect(self.show_nan_values) # recibir la columna seleccionada para ver si tiene NaN values
         self._select_cols.selected.connect(self._preprocess.activate_menu) # se envía la señal de activarse al menu del preprocesado
+
         self._preprocess.preprocess_request.connect(self.handle_preprocess) 
         self._preprocess.processed_data.connect(self._table.set_data) #añadir los datos preprocesados a la tabla
 
@@ -71,6 +75,25 @@ class MainWindow(QMainWindow):
     @Slot(pd.DataFrame)
     def get_data(self, data):
         self._dmanager.data = data
+
+
+    @Slot(int)
+    def show_nan_values(self, index):
+
+        """
+        This function checks if a column of the data frame has NaN values, if it does,
+        it will inform the user about it raising an informative message.
+
+        Parameters:
+            col_name: name o fthe column in the data frame.
+        """
+
+        col_name = self._dmanager.data.columns[index]
+        num_nan = self._dmanager.detect(column=col_name)
+
+        if num_nan > 0:
+            QMessageBox.information(self, "Unknown Values", f'{col_name} has {num_nan} unknown values, you might want to pre-process your data.')
+
 
     @Slot()
     def handle_preprocess(self):

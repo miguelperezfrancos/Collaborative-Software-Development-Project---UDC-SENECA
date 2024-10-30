@@ -12,7 +12,7 @@ import UserInterface.UIHelpers as helper
 
 class ChooseColumn(QWidget):
 
-    send_selection = Signal(list) # señal para mandar la seleccion actual de columnas
+    send_selection = Signal(int) # señal para mandar la seleccion de un menú
     selected = Signal(bool) # señal para indicar que existe una seleccion válida
 
     def __init__(self):
@@ -68,22 +68,29 @@ class ChooseColumn(QWidget):
         This function send column selection when
         preprocessing button is pressed
         """
-
         selection = [self._input_menu.currentText(), self._output_menu.currentText()]
         return selection
 
 
     def on_combo_box1_changed(self, index):
 
-        if index != 0 and self._output_menu.currentIndex() != 0:
-            self.check_selection() # Revisar selección si se ha seleccionado una columna
+        if index != 0:  
+
+            self.send_selection.emit(index-1)
+            
+            if self._output_menu.currentIndex() != 0:
+                self.check_selection() # Revisar selección si se ha seleccionado una columna
         else :
             self.selected.emit(False) # Emitir False si se ha seleccionado la opción por defecto
 
     def on_combo_box2_changed(self, index):
 
-        if index != 0 and self._input_menu.currentIndex() != 0:
-            self.check_selection() # revisar seleccion si se ha mandado una columna
+        if index != 0:  
+
+            self.send_selection.emit(index-1)
+            
+            if self._input_menu.currentIndex() != 0:
+                self.check_selection() # revisar seleccion si se ha mandado una columna
         else:
             self.selected.emit(False) # emitir False si se ha seleccionado la opción por defecto
 
