@@ -61,16 +61,16 @@ class MainWindow(QMainWindow):
 
 
         # connect signals and slots
-        self._choose_file_menu.file_selected.connect(self.get_data) # poner los datos en el data manager
-        self._choose_file_menu.file_selected.connect(self._table.set_data) # se envían los datos a la tabla
-        self._choose_file_menu.file_selected.connect(self._select_cols.update_selection) # se envian los datos al menu de seleccion de columnas
+        self._choose_file_menu.file_selected.connect(self.get_data) # send selected file to data manager
+        self._choose_file_menu.file_selected.connect(self._table.set_data) # send data to table
+        self._choose_file_menu.file_selected.connect(self._select_cols.update_selection) # send data to column selection menu
 
-        self._select_cols.send_selection.connect(self.show_nan_values) # recibir la columna seleccionada para ver si tiene NaN values
-        self._select_cols.selected.connect(self._preprocess.activate_menu) # se envía la señal de activarse al menu del preprocesado
+        self._select_cols.send_selection.connect(self.show_nan_values) # get selected column to check if it has NaN values
+        self._select_cols.selected.connect(self._preprocess.activate_menu) # send selection status to activate preprocess menu
 
-        self._preprocess.preprocess_request.connect(self.handle_preprocess) 
-        self._preprocess.processed_data.connect(self._table.set_data) #añadir los datos preprocesados a la tabla
-
+        self._preprocess.preprocess_request.connect(self.handle_preprocess) # handle preprocessing
+        self._preprocess.processed_data.connect(self._table.set_data) # update table content when preprocess is done
+        
 
     @Slot(pd.DataFrame)
     def get_data(self, data):

@@ -51,12 +51,13 @@ class ChooseColumn(QWidget):
             menu.addItems(items)
 
 
-    def check_selection(self):
+    def check_selection(self, menu):
 
         # Verificar si las selecciones son iguales
         if self._input_menu.currentText() == self._output_menu.currentText():
 
             QMessageBox.warning(self, "Error", "You cannot select the same column.")
+            menu.setCurrentIndex(0)
 
         else:
             # Si no son iguales emitimos que la selcción es válida y las columnas seleccionadas
@@ -79,7 +80,7 @@ class ChooseColumn(QWidget):
             self.send_selection.emit(index-1)
             
             if self._output_menu.currentIndex() != 0:
-                self.check_selection() # Revisar selección si se ha seleccionado una columna
+                self.check_selection(menu=self._input_menu) # Revisar selección si se ha seleccionado una columna
         else :
             self.selected.emit(False) # Emitir False si se ha seleccionado la opción por defecto
 
@@ -90,7 +91,7 @@ class ChooseColumn(QWidget):
             self.send_selection.emit(index-1)
             
             if self._input_menu.currentIndex() != 0:
-                self.check_selection() # revisar seleccion si se ha mandado una columna
+                self.check_selection(menu=self._output_menu) # revisar seleccion si se ha mandado una columna
         else:
             self.selected.emit(False) # emitir False si se ha seleccionado la opción por defecto
 

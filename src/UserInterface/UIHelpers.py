@@ -13,7 +13,7 @@ from  PySide6.QtWidgets import (
     QRadioButton,
     QLineEdit,
     QHBoxLayout,
-    QVBoxLayout
+    QVBoxLayout,
 )
 
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
