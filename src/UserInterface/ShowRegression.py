@@ -1,15 +1,11 @@
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
-    QMessageBox
 )
 
-from PySide6.QtCore import Signal, Slot
-import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import UserInterface.UIHelpers as helper
 from dataManagement.linearRegression import Regression
 
 

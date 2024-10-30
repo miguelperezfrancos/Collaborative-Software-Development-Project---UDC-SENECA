@@ -10,18 +10,24 @@ from .UIHelpers import (create_button,
                         create_text_box,
                         create_virtual_table,
                         set_layout)
-from VirtualTable import VirtualTableModel, VirtualTableView
+from .VirtualTable import VirtualTableModel, VirtualTableView
+from .mainWindow import MainWindow
+import UserInterface.UIHelpers as Helpers
 
 __all__ = [
     ChooseColumn,
     RegressionGraph,
     ChooseFile,
     PrepMenu,
+    VirtualTableModel,
+    VirtualTableView,
     create_button,
     create_combo_box,
     create_label,
     create_radio_button,
     create_text_box,
     create_virtual_table,
-    set_layout
+    set_layout,
+    MainWindow,
+    Helpers
 ]

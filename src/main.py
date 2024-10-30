@@ -1,4 +1,4 @@
-from UserInterface.main_window_two import MainWindow
+from UserInterface import MainWindow
 import sys
 from PySide6.QtWidgets import QApplication
 

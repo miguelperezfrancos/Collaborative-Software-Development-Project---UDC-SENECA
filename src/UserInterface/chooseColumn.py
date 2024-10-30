@@ -7,8 +7,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Signal, Slot
 import pandas as pd
 
-import UserInterface.UIHelpers as helper
-
+from UserInterface import Helpers as helper
 
 class ChooseColumn(QWidget):
 
