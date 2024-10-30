@@ -11,6 +11,7 @@ from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 import UserInterface.UIHelpers as helper
 from UserInterface.chooseColumn import ChooseColumn
 from UserInterface.prepMenu import PrepMenu
+from UserInterface.ShowRegression import RegressionGraph
 from PySide6.QtCore import Signal, Slot
 import pandas as pd
 from dataManagement.dataManager import DataManager
@@ -18,7 +19,6 @@ from dataManagement.dataManager import DataManager
 
 class MainWindow(QMainWindow):
 
-    preprocess_settings = Signal(dict)
 
     def __init__(self):
 
@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
         self._table = helper.create_virtual_table()
         self._select_cols = ChooseColumn()
         self._preprocess = PrepMenu()
+        self._graph = RegressionGraph()
 
         self._cp_layout = QHBoxLayout()
 
@@ -51,7 +52,8 @@ class MainWindow(QMainWindow):
         helper.set_layout(layout=self._main_layout, items = [
             self._choose_file_menu,
             self._table,
-            self._cp_layout
+            self._cp_layout,
+            self._graph
         ])
 
         self._container.setLayout(self._main_layout)
@@ -70,6 +72,8 @@ class MainWindow(QMainWindow):
 
         self._preprocess.preprocess_request.connect(self.handle_preprocess) # handle preprocessing
         self._preprocess.processed_data.connect(self._table.set_data) # update table content when preprocess is done
+
+        self._select_cols.make_regression.connect(self.handle_regression) # stablish connection to create regression graph
         
 
     @Slot(pd.DataFrame)
@@ -106,3 +110,9 @@ class MainWindow(QMainWindow):
 
         columns = self._select_cols.selection()
         self._preprocess.apply_preprocess(columns=columns, manager=self._dmanager)
+
+    @Slot()
+    def handle_regression(self):
+
+        columns = self._select_cols.selection()
+        self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])

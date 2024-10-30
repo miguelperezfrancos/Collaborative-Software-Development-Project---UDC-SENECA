@@ -14,6 +14,7 @@ class ChooseColumn(QWidget):
 
     send_selection = Signal(int) # señal para mandar la seleccion de un menú
     selected = Signal(bool) # señal para indicar que existe una seleccion válida
+    make_regression = Signal() # señal para crear la regresión
 
     def __init__(self):
 
@@ -24,6 +25,7 @@ class ChooseColumn(QWidget):
         self._input_menu = helper.create_combo_box(default_item= "Select an input column", event=self.on_combo_box1_changed)
         self._output_menu = helper.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
         self._create_model = helper.create_button(text="Generate model", event=self.on_create_model)
+        self.selected.connect(self.enable_button)
 
         helper.set_layout(layout=layout, items= [
             self._input_menu,
@@ -88,12 +90,17 @@ class ChooseColumn(QWidget):
 
         if index != 0:  
 
-            self.send_selection.emit(index-1)
+            self.send_selection.emit(index-1) #check NaN values
             
             if self._input_menu.currentIndex() != 0:
                 self.check_selection(menu=self._output_menu) # revisar seleccion si se ha mandado una columna
         else:
             self.selected.emit(False) # emitir False si se ha seleccionado la opción por defecto
 
+
+    @Slot(bool)
+    def enable_button(self, enabled):
+        self._create_model.setEnabled(enabled)
+
     def on_create_model(self):
-        pass
+        self.make_regression.emit()
