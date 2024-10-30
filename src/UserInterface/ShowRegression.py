@@ -9,9 +9,7 @@ from matplotlib.figure import Figure
 from dataManagement.linearRegression import Regression
 
 
-
 class RegressionGraph(QWidget):
-
 
     def __init__(self):
 
@@ -22,6 +20,8 @@ class RegressionGraph(QWidget):
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.canvas)
         self.setLayout(self.layout)
+
+        self.setVisible(False)
 
 
     def make_regression(self, data, x, y):

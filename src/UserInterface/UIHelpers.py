@@ -16,7 +16,7 @@ from  PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from UserInterface import VirtualTableModel, VirtualTableView
+from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
 

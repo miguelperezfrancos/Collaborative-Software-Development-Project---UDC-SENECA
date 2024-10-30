@@ -12,7 +12,6 @@ from .UIHelpers import (create_button,
                         set_layout)
 from .VirtualTable import VirtualTableModel, VirtualTableView
 from .mainWindow import MainWindow
-import UserInterface.UIHelpers as Helpers
 
 __all__ = [
     ChooseColumn,
@@ -28,6 +27,5 @@ __all__ = [
     create_text_box,
     create_virtual_table,
     set_layout,
-    MainWindow,
-    Helpers
+    MainWindow
 ]
