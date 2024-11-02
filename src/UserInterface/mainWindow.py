@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal, Slot
 import pandas as pd
 from UserInterface import ChooseColumn, ChooseFile, PrepMenu, RegressionGraph
-from UserInterface.changeNumberWidget import ChangeNumberWidget  # Importar el nuevo widget
 import UserInterface.UIHelpers as helper
 from dataManagement.dataManager import DataManager
 
