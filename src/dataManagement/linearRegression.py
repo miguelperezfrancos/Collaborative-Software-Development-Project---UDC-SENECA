@@ -80,31 +80,60 @@ class Regression():
         MSE = mean_squared_error(self._target_value, self._pred_line)
         return MSE
 
-    def get_plot(self):
-
+    def get_plot_text(self):
         """
-        This function creates a graph for the linear regression it has made.
-        """
-
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.scatter(self._independent_value, self._target_value, color='blue', label='Actual Data')
-        ax.plot(self._independent_value, self._pred_line, color='red', label='Regression Line')
+        Devuelve el texto con la fórmula de predicción, R² y MSE.
         
-        # Display formula, R^2, and MSE on the plot
+        Returns:
+            plot_text (str): Texto que contiene la fórmula de predicción, R² y MSE formateado.
+        """
         formula_text = self.get_regression_line()
         r2 = self.get_r_squared()
         mse = self.get_MSE()
-
-        ax.text(0.05, 0.95, f"Prediction Formula: {formula_text}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.90, f"R^2: {r2:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.85, f"MSE: {mse:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
         
-        # Labels and title
+        # Formatear el texto para visualizar fuera de la gráfica
+        plot_text = (
+            f"Prediction Formula: {formula_text}\n"
+            f"R²: {r2:.2f}\n"
+            f"MSE: {mse:.2f}"
+        )
+        return plot_text
+
+    def get_plot(self):
+        """
+        This function creates a graph for the linear regression it has made,
+        ensuring consistent axis scaling and optimal data representation.
+        """
+
+        # Crear la figura cuadrada con un tamaño que permita la visualización correcta del texto
+        fig, ax = plt.subplots(figsize=(12, 8))
+
+        # Graficar datos y línea de regresión
+        ax.scatter(self._independent_value, self._target_value, color='blue', label='Actual Data')
+        ax.plot(self._independent_value, self._pred_line, color='red', label='Regression Line')
+
+        # Ajuste automático de los límites de los datos y escalado de ejes
+        ax.relim()
+        ax.autoscale_view()
+
+        # Asegurar que el aspecto de los ejes mantenga la proporción de los datos
+        x_range = self._independent_value.max().iloc[0] - self._independent_value.min().iloc[0]
+        y_range = max(self._target_value.max(), self._pred_line.max()) - min(self._target_value.min(), self._pred_line.min())
+        ax.set_aspect(aspect=x_range / y_range, adjustable='datalim')
+
+        # Configuración de textos
+        formula_text = self.get_regression_line()
+        r2 = self.get_r_squared()
+        mse = self.get_MSE()
+        # Etiquetas, leyenda y cuadrícula
         ax.set_xlabel(self._x_name)
         ax.set_ylabel(self._y_name)
-        ax.set_title("Linear Regression Plot")
         ax.legend()
-        ax.grid(True)
-        
-        return fig  # Return the figure object
+        ax.grid(True, linestyle='--', alpha=0.7)
+
+        return fig  # Retornar la figura
+
+
     
+
+
