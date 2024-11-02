@@ -37,13 +37,9 @@ class MainWindow(QMainWindow):
         self._button_container = QWidget()
         self._button_layout = QHBoxLayout()
 
-        # Crear el widget de cambio de número
-        self.change_number_widget = ChangeNumberWidget()
-        self.change_number_widget.number_changed.connect(self.handle_number_change)  # Conectar la señal
+        
 
-        # Agregar el widget de cambio de número al layout del contenedor
-        self._button_layout.addWidget(self.change_number_widget)
-        self._button_container.setLayout(self._button_layout)
+    
 
         # Agregar el contenedor de botones al layout principal
         self._main_layout.addWidget(self._button_container)
@@ -165,11 +161,3 @@ class MainWindow(QMainWindow):
         self._main_layout.update()
         self._main_layout.activate()
 
-# Aquí debería ir el código para ejecutar la aplicación, por ejemplo:
-# if __name__ == "__main__":
-#     import sys
-#     from PySide6.QtWidgets import QApplication
-#     app = QApplication(sys.argv)
-#     window = MainWindow()
-#     window.show()
-#     sys.exit(app.exec())
