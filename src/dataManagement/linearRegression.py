@@ -18,6 +18,7 @@ class Regression():
         self._x_name = None
         self._independent_value = None
         self._target_value = None
+        
 
     def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
         """

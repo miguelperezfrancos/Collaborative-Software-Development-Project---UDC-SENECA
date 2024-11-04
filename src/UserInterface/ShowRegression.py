@@ -15,6 +15,7 @@ class RegressionGraph(QWidget):
         super().__init__()
         
         self.canvas = FigureCanvas(Figure())
+        self.regression = None
         
         # Text input for description
         self.description_input = QLineEdit()
@@ -42,10 +43,25 @@ class RegressionGraph(QWidget):
 
     def make_regression(self, data, x, y):
         # Create the regression model and graph
-        regression = Regression()
-        regression.make_model(data, x, y)
-        graph = regression.get_plot()
+        self.regression = Regression()
+        self.regression.make_model(data, x, y)
+        graph = self.regression.get_plot()
         
         # Set the figure of the canvas and refresh
         self.canvas.figure = graph
         self.canvas.draw()
+        
+        return self.regression.model
+
+    def get_formula(self):
+        if self.regression and self.regression.model:
+            coef = self.regression.model.coef_
+            intercept = self.regression.model.intercept_
+            formula = f"y = {intercept:.4f}"
+            for i, col in enumerate(self.regression.X.columns):
+                formula += f" + {coef[i]:.4f} * {col}"
+            return formula
+        return ""
+
+    def get_description(self):
+        return self.description_input.text()
