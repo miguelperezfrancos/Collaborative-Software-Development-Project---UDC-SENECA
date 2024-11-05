@@ -1,6 +1,6 @@
 import pandas as pd
 from PySide6.QtWidgets import QTableView
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Slot
 
 
 """
@@ -63,9 +63,15 @@ class VirtualTableView(QTableView):
     visible section of the table widget, as it inherits class QTableView
     that allows to deploy this feature.
     """
+
     def __init__(self, model: VirtualTableModel):
         super().__init__()
         #we provide the table viewer with our data model
         self.setModel(model)
         #we set a vertical scroll bar
         self.setVerticalScrollMode(QTableView.ScrollPerPixel)
+
+
+    @Slot(pd.DataFrame)
+    def set_data(self, data):
+        self.model().setDataFrame(data)

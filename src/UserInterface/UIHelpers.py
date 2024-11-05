@@ -11,10 +11,12 @@ from  PySide6.QtWidgets import (
     QComboBox,
     QHeaderView,
     QRadioButton,
-    QLineEdit
+    QLineEdit,
+    QHBoxLayout,
+    QVBoxLayout,
 )
 
-from src.UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
+from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
 
@@ -94,3 +96,19 @@ def create_text_box() -> QLineEdit:
     text_box.setEnabled(False)
     text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
     return text_box
+
+def set_layout(layout, items: list):
+
+    """
+    Automatically adds widget or layout to another layout.
+
+    Parameters:
+        layout: layout that will contain the widgets or another layouts.
+        items (list): list of items that will be stored in the layout.
+    """
+        
+    for i in items:
+        if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout):
+            layout.addLayout(i)
+        else:
+            layout.addWidget(i)
