@@ -13,7 +13,7 @@ repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(repo_root)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from src.dataManagement.linearRegression import Regression
+from src.dataManagement import Regression, save_model
 import joblib
 import UserInterface.UIHelpers as helper
 from PySide6.QtCore import Slot, Signal
@@ -92,18 +92,19 @@ class RegressionGraph(QWidget):
         if self.regression and self.regression.model:
             file_path, _ = QFileDialog.getSaveFileName(self, "Save Model", "", "Joblib Files (*.joblib)")
             if file_path:
-                model_data = {
-                    'formula': self.regression.pred_line,
-                    'input_columns': list(self.regression.x_name),
-                    'output_column': self.regression.y_name,
-                    'r2': self.regression.get_r_squared(),
-                    'mse': self.regression.get_MSE(),
-                    'description': self.get_description(),
-                    'model': self.regression.model
-                }
+
+                formula = self.regression.get_regression_line()
+                x = self.regression.x_name
+                y = self.regression.y_name
+                r2=self.regression.get_r_squared()
+                mse = self.regression.get_MSE()
+                description = self._get_description()
+                slope = self.regression.slope
+                intercept = self.regression.intercept
 
                 try:
-                    joblib.dump(model_data, file_path)
-                    QMessageBox.information(self, "Model succesfully saved")
+                    save_model(file_path=file_path, formula=formula, input=x, output=y,
+                           r2=r2, mse=mse,description=description, slope=slope, intercept=intercept)
+                    QMessageBox.information(self,"Saving Model", "Model succesfully saved")
                 except Exception as e:
-                    QMessageBox.information(self, f"Unexpected error occoured: {e}")
+                    QMessageBox.information(self,"Saving model", f"Unexpected error occoured: {e}")

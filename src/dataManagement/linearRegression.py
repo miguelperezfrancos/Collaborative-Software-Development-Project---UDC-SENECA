@@ -18,6 +18,8 @@ class Regression():
         self._x_name = None
         self._independent_value = None
         self._target_value = None
+        self._slope = None
+        self._intercept = None
     
     # Property and setter for _model
     @property
@@ -72,6 +74,24 @@ class Regression():
     @target_value.setter
     def target_value(self, value):
         self._target_value = value
+
+    # Property and setter for the slope
+    @property
+    def slope(self):
+        return self._slope
+
+    @slope.setter
+    def slope(self, value):
+        self._slope = value
+
+    # Property and setter for the intercept
+    @property
+    def intercept(self):
+        return self._intercept
+
+    @intercept.setter
+    def intercept(self, value):
+        self._intercept = value
         
 
     def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
@@ -97,9 +117,12 @@ class Regression():
         r_model.fit(self._independent_value, self._target_value)
         y_pred = r_model.predict(X=self._independent_value)
 
-        # asign the model to the class variables
+        # asign the model, slope and intercept to the class variables
         self._model = r_model
         self._pred_line = y_pred
+        self._slope = self._model.coef_[0]
+        self._intercept = self._model.intercept_
+
 
     def get_regression_line(self):
         """
@@ -108,11 +131,8 @@ class Regression():
         Returns:
             model_line (str): string containing the regression model line
         """
-        slope = self._model.coef_[0]
-        intercept = self._model.intercept_
 
-        model_line = f'{self._y_name} = {slope:.2f} * {self._x_name} + {intercept:.2f}'
-
+        model_line = f'{self._y_name} = {self._slope:.2f} * {self._x_name} + {self._intercept:.2f}'
         return model_line
 
     def get_r_squared(self):
@@ -153,4 +173,3 @@ class Regression():
         ax.grid(True)
         
         return fig  # Return the figure object
-    

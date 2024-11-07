@@ -11,7 +11,7 @@ from PySide6.QtWidgets import(
 from PySide6.QtCore import Qt
 from PySide6.QtCore import Slot
 import pandas as pd
-from dataManagement.dataManager import DataManager
+from src.dataManagement import DataManager
 
 from UserInterface import(ChooseColumn, 
                           ChooseFile, 

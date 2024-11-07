@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Signal
 import UserInterface.UIHelpers as helper
-from dataManagement.fileReader import FileReader
+from src.dataManagement import FileReader
 import pandas as pd
 
 
@@ -26,18 +26,20 @@ class ChooseFile(QWidget):
 
         self._file_indicator = helper.create_label(text="File path: ")
         self._path_label = helper.create_label(text="")
-        self._open_file_button = helper.create_button(text="Open File Explorer", event=self.open_file_dialog)
+        self._open_dataset_button = helper.create_button(text="Load Dataset", event=self._load_dataSet)
+        self._load_model_button = helper.create_button(text="Load Model", event = self._load_model)
 
         helper.set_layout(layout=layout, items=[
             self._file_indicator,
             self._path_label,
-            self._open_file_button
+            self._open_dataset_button,
+            self._load_model_button
         ])
 
         self.setLayout(layout)
 
 
-    def open_file_dialog(self):
+    def _load_dataSet(self):
 
         """
         This function defines the events that will take place
@@ -81,4 +83,18 @@ class ChooseFile(QWidget):
             self.file_selected.emit(df)
 
         except:  # Catch any other unknown errors
-            self._show_error_message('ERROR: Unknown error')    
+            self._show_error_message('ERROR: Unknown error') 
+
+    def _load_model(self):
+
+        options = QFileDialog.Options()
+        allowed_extensions = "Compatible files (*.joblib)"
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select File: ", "", allowed_extensions, options=options)
+
+        # If a file is selected, load it into the table
+        if file_path:
+
+            try:
+                self._path_label.setText(f"{file_path}")
+            except:
+                pass
