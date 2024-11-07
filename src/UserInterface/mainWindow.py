@@ -82,7 +82,8 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.file_selected.connect(self.get_data)
         self._choose_file_menu.file_selected.connect(self._table.set_data)
         self._choose_file_menu.file_selected.connect(self._select_cols.update_selection)
-        self._choose_file_menu.loaded_model.connect(self.hide_dataset)
+        self._choose_file_menu.loaded_model.connect(self.update_model)
+        self._choose_file_menu.hide_show.connect(self.hide_show_data)
 
         self._select_cols.send_selection.connect(self.show_nan_values)
         self._select_cols.selected.connect(self._preprocess.activate_menu)
@@ -116,13 +117,26 @@ class MainWindow(QMainWindow):
         self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
         self._graph.setVisible(True)
 
-    @Slot(Model)
-    def hide_dataset(self, model: Model):
-        self._table.setVisible(False)
-        self._select_cols.setVisible(False)
-        self._preprocess.setVisible(False)
-        self._graph.setVisible(False)
-        self._loaded_model.setVisible(True)
+    @Slot(bool)
+    def hide_show_data(self, show: bool):
 
+        """
+        This function shows or hide widgets according
+        to what type of file is loaded by user.
+        """
+
+        self._table.setVisible(show)
+        self._select_cols.setVisible(show)
+        self._preprocess.setVisible(show)
+        self._graph.setVisible(False)
+        self._loaded_model.setVisible(not show)
+
+
+    @Slot(Model)
+    def update_model(self, model: Model):
+        """
+        This function provides our model representation widget
+        the model that is loaded.
+        """
         self._loaded_model.model = model
         self._loaded_model.update_model()

@@ -19,6 +19,7 @@ class ChooseFile(QWidget):
 
     file_selected = Signal(pd.DataFrame)
     loaded_model = Signal(Model)
+    hide_show = Signal(bool)
 
     def __init__(self):
 
@@ -84,6 +85,7 @@ class ChooseFile(QWidget):
         try:
             df = reader.parse_file(path)
             self.file_selected.emit(df)
+            self.hide_show.emit(True)
 
         except:  # Catch any other unknown errors
             self._show_error_message('ERROR: Unknown error') 
@@ -100,6 +102,7 @@ class ChooseFile(QWidget):
             try:
                 model = load_model(file_path=file_path)
                 self._path_label.setText(f"{file_path}")
-                self.loaded_model.emit(model)
+                self.hide_show.emit(False)
+                self.loaded_model.emit(model)   
             except:
                 pass

@@ -26,7 +26,7 @@ class RepModel(QWidget):
         self.setLayout(layout)
 
         # Add title label
-        self.title_label = QLabel()
+        self.title_label = QLabel("Current Model")
         self.title_label.setAlignment(Qt.AlignLeft)
         self.title_label.setStyleSheet("font-size: 18px; font-weight: bold;")
         layout.addWidget(self.title_label)
