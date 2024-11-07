@@ -1,60 +1,77 @@
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
-    QLabel,
-    QSizePolicy
+    QLabel
 )
 
-from PySide6.QtCore import Signal, Slot, Qt
+from PySide6.QtCore import Qt
 import UserInterface.UIHelpers as helper
+from src.dataManagement import Model
 
 """
 This module cretes the widget that shows up when you load an
 existing model.
 """
 
-class repModel(QWidget):
+class RepModel(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        #model that is working with
+        self._model = Model()
 
          # Create layout
         layout = QVBoxLayout()
         self.setLayout(layout)
 
         # Add title label
-        title_label = QLabel("Current Model")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet("font-size: 18px; font-weight: bold;")
-        layout.addWidget(title_label)
+        self.title_label = QLabel()
+        self.title_label.setAlignment(Qt.AlignLeft)
+        self.title_label.setStyleSheet("font-size: 18px; font-weight: bold;")
+        layout.addWidget(self.title_label)
 
         # Create a sub-layout for indented content
         content_layout = QVBoxLayout()
         content_layout.setContentsMargins(20, 0, 0, 0)  # Add left indent
 
         # Add formula label
-        formula_label = QLabel("Formula: y = mx + a")
-        formula_label.setAlignment(Qt.AlignLeft)
-        formula_label.setStyleSheet("font-size: 16px;")
-        content_layout.addWidget(formula_label)
+        self.formula_label = QLabel()
+        self.formula_label.setAlignment(Qt.AlignLeft)
+        self.formula_label.setStyleSheet("font-size: 16px;")
+        content_layout.addWidget(self.formula_label)
 
         # Add R² label
-        r2_label = QLabel("R²: 0.92")
-        r2_label.setAlignment(Qt.AlignLeft)
-        r2_label.setStyleSheet("font-size: 16px;")
-        content_layout.addWidget(r2_label)
+        self.r2_label = QLabel()
+        self.r2_label.setAlignment(Qt.AlignLeft)
+        self.r2_label.setStyleSheet("font-size: 16px;")
+        content_layout.addWidget(self.r2_label)
 
         # Add MSE label
-        mse_label = QLabel("MSE: 0.11")
-        mse_label.setAlignment(Qt.AlignLeft)
-        mse_label.setStyleSheet("font-size: 16px;")
-        content_layout.addWidget(mse_label)
+        self.mse_label = QLabel()
+        self.mse_label.setAlignment(Qt.AlignLeft)
+        self.mse_label.setStyleSheet("font-size: 16px;")
+        content_layout.addWidget(self.mse_label)
 
         # Add description label
-        description_label = QLabel("Bla bla bla bla")
-        description_label.setAlignment(Qt.AlignLeft)
-        description_label.setStyleSheet("font-size: 16px;")
-        content_layout.addWidget(description_label)
+        self.description_label = QLabel()
+        self.description_label.setAlignment(Qt.AlignLeft)
+        self.description_label.setStyleSheet("font-size: 16px;")
+        content_layout.addWidget(self.description_label)
 
         # Add the sub-layout to the main layout
         layout.addLayout(content_layout)
+
+    @property
+    def model(self):
+        return self._model
+    
+    @model.setter
+    def model(self, value):
+        self._model = value
+
+    def update_model(self):
+        self.formula_label.setText(f'Formula: {self._model.formula}')
+        self.r2_label.setText(f'R2: {self._model.r2:.4f}')
+        self.mse_label.setText(f'MSE: {self._model.mse:.4f}')
+        self.description_label.setText(f'Description: {self._model.description}')

@@ -11,13 +11,13 @@ from PySide6.QtWidgets import(
 from PySide6.QtCore import Qt
 from PySide6.QtCore import Slot
 import pandas as pd
-from src.dataManagement import DataManager
+from src.dataManagement import DataManager, Model
 
-from UserInterface import(ChooseColumn, 
+from src.UserInterface import(ChooseColumn, 
                           ChooseFile, 
                           PrepMenu, 
                           RegressionGraph,
-                          repModel)
+                          RepModel)
 
 import UserInterface.UIHelpers as helper
 
@@ -47,16 +47,15 @@ class MainWindow(QMainWindow):
         # Create other widgets
         self._choose_file_menu = ChooseFile()
         self._table = helper.create_virtual_table()  # Assuming this function returns a QWidget
-        self._table.setMinimumHeight(250)
         self._select_cols = ChooseColumn()
         self._preprocess = PrepMenu()
-        self._loaded_model = repModel()
-
-        self._loaded_model.setVisible(False)
-
-        # Create the graph widget
-        self._graph = RegressionGraph()  # Assuming this function returns a QWidget
+        self._loaded_model = RepModel()
+        self._graph = RegressionGraph()
+        
+        # specify some requirements
+        self._table.setMinimumHeight(250)
         self._graph.setMinimumHeight(450)
+        self._loaded_model.setVisible(False)
 
         # Processing options layout
         self._cp_layout = QHBoxLayout()
@@ -93,6 +92,7 @@ class MainWindow(QMainWindow):
 
         self._select_cols.make_regression.connect(self.handle_regression)
 
+
     @Slot(pd.DataFrame)
     def get_data(self, data):
         self._dmanager.data = data
@@ -116,10 +116,13 @@ class MainWindow(QMainWindow):
         self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
         self._graph.setVisible(True)
 
-    @Slot()
-    def hide_dataset(self):
+    @Slot(Model)
+    def hide_dataset(self, model: Model):
         self._table.setVisible(False)
         self._select_cols.setVisible(False)
         self._preprocess.setVisible(False)
         self._graph.setVisible(False)
         self._loaded_model.setVisible(True)
+
+        self._loaded_model.model = model
+        self._loaded_model.update_model()

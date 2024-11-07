@@ -8,7 +8,7 @@ from PySide6.QtCore import Signal
 import UserInterface.UIHelpers as helper
 from src.dataManagement import FileReader
 import pandas as pd
-from src.dataManagement import load_model
+from src.dataManagement import load_model, Model
 
 
 class ChooseFile(QWidget):
@@ -18,7 +18,7 @@ class ChooseFile(QWidget):
     """
 
     file_selected = Signal(pd.DataFrame)
-    loaded_model = Signal()
+    loaded_model = Signal(Model)
 
     def __init__(self):
 
@@ -39,6 +39,7 @@ class ChooseFile(QWidget):
         ])
 
         self.setLayout(layout)
+        self.setMaximumHeight(75)
 
 
     def _load_dataSet(self):
@@ -97,8 +98,8 @@ class ChooseFile(QWidget):
         if file_path:
 
             try:
-                load_model(file_path=file_path)
+                model = load_model(file_path=file_path)
                 self._path_label.setText(f"{file_path}")
-                self.loaded_model.emit()
+                self.loaded_model.emit(model)
             except:
                 pass

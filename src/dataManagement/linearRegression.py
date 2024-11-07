@@ -8,18 +8,38 @@ from sklearn.metrics import r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 
 
-class Regression():
+class Model():
+
+    """
+    This class creates a regression model from
+    a data set and an input of independent and target values.
+    """
 
     def __init__(self):
 
-        self._model = None
-        self._pred_line = None
+        # attributes that are going to be saved
+        self._formula = None
         self._y_name = None
         self._x_name = None
-        self._independent_value = None
-        self._target_value = None
         self._slope = None
         self._intercept = None
+        self._description = None
+        self._r2 = None
+        self._mse = None
+
+        #attributes that are not going to be saved
+        self._pred_line = None
+        self._independent_value = None
+        self._target_value = None
+
+    # Property and setter for formula
+    @property
+    def formula(self):
+        return self._formula
+    
+    @formula.setter
+    def formula(self, value):
+        self._formula = value
     
     # Property and setter for _model
     @property
@@ -29,6 +49,24 @@ class Regression():
     @model.setter
     def model(self, value):
         self._model = value
+
+    # Property and setter for r2
+    @property
+    def r2(self):
+        return self._r2
+
+    @r2.setter
+    def r2(self, value):
+        self._r2 = value
+
+    # property and setter for mse
+    @property
+    def mse(self):
+        return self._mse
+
+    @mse.setter
+    def mse(self, value):
+        self._mse = value
 
     # Property and setter for _pred_line
     @property
@@ -92,9 +130,18 @@ class Regression():
     @intercept.setter
     def intercept(self, value):
         self._intercept = value
+
+    #Property and setter for description
+    @property
+    def description(self):
+        return self._description
+    
+    @description.setter
+    def description(self, value):
+        self._description = value
         
 
-    def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
+    def create_from_data(self, data: pd.DataFrame, input_col: str, output_col: str):
         """
         This function creates a linear regression model.
 
@@ -118,42 +165,15 @@ class Regression():
         y_pred = r_model.predict(X=self._independent_value)
 
         # asign the model, slope and intercept to the class variables
-        self._model = r_model
         self._pred_line = y_pred
-        self._slope = self._model.coef_[0]
-        self._intercept = self._model.intercept_
+        self._slope = r_model.coef_[0]
+        self._intercept = r_model.intercept_
 
+        #assign r2 and mse
+        self._mse = mean_squared_error(self._target_value, self._pred_line)
+        self._r2 = r2_score(self._target_value, self._pred_line)
+        self._formula = f'{self._y_name} = {self._slope:.2f} * {self._x_name} + {self._intercept:.2f}'
 
-    def get_regression_line(self):
-        """
-        This function returns the regression line definition as a string.
-
-        Returns:
-            model_line (str): string containing the regression model line
-        """
-
-        model_line = f'{self._y_name} = {self._slope:.2f} * {self._x_name} + {self._intercept:.2f}'
-        return model_line
-
-    def get_r_squared(self):
-        """
-        This funciton returns the R² measure of our regression model.
-
-        Returns:
-            r_squared
-        """
-        r2 = r2_score(self._target_value, self._pred_line)
-        return r2
-
-    def get_MSE(self):
-        """
-        This funciton returns the mean squared error (MSE) measure of our regression model.
-
-        Returns:
-            MSE
-        """
-        MSE = mean_squared_error(self._target_value, self._pred_line)
-        return MSE
 
     def get_plot(self):
 

@@ -13,8 +13,7 @@ repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(repo_root)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from src.dataManagement import Regression, save_model
-import joblib
+from src.dataManagement import Model, save_model
 import UserInterface.UIHelpers as helper
 from PySide6.QtCore import Slot, Signal
 
@@ -26,7 +25,7 @@ class RegressionGraph(QWidget):
         super().__init__()
 
         self.canvas = FigureCanvas(Figure())
-        self.regression = None
+        self._model = Model()
 
         # signal to update 
         self.is_model.connect(self._get_graph_data)
@@ -58,9 +57,8 @@ class RegressionGraph(QWidget):
 
     def make_regression(self, data, x, y):
         # Create the regression model and graph
-        self.regression = Regression()
-        self.regression.make_model(data, x, y)
-        graph = self.regression.get_plot()
+        self._model.create_from_data(data, x, y)
+        graph = self._model.get_plot()
         
         # Clear canvas, set new figure and refresh
         self.canvas.figure.clf()
@@ -77,11 +75,7 @@ class RegressionGraph(QWidget):
     @Slot()
     def _get_graph_data(self):
 
-        formula = self.regression.get_regression_line()
-        r2 = self.regression.get_r_squared()
-        mse = self.regression.get_MSE()
-
-        text = f"{formula}\nR2: {r2:.3f}\nMSE: {mse:.3f}\n"
+        text = f"{self._model.formula}\nR2: {self._model.r2:.3f}\nMSE: {self._model.mse:.3f}\n"
         self._model_info.setText(text)
     
     def _get_description(self):
@@ -89,18 +83,18 @@ class RegressionGraph(QWidget):
 
     def _save_model(self):
 
-        if self.regression and self.regression.model:
+        if self._model:
             file_path, _ = QFileDialog.getSaveFileName(self, "Save Model", "", "Joblib Files (*.joblib)")
             if file_path:
 
-                formula = self.regression.get_regression_line()
-                x = self.regression.x_name
-                y = self.regression.y_name
-                r2=self.regression.get_r_squared()
-                mse = self.regression.get_MSE()
+                formula = self._model.formula
+                x = self._model.x_name
+                y = self._model.y_name
+                r2=self._model.r2
+                mse = self._model.mse
                 description = self._get_description()
-                slope = self.regression.slope
-                intercept = self.regression.intercept
+                slope = self._model.slope
+                intercept = self._model.intercept
 
                 try:
                     save_model(file_path=file_path, formula=formula, input=x, output=y,
