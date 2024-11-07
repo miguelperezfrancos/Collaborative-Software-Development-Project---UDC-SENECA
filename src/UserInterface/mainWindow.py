@@ -16,7 +16,8 @@ from src.dataManagement import DataManager
 from UserInterface import(ChooseColumn, 
                           ChooseFile, 
                           PrepMenu, 
-                          RegressionGraph)
+                          RegressionGraph,
+                          repModel)
 
 import UserInterface.UIHelpers as helper
 
@@ -49,6 +50,9 @@ class MainWindow(QMainWindow):
         self._table.setMinimumHeight(250)
         self._select_cols = ChooseColumn()
         self._preprocess = PrepMenu()
+        self._loaded_model = repModel()
+
+        self._loaded_model.setVisible(False)
 
         # Create the graph widget
         self._graph = RegressionGraph()  # Assuming this function returns a QWidget
@@ -66,6 +70,7 @@ class MainWindow(QMainWindow):
         self._main_layout.addWidget(self._table)
         self._main_layout.addLayout(self._cp_layout)
         self._main_layout.addWidget(self._graph)
+        self._main_layout.addWidget(self._loaded_model)
 
         # Set the scroll area as the central widget
         self.setCentralWidget(scroll_area)
@@ -78,6 +83,7 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.file_selected.connect(self.get_data)
         self._choose_file_menu.file_selected.connect(self._table.set_data)
         self._choose_file_menu.file_selected.connect(self._select_cols.update_selection)
+        self._choose_file_menu.loaded_model.connect(self.hide_dataset)
 
         self._select_cols.send_selection.connect(self.show_nan_values)
         self._select_cols.selected.connect(self._preprocess.activate_menu)
@@ -109,3 +115,11 @@ class MainWindow(QMainWindow):
         columns = self._select_cols.selection()
         self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
         self._graph.setVisible(True)
+
+    @Slot()
+    def hide_dataset(self):
+        self._table.setVisible(False)
+        self._select_cols.setVisible(False)
+        self._preprocess.setVisible(False)
+        self._graph.setVisible(False)
+        self._loaded_model.setVisible(True)

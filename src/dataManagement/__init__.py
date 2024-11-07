@@ -2,11 +2,12 @@
 from .dataManager import DataManager
 from .fileReader import FileReader
 from .linearRegression import Regression
-from .modelFileManager import save_model
+from .modelFileManager import save_model, load_model
 
 __all__ = [
     "DataManager",
     "FileReader",
     "Regression",
-    "save_model"
+    "save_model",
+    "load_model"
 ]

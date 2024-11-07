@@ -12,20 +12,22 @@ from .UIHelpers import (create_button,
                         set_layout)
 from .VirtualTable import VirtualTableModel, VirtualTableView
 from .mainWindow import MainWindow
+from .repModel import repModel
 
 __all__ = [
-    ChooseColumn,
-    RegressionGraph,
-    ChooseFile,
-    PrepMenu,
-    VirtualTableModel,
-    VirtualTableView,
-    create_button,
-    create_combo_box,
-    create_label,
-    create_radio_button,
-    create_text_box,
-    create_virtual_table,
-    set_layout,
-    MainWindow
+    "ChooseColumn",
+    "RegressionGraph",
+    "ChooseFile",
+    "PrepMenu",
+    "VirtualTableModel",
+    "VirtualTableView",
+    "create_button",
+    "create_combo_box",
+    "create_label",
+    "create_radio_button",
+    "create_text_box",
+    "create_virtual_table",
+    "set_layout",
+    "MainWindow",
+    "repModel"
 ]
