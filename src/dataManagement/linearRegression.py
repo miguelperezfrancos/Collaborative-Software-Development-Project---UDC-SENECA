@@ -18,6 +18,60 @@ class Regression():
         self._x_name = None
         self._independent_value = None
         self._target_value = None
+    
+    # Property and setter for _model
+    @property
+    def model(self):
+        return self._model
+
+    @model.setter
+    def model(self, value):
+        self._model = value
+
+    # Property and setter for _pred_line
+    @property
+    def pred_line(self):
+        return self._pred_line
+
+    @pred_line.setter
+    def pred_line(self, value):
+        self._pred_line = value
+
+    # Property and setter for _y_name
+    @property
+    def y_name(self):
+        return self._y_name
+
+    @y_name.setter
+    def y_name(self, value):
+        self._y_name = value
+
+    # Property and setter for _x_name
+    @property
+    def x_name(self):
+        return self._x_name
+
+    @x_name.setter
+    def x_name(self, value):
+        self._x_name = value
+
+    # Property and setter for _independent_value
+    @property
+    def independent_value(self):
+        return self._independent_value
+
+    @independent_value.setter
+    def independent_value(self, value):
+        self._independent_value = value
+
+    # Property and setter for _target_value
+    @property
+    def target_value(self):
+        return self._target_value
+
+    @target_value.setter
+    def target_value(self, value):
+        self._target_value = value
         
 
     def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
@@ -90,15 +144,6 @@ class Regression():
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.scatter(self._independent_value, self._target_value, color='blue', label='Actual Data')
         ax.plot(self._independent_value, self._pred_line, color='red', label='Regression Line')
-        
-        # Display formula, R^2, and MSE on the plot
-        formula_text = self.get_regression_line()
-        r2 = self.get_r_squared()
-        mse = self.get_MSE()
-
-        ax.text(0.05, 0.95, f"Prediction Formula: {formula_text}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.90, f"R^2: {r2:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.85, f"MSE: {mse:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
         
         # Labels and title
         ax.set_xlabel(self._x_name)

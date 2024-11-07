@@ -3,9 +3,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLineEdit,
     QLabel,
-    QPushButton,
     QHBoxLayout,
     QFileDialog,
+    QMessageBox
 )
 import sys
 import os 
@@ -15,50 +15,46 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from src.dataManagement.linearRegression import Regression
 import joblib
+import UserInterface.UIHelpers as helper
+from PySide6.QtCore import Slot, Signal
 
 class RegressionGraph(QWidget):
 
+    is_model = Signal()
+
     def __init__(self):
         super().__init__()
-        
+
         self.canvas = FigureCanvas(Figure())
         self.regression = None
+
+        # signal to update 
+        self.is_model.connect(self._get_graph_data)
         
         # Text input for description
         self.description_input = QLineEdit()
         self.description_input.setPlaceholderText("Enter a description for the model...")
-
-        # Label to show the description below the graph
-        self.description_label = QLabel()
-        
         # Save button
-        self.save_button = QPushButton("Save Model")
-        self.save_button.clicked.connect(self.save_model)
-        self.save_button.setVisible(False)  # Initially hidden
-        
-        # Set up layout
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.canvas)
-        self.layout.addWidget(self.description_input)
-        self.layout.addWidget(self.description_label)
+        self.save_button = helper.create_button(text = "Save Model", event = self._save_model)
+        #graph data
+        self._model_info = QLabel()
+  
         
         # Add a horizontal layout for the save button
-        button_layout = QHBoxLayout()
-        button_layout.addStretch()
-        button_layout.addWidget(self.save_button)
-        self.layout.addLayout(button_layout)
+        description_layout = QVBoxLayout()
+        description_layout.addWidget(self._model_info)
+        description_layout.addWidget(self.description_input)
+        description_layout.addWidget(self.save_button)
         
-        self.setLayout(self.layout)
+        
+        # Set up layout
+        self._layout = QHBoxLayout()
+        self._layout.addWidget(self.canvas)
+        self._layout.addLayout(description_layout)
+        self.setLayout(self._layout)
         
         # Hide the graph initially
         self.setVisible(False)
-        
-        # Connect input change to update description
-        self.description_input.textChanged.connect(self.update_description)
-
-    def update_description(self):
-        # Update the label with the text from the input
-        self.description_label.setText(self.description_input.text())
 
     def make_regression(self, data, x, y):
         # Create the regression model and graph
@@ -66,29 +62,48 @@ class RegressionGraph(QWidget):
         self.regression.make_model(data, x, y)
         graph = self.regression.get_plot()
         
-        # Set the figure of the canvas and refresh
+        # Clear canvas, set new figure and refresh
+        self.canvas.figure.clf()
         self.canvas.figure = graph
         self.canvas.draw()
+
+        #clear description
+        self.description_input.setText("")
         
         # Show the save button
         self.save_button.setVisible(True)
-        
-        return self.regression._model
+        self.is_model.emit()
     
-    def get_description(self):
+    @Slot()
+    def _get_graph_data(self):
+
+        formula = self.regression.get_regression_line()
+        r2 = self.regression.get_r_squared()
+        mse = self.regression.get_MSE()
+
+        text = f"{formula}\nR2: {r2:.3f}\nMSE: {mse:.3f}\n"
+        self._model_info.setText(text)
+    
+    def _get_description(self):
         return self.description_input.text()
 
-    def save_model(self):
-        if self.regression and self.regression._model:
+    def _save_model(self):
+
+        if self.regression and self.regression.model:
             file_path, _ = QFileDialog.getSaveFileName(self, "Save Model", "", "Joblib Files (*.joblib)")
             if file_path:
                 model_data = {
-                    'formula': self.regression._pred_line,
-                    'input_columns': list(self.regression._x_name),
-                    'output_column': self.regression._y_name,
+                    'formula': self.regression.pred_line,
+                    'input_columns': list(self.regression.x_name),
+                    'output_column': self.regression.y_name,
                     'r2': self.regression.get_r_squared(),
                     'mse': self.regression.get_MSE(),
                     'description': self.get_description(),
-                    'model': self.regression._model
+                    'model': self.regression.model
                 }
-                joblib.dump(model_data, file_path)
+
+                try:
+                    joblib.dump(model_data, file_path)
+                    QMessageBox.information(self, "Model succesfully saved")
+                except Exception as e:
+                    QMessageBox.information(self, f"Unexpected error occoured: {e}")

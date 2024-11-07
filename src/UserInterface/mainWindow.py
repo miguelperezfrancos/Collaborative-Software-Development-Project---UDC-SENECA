@@ -26,8 +26,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('Rodri es gay')
-        self.setGeometry(100, 100, 1000, 500)
+        self.setWindowTitle('Linear Regression')
+        self.setGeometry(100, 100, 1000, 550)
 
         self._dmanager = DataManager()
 
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
 
         # Create the graph widget
         self._graph = RegressionGraph()  # Assuming this function returns a QWidget
-        self._graph.setMinimumHeight(350)
+        self._graph.setMinimumHeight(450)
 
         # Processing options layout
         self._cp_layout = QHBoxLayout()
