@@ -108,11 +108,19 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_preprocess(self):
+        """
+        This fucntion is activated when user generates regression, and it provides
+        preprocessing module the necessary data.
+        """
         columns = self._select_cols.selection()
         self._preprocess.apply_preprocess(columns=columns, manager=self._dmanager)
 
     @Slot()
     def handle_regression(self):
+        """
+        This fucntion is activated when user generates regression, and it provides
+        regression module the necessary data.
+        """
         columns = self._select_cols.selection()
         self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
         self._graph.setVisible(True)
