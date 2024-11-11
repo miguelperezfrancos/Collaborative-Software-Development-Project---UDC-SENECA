@@ -31,6 +31,8 @@ class ChooseFile(QWidget):
         self._path_label = helper.create_label(text="")
         self._open_dataset_button = helper.create_button(text="Load Dataset", event=self._load_dataSet)
         self._load_model_button = helper.create_button(text="Load Model", event = self._load_model_event)
+        self._open_dataset_button.setFixedSize(170, 50)
+        self._load_model_button.setFixedSize(170, 50)
 
         helper.set_layout(layout=layout, items=[
             self._file_indicator,

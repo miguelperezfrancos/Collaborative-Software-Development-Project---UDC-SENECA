@@ -45,7 +45,7 @@ def create_button(text: str, event) -> QPushButton:
 
     button.setStyleSheet("""
         QPushButton {
-            background-color: #007BFF;  
+            background-color: #1E88E5;  
             color: white;                
             font-size: 18px;            
             font-weight: bold;          
