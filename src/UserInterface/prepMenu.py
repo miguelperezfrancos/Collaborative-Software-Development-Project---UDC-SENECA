@@ -26,6 +26,7 @@ class PrepMenu(QWidget):
         # Declare layouts
         self._main_layout = QVBoxLayout()
         self._constant_layout = QHBoxLayout()
+        self._button_layout = QHBoxLayout()
 
         self._remove_option = helper.create_radio_button(text='Remove row')
         self._constant_option = helper.create_radio_button(text='Replace with a number')
@@ -48,12 +49,13 @@ class PrepMenu(QWidget):
 
         # build layouts
         helper.set_layout(layout=self._constant_layout, items = [self._constant_option, self._input_number])
+        helper.set_layout(layout = self._button_layout, items = [self._remove_option, self._apply_button])
+
         helper.set_layout(layout=self._main_layout, items= [
             self._constant_layout,
             self._mean_option,
             self._median_option,
-            self._remove_option,
-            self._apply_button
+            self._button_layout
         ])
 
         # set container
@@ -68,7 +70,17 @@ class PrepMenu(QWidget):
         self._median_option.setEnabled(enabled)
         self._remove_option.setEnabled(enabled)
         self._apply_button.setEnabled(enabled)
-
+        self.toggle_input(checked=False)
+        
+        #Desseleccionar todos los botones
+        self._preprocessing_opts.setExclusive(False)
+    
+        # Desmarcar todos los botones
+        for button in self._preprocessing_opts.buttons():
+            button.setChecked(False)
+        
+        # Volver a establecer el QButtonGroup como exclusivo
+        self._preprocessing_opts.setExclusive(True)
 
     @Slot(bool)
     def toggle_input(self, checked: bool):
@@ -80,6 +92,7 @@ class PrepMenu(QWidget):
 
         self._input_number.setEnabled(checked)
         self._input_number.setVisible(checked)
+        self._input_number.setText('')
 
     
     def on_apply_button(self):
@@ -87,7 +100,7 @@ class PrepMenu(QWidget):
         self.preprocess_request.emit()
 
 
-    def apply_preprocess(self, columns, manager):
+    def apply_preprocess(self, columns, manager: DataManager):
 
         choice = self._preprocessing_opts.checkedButton()
         

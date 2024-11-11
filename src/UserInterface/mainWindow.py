@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         self._main_layout.addWidget(self._choose_file_menu)
         self._main_layout.addWidget(self._table)
         self._main_layout.addLayout(self._cp_layout)
+        self._main_layout.addWidget(self._select_cols.create_model)
         self._main_layout.addWidget(self._graph)
         self._main_layout.addWidget(self._loaded_model)
 
@@ -136,6 +137,8 @@ class MainWindow(QMainWindow):
         self._table.setVisible(show)
         self._select_cols.setVisible(show)
         self._preprocess.setVisible(show)
+        self._preprocess.toggle_input(checked=False)
+        self._select_cols.create_model.setVisible(show) # generate model button
         self._graph.setVisible(False)
         self._loaded_model.setVisible(not show)
 
