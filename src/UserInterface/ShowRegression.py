@@ -75,8 +75,16 @@ class RegressionGraph(QWidget):
     @Slot()
     def _get_graph_data(self):
 
-        text = f"{self._model.formula}\nR2: {self._model.r2:.3f}\nMSE: {self._model.mse:.3f}\n"
+        # Obtener los datos
+        text = f"<b style='font-size: 16pt; color: #2C3E50'>{self._model.formula}</b><br>"  # Fórmula en negrita y tamaño grande
+        text += f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}</font><br>"  # R² con un color verde bonito
+        text += f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}</font>"  # MSE con un color rojo atractivo
+        # Aplicar el texto con estilo al widget
         self._model_info.setText(text)
+
+        # Opcional: cambiar la fuente del texto
+        font = QFont("Arial", 12, QFont.Bold)  # Cambiar la fuente a Arial, tamaño 12 y en negrita
+        self._model_info.setFont(font)
     
     def _get_description(self):
         return self.description_input.text()
