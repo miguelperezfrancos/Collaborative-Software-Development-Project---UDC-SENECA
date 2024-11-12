@@ -16,6 +16,7 @@ from matplotlib.figure import Figure
 from src.dataManagement import Model, save_model
 import UserInterface.UIHelpers as helper
 from PySide6.QtCore import Slot, Signal
+from PySide6.QtGui import QFont
 
 class RegressionGraph(QWidget):
 
@@ -31,7 +32,7 @@ class RegressionGraph(QWidget):
         self.is_model.connect(self._get_graph_data)
         
         # Text input for description
-        self.description_input = QLineEdit()
+        self.description_input = helper.create_description_box()
         self.description_input.setPlaceholderText("Enter a description for the model...")
         # Save button
         self.save_button = helper.create_button(text = "Save Model", event = self._save_model)
@@ -62,6 +63,7 @@ class RegressionGraph(QWidget):
         
         # Clear canvas, set new figure and refresh
         self.canvas.figure.clf()
+        self.canvas.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.canvas.figure = graph
         self.canvas.draw()
 
@@ -76,7 +78,7 @@ class RegressionGraph(QWidget):
     def _get_graph_data(self):
 
         # Obtener los datos
-        text = f"<b style='font-size: 16pt; color: #2C3E50'>{self._model.formula}</b><br>"  # Fórmula en negrita y tamaño grande
+        text = f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}</b><br>"  # Fórmula en negrita y tamaño grande
         text += f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}</font><br>"  # R² con un color verde bonito
         text += f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}</font>"  # MSE con un color rojo atractivo
         # Aplicar el texto con estilo al widget
@@ -87,7 +89,7 @@ class RegressionGraph(QWidget):
         self._model_info.setFont(font)
     
     def _get_description(self):
-        return self.description_input.text()
+        return self.description_input.toPlainText()
 
     def _save_model(self):
 

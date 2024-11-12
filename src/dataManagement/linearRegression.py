@@ -181,15 +181,32 @@ class Model():
         This function creates a graph for the linear regression it has made.
         """
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.scatter(self._independent_value, self._target_value, color='blue', label='Actual Data')
-        ax.plot(self._independent_value, self._pred_line, color='red', label='Regression Line')
-        
-        # Labels and title
-        ax.set_xlabel(self._x_name)
-        ax.set_ylabel(self._y_name)
-        ax.set_title("Linear Regression Plot")
-        ax.legend()
-        ax.grid(True)
-        
-        return fig  # Return the figure object
+        # Crear la figura con un fondo transparente y mantener las dimensiones
+        fig, ax = plt.subplots(figsize=(10, 6), facecolor=(1, 1, 1, 0))  # Fondo de la figura transparente
+
+        # Datos de ejemplo
+        ax.scatter(self._independent_value, self._target_value, s= 10, color='#c2ffff', alpha=0.7)
+        ax.plot(self._independent_value, self._pred_line, color='#E74C3C')
+
+        # Etiquetas y título con colores personalizados
+        ax.set_xlabel(self._x_name, color='#a0a0a0')  # Color de la etiqueta del eje X
+        ax.set_ylabel(self._y_name, color='#a0a0a0')  # Color de la etiqueta del eje Y
+
+        # Cambiar el color de los ticks de los ejes
+        ax.tick_params(axis='x', colors='#a0a0a0')  # Color de los ticks del eje X
+        ax.tick_params(axis='y', colors='#a0a0a0')  # Color de los ticks del eje Y
+
+        # Eliminar las cajas de los bordes (spines)
+        ax.spines['top'].set_visible(False)  # Eliminar el borde superior
+        ax.spines['right'].set_visible(False)  # Eliminar el borde derecho
+        ax.spines['left'].set_visible(True)  # Mantener el borde izquierdo
+        ax.spines['bottom'].set_visible(True)  # Mantener el borde inferior
+
+        # Etiquetas y título
+        ax.grid(False)
+
+        # Hacer el fondo de los ejes transparente
+        ax.patch.set_alpha(0.0)  # Fondo de los ejes completamente transparente
+
+        # Retornar la figura
+        return fig

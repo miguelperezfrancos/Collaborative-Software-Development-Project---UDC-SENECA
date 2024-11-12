@@ -14,9 +14,11 @@ from  PySide6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
     QVBoxLayout,
-    QMessageBox
+    QMessageBox,
+    QTextEdit
 )
 
+from PySide6.QtCore import Qt
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
@@ -100,6 +102,29 @@ def create_radio_button(text:str, event=None) -> QRadioButton:
     radio_button = QRadioButton(text)
     radio_button.setEnabled(False)
     return radio_button
+
+def create_description_box() -> QTextEdit:
+
+    textEdit = QTextEdit()
+    textEdit.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    textEdit.setAlignment(Qt.AlignVCenter)  # Centrar el texto verticalmente
+
+
+    textEdit.setStyleSheet("""
+        QTextEdit {
+            height: 60px;  /* Ajusta la altura */
+            padding: 6px;  /* Añade espacio interno */
+            border: 2px dashed #1E88E5;  /* Borde rallado */
+            border-radius: 10px;  /* Bordes redondeados */
+            color: white;  /* Color del texto */
+            background-color: #333333;  /* Fondo oscuro */
+        }
+        QTextEdit:focus {
+            border: 2px dashed #0056b3;  /* Color del borde al enfocar */
+        }
+    """)
+
+    return textEdit
 
 def create_text_box() -> QLineEdit:
 
