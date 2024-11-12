@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
     QMessageBox
 )
 
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import Signal, Slot, Qt
 import pandas as pd
 
 import UserInterface.UIHelpers as helper
@@ -30,6 +30,8 @@ class ChooseColumn(QWidget):
             self._input_menu,
             self._output_menu
         ])
+
+        layout.setAlignment(Qt.AlignTop)
 
         self.setLayout(layout)
 

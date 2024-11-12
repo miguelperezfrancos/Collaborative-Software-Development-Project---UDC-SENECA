@@ -64,11 +64,17 @@ class MainWindow(QMainWindow):
             self._preprocess
         ])
 
+        #layout for create model button
+        self._gen_button_ly = QHBoxLayout()
+        self._gen_button_ly.addWidget(self._select_cols.create_model)
+        self._gen_button_ly.setAlignment(Qt.AlignCenter)
+
+
         # Add widgets to the main layout
         self._main_layout.addWidget(self._choose_file_menu)
         self._main_layout.addWidget(self._table)
         self._main_layout.addLayout(self._cp_layout)
-        self._main_layout.addWidget(self._select_cols.create_model)
+        self._main_layout.addLayout(self._gen_button_ly)
         self._main_layout.addWidget(self._graph)
         self._main_layout.addWidget(self._loaded_model)
 

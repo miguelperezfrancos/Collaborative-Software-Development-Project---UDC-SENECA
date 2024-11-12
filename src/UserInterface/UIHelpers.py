@@ -14,6 +14,7 @@ from  PySide6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
     QVBoxLayout,
+    QMessageBox
 )
 
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
@@ -35,13 +36,17 @@ def create_label(text: str) -> QLabel:
         }
     """)
 
-    label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     return label
+
+def create_title(text: str):
+    pass
         
 def create_button(text: str, event) -> QPushButton:
 
     button = QPushButton(text)
     button.clicked.connect(event)
+    button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     button.setStyleSheet("""
         QPushButton {
@@ -51,7 +56,7 @@ def create_button(text: str, event) -> QPushButton:
             font-weight: bold;          
             border: none;               
             border-radius: 20px;        
-            padding: 12px 30px;         
+            padding: 6px 30px;         
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
             transition: background-color 0.3s ease;   
         }
@@ -61,6 +66,12 @@ def create_button(text: str, event) -> QPushButton:
         QPushButton:pressed {
             background-color: #003d80;   
             box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
+        }
+                         
+        QPushButton:disabled {
+            background-color: #a0a0a0;
+            color: #666666;
+            box-shadow: none;
         }""")
     
     return button
@@ -95,6 +106,17 @@ def create_text_box() -> QLineEdit:
     text_box = QLineEdit()
     text_box.setEnabled(False)
     text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    text_box.setStyleSheet("""
+        QLineEdit {
+            border: none;
+            border-bottom: 1px solid #FFFFFF;  /* Línea inferior como borde */
+            background-color: transparent;     /* Fondo transparente */
+            color: white;                      /* Color del texto */
+            padding: 2px;                      /* Espaciado interno */
+        }
+        QLineEdit:focus {
+            border-bottom: 1px solid #007bff;  /* Color diferente cuando tiene foco */
+        }""")
     return text_box
 
 def set_layout(layout, items: list):
@@ -112,3 +134,18 @@ def set_layout(layout, items: list):
             layout.addLayout(i)
         else:
             layout.addWidget(i)
+
+def show_error_message(message: str):
+        
+        """
+        This method launches an error message.
+        """
+        
+        # Create the message box
+        error_msg = QMessageBox()
+        error_msg.setIcon(QMessageBox.Critical)  # Set the icon to "Critical" for an error
+        error_msg.setWindowTitle("Error")
+        error_msg.setText("An error occurred!")
+        error_msg.setInformativeText(f'{message}')
+        error_msg.setStandardButtons(QMessageBox.Ok)  # Add the OK button
+        error_msg.exec()  # Display the message box

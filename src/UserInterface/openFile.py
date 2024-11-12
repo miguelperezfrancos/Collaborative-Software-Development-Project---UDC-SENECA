@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
-    QFileDialog
+    QFileDialog,
+    QSizePolicy
 )
 
 from PySide6.QtCore import Signal
@@ -31,8 +32,11 @@ class ChooseFile(QWidget):
         self._path_label = helper.create_label(text="")
         self._open_dataset_button = helper.create_button(text="Load Dataset", event=self._load_dataSet)
         self._load_model_button = helper.create_button(text="Load Model", event = self._load_model_event)
-        self._open_dataset_button.setFixedSize(170, 50)
-        self._load_model_button.setFixedSize(170, 50)
+
+        # Adjust some apperance settings for the widgets
+        self._open_dataset_button.setMaximumSize(170, 50)
+        self._load_model_button.setMaximumSize(170, 50)
+        self._path_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         helper.set_layout(layout=layout, items=[
             self._file_indicator,
@@ -89,8 +93,8 @@ class ChooseFile(QWidget):
             self.file_selected.emit(df)
             self.hide_show.emit(True)
 
-        except:  # Catch any other unknown errors
-            self._show_error_message('ERROR: Unknown error') 
+        except Exception as e:  # Catch any other unknown errors
+            helper.show_error_message('ERROR: {e}') 
 
     def _load_model_event(self):
 

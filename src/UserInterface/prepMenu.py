@@ -2,14 +2,12 @@ from dataManagement.dataManager import DataManager
 
 from PySide6.QtWidgets import (
     QWidget,
-    QHBoxLayout,
-    QVBoxLayout,
-    QFileDialog,
+    QGridLayout,
     QMessageBox,
     QButtonGroup
 )
 
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import Signal, Slot, Qt
 import pandas as pd
 import UserInterface.UIHelpers as helper
 
@@ -24,9 +22,7 @@ class PrepMenu(QWidget):
         self._manager = DataManager()
 
         # Declare layouts
-        self._main_layout = QVBoxLayout()
-        self._constant_layout = QHBoxLayout()
-        self._button_layout = QHBoxLayout()
+        self._main_layout = QGridLayout()
 
         self._remove_option = helper.create_radio_button(text='Remove row')
         self._constant_option = helper.create_radio_button(text='Replace with a number')
@@ -44,21 +40,21 @@ class PrepMenu(QWidget):
         self._apply_button = helper.create_button(text='Apply', event=self.on_apply_button)
         self._apply_button.setEnabled(False)
 
+
         # Connect signals
         self._constant_option.toggled.connect(self.toggle_input)
 
-        # build layouts
-        helper.set_layout(layout=self._constant_layout, items = [self._constant_option, self._input_number])
-        helper.set_layout(layout = self._button_layout, items = [self._remove_option, self._apply_button])
+        # build layout
+        self._main_layout.setHorizontalSpacing(10)
+        self._main_layout.setVerticalSpacing(10)
 
-        helper.set_layout(layout=self._main_layout, items= [
-            self._constant_layout,
-            self._mean_option,
-            self._median_option,
-            self._button_layout
-        ])
+        self._main_layout.addWidget(self._constant_option, 0, 0)  # Primera fila, primera columna
+        self._main_layout.addWidget(self._input_number, 0, 1)  
+        self._main_layout.addWidget(self._mean_option, 1, 0)
+        self._main_layout.addWidget(self._median_option, 2, 0)
+        self._main_layout.addWidget(self._remove_option, 3, 0)
+        self._main_layout.addWidget(self._apply_button, 4, 1)
 
-        # set container
         self.setLayout(self._main_layout)
     
 
@@ -123,5 +119,5 @@ class PrepMenu(QWidget):
             self.processed_data.emit(manager.data)
             QMessageBox.information(self, "Succesfull preprocess", f"{columns[0]} and {columns[1]} no longer have null values")
 
-        except:
-            self._show_error_message("ERROR: pre-process could not be completed")
+        except Exception as e:
+            helper.show_error_message(message=f"Preprocess could not be completed: {e}")
