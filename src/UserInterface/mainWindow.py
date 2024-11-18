@@ -49,19 +49,28 @@ class MainWindow(QMainWindow):
         self._table = helper.create_virtual_table()  # Assuming this function returns a QWidget
         self._select_cols = ChooseColumn()
         self._preprocess = PrepMenu()
-        self._loaded_model = RepModel()
+        self._model_info = RepModel()
         self._graph = RegressionGraph()
+
+        self._model_info.setVisible(False)
+        self._graph.setVisible(False)
         
         # specify some requirements
         self._table.setMinimumHeight(250)
         self._graph.setMinimumHeight(450)
-        self._loaded_model.setVisible(False)
 
         # Processing options layout
         self._cp_layout = QHBoxLayout()
         helper.set_layout(layout=self._cp_layout, items=[
             self._select_cols,
             self._preprocess
+        ])
+
+        #layout for model representation
+        self._model_layout = QHBoxLayout()
+        helper.set_layout(layout=self._model_layout, items=[
+            self._graph,
+            self._model_info
         ])
 
         #layout for create model button
@@ -75,8 +84,7 @@ class MainWindow(QMainWindow):
         self._main_layout.addWidget(self._table)
         self._main_layout.addLayout(self._cp_layout)
         self._main_layout.addLayout(self._gen_button_ly)
-        self._main_layout.addWidget(self._graph)
-        self._main_layout.addWidget(self._loaded_model)
+        self._main_layout.addLayout(self._model_layout)
 
         # Set the scroll area as the central widget
         self.setCentralWidget(scroll_area)
@@ -89,14 +97,16 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.file_selected.connect(self.get_data)
         self._choose_file_menu.file_selected.connect(self._table.set_data)
         self._choose_file_menu.file_selected.connect(self._select_cols.update_selection)
-        self._choose_file_menu.loaded_model.connect(self.update_model)
-        self._choose_file_menu.hide_show.connect(self.hide_show_data)
+        self._choose_file_menu.hide_show.connect(self.hide_show_data) # hide or show widgets
 
         self._select_cols.send_selection.connect(self.show_nan_values)
         self._select_cols.selected.connect(self._preprocess.activate_menu)
 
         self._preprocess.preprocess_request.connect(self.handle_preprocess)
         self._preprocess.processed_data.connect(self._table.set_data)
+
+        self._graph.is_model.connect(self._model_info._update_model) # display model info when model in generated
+        self._choose_file_menu.loaded_model.connect(self._model_info._update_model) # display model info when model is loaded
 
         self._select_cols.make_regression.connect(self.handle_regression)
 
@@ -139,9 +149,11 @@ class MainWindow(QMainWindow):
             try:
                 self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
                 self._graph.setVisible(True)
+                self._model_info.setVisible(True)
             except Exception as e:
                 helper.show_error_message(f'Unexpected error: {e}')
                 self._graph.setVisible(False)
+                self._model_info.setVisible(False)
 
         else:
             helper.show_error_message(f'Data contains NaN values: please, apply preeprofess before generating model.')
@@ -160,14 +172,4 @@ class MainWindow(QMainWindow):
         self._preprocess.toggle_input(checked=False)
         self._select_cols.create_model.setVisible(show) # generate model button
         self._graph.setVisible(False)
-        self._loaded_model.setVisible(not show)
-
-
-    @Slot(Model)
-    def update_model(self, model: Model):
-        """
-        This function provides our model representation widget
-        the model that is loaded.
-        """
-        self._loaded_model.model = model
-        self._loaded_model.update_model()
+        self._model_info.setVisible(not show)
