@@ -58,7 +58,7 @@ def create_button(text: str, event) -> QPushButton:
             font-weight: bold;          
             border: none;               
             border-radius: 20px;        
-            padding: 6px 30px;         
+            padding: 10px 30px;         
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
             transition: background-color 0.3s ease;   
         }
@@ -106,7 +106,7 @@ def create_radio_button(text:str, event=None) -> QRadioButton:
 def create_description_box() -> QTextEdit:
 
     textEdit = QTextEdit()
-    textEdit.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    textEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
     textEdit.setAlignment(Qt.AlignVCenter)  # Centrar el texto verticalmente
 
 
@@ -118,6 +118,8 @@ def create_description_box() -> QTextEdit:
             border-radius: 10px;  /* Bordes redondeados */
             color: white;  /* Color del texto */
             background-color: #333333;  /* Fondo oscuro */
+            margin-top: 25px;                  /* Margen superior */
+            margin-bottom: 25px;               /* Margen inferior */
         }
         QTextEdit:focus {
             border: 2px dashed #0056b3;  /* Color del borde al enfocar */

@@ -204,6 +204,7 @@ class Model():
 
         # Etiquetas y título
         ax.grid(False)
+        plt.tight_layout()
 
         # Hacer el fondo de los ejes transparente
         ax.patch.set_alpha(0.0)  # Fondo de los ejes completamente transparente

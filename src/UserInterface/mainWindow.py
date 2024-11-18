@@ -125,12 +125,26 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_regression(self):
         """
-        This fucntion is activated when user generates regression, and it provides
+        This function is activated when user generates regression, and it provides
         regression module the necessary data.
         """
         columns = self._select_cols.selection()
-        self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
-        self._graph.setVisible(True)
+
+        num_nan = 0
+        num_nan += self._dmanager.detect(columns[0])
+        num_nan += self._dmanager.detect(columns[1])
+
+        if num_nan == 0:
+
+            try:
+                self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
+                self._graph.setVisible(True)
+            except Exception as e:
+                helper.show_error_message(f'Unexpected error: {e}')
+                self._graph.setVisible(False)
+
+        else:
+            helper.show_error_message(f'Data contains NaN values: please, apply preeprofess before generating model.')
 
     @Slot(bool)
     def hide_show_data(self, show: bool):
