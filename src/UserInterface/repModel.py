@@ -2,7 +2,6 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QLabel,
-    QHBoxLayout,
     QFileDialog,
     QMessageBox
 )
@@ -14,7 +13,7 @@ sys.path.append(repo_root)
 from src.dataManagement import Model, save_model
 import UserInterface.UIHelpers as helper
 from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt, Slot, Signal
+from PySide6.QtCore import Slot
 import UserInterface.UIHelpers as helper
 from src.dataManagement import Model
 
@@ -65,27 +64,27 @@ class RepModel(QWidget):
 
     def _get_graph_data(self):
 
-        
-        # Obtener los datos
+        """
+        This function updated the information of the model that is being 
+        displayed and also adjusts the whole widget depending on the user's choice
+        to load an already generated model or create a new one.
+        """
+
         text = f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}</b><br>"  # Fórmula en negrita y tamaño grande
         text += f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}</font><br>"  # R² con un color verde bonito
         text += f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}</font><br>"  # MSE con un color rojo atractivo
-        
     
-        # Solo los modelos guardados tienen descripcion, adaptamos el widget
+        # Only loaded model have a description, if it does, we adapt the widget
         if self._model.description:
             text += f"<font size='6' color='#E74C3C'>{self._model.description}</font>" 
             self.description_input.setVisible(False)
             self.save_button.setVisible(False)
-
         else:
+            self.description_input.setText('')
             self.description_input.setVisible(True)
             self.save_button.setVisible(True)
 
-        # Aplicar el texto con estilo al widget
         self._model_info.setText(text)
-
-        # Opcional: cambiar la fuente del texto
         font = QFont("Arial", 12, QFont.Bold)  # Cambiar la fuente a Arial, tamaño 12 y en negrita
         self._model_info.setFont(font)
 
@@ -93,7 +92,7 @@ class RepModel(QWidget):
     def _save_model(self):
 
         """
-        This fucntion acts as an event for the saving model button.
+        This function acts as an event for the saving model button.
         """
 
         if self._model:

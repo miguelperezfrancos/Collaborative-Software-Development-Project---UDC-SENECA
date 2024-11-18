@@ -4,7 +4,9 @@ from PySide6.QtWidgets import (
     QWidget,
     QGridLayout,
     QMessageBox,
-    QButtonGroup
+    QButtonGroup,
+    QVBoxLayout,
+    QHBoxLayout
 )
 
 from PySide6.QtCore import Signal, Slot, Qt
@@ -22,7 +24,8 @@ class PrepMenu(QWidget):
         self._manager = DataManager()
 
         # Declare layouts
-        self._main_layout = QGridLayout()
+        self._main_layout = QHBoxLayout()
+        self._opts_layout = QGridLayout()
 
         self._remove_option = helper.create_radio_button(text='Remove row')
         self._constant_option = helper.create_radio_button(text='Replace with a number')
@@ -45,15 +48,22 @@ class PrepMenu(QWidget):
         self._constant_option.toggled.connect(self.toggle_input)
 
         # build layout
-        self._main_layout.setHorizontalSpacing(10)
-        self._main_layout.setVerticalSpacing(10)
+        self._opts_layout.setHorizontalSpacing(10)
+        self._opts_layout.setVerticalSpacing(10)
 
-        self._main_layout.addWidget(self._constant_option, 0, 0)  # Primera fila, primera columna
-        self._main_layout.addWidget(self._input_number, 0, 1)  
-        self._main_layout.addWidget(self._mean_option, 1, 0)
-        self._main_layout.addWidget(self._median_option, 2, 0)
-        self._main_layout.addWidget(self._remove_option, 3, 0)
-        self._main_layout.addWidget(self._apply_button, 4, 1)
+        self._opts_layout.addWidget(self._constant_option, 0, 0)  # Primera fila, primera columna
+        self._opts_layout.addWidget(self._input_number, 0, 1)  
+        self._opts_layout.addWidget(self._mean_option, 1, 0)
+        self._opts_layout.addWidget(self._median_option, 2, 0)
+        self._opts_layout.addWidget(self._remove_option, 3, 0)
+        
+
+        self._button_layout = QVBoxLayout()
+        self._button_layout.addWidget(self._apply_button)
+        self._button_layout.setAlignment(Qt.AlignBottom)
+
+        self._main_layout.addLayout(self._opts_layout)
+        self._main_layout.addLayout(self._button_layout)
 
         self.setLayout(self._main_layout)
     

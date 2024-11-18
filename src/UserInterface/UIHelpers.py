@@ -19,30 +19,31 @@ from  PySide6.QtWidgets import (
 )
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
 
     label = QLabel(text)
 
+
     label.setStyleSheet("""
         QLabel {
-            background-color: #FFFDD0;  
-            color: #333;                
-            font-size: 14px;           
-            font-weight: bold;         
-            border: 1px solid #d1d1d1; 
-            border-radius: 7px;      
+            background-color: #282828; 
+            color: #e8eaed;                
+            font-size: 14px;                  
+            border: 1px solid #5f6368; 
+            border-radius: 15px;      
             padding: 8px;             
             margin-top: 5px;          
         }
     """)
 
+    label.setFont(QFont("Arial", 12))  # Fuente similar a Chrome
+    label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
     label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     return label
 
-def create_title(text: str):
-    pass
         
 def create_button(text: str, event) -> QPushButton:
 
@@ -54,11 +55,11 @@ def create_button(text: str, event) -> QPushButton:
         QPushButton {
             background-color: #1E88E5;  
             color: white;                
-            font-size: 18px;            
+            font-size: 15px;            
             font-weight: bold;          
             border: none;               
             border-radius: 20px;        
-            padding: 10px 30px;         
+            padding: 11px 30px;         
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
             transition: background-color 0.3s ease;   
         }
