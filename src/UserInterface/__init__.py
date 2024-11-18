@@ -6,6 +6,7 @@ from .prepMenu import PrepMenu
 from .repModel import RepModel
 from .VirtualTable import VirtualTableModel, VirtualTableView
 from .mainWindow import MainWindow
+from .predictions import Predict
 
 
 __all__ = [
@@ -16,5 +17,6 @@ __all__ = [
     "VirtualTableModel",
     "VirtualTableView",
     "MainWindow",
-    "RepModel"
+    "RepModel",
+    "Predict"
 ]
