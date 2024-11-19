@@ -38,9 +38,10 @@ class MainWindow(QMainWindow):
         self._content_widget.setLayout(self._main_layout)
         self._content_widget.setObjectName("contentWidget")
 
+        # set dark theme on default
         self._content_widget.setStyleSheet("""
             QWidget#contentWidget {
-                background-color: #323232; /* Fondo gris oscuro */
+                background-color: #1E1E1E; /* Fondo gris oscuro */
             }
         """)
 
@@ -105,8 +106,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.scroll_area)
         self._content_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        
-
         # Window layout
         self.setLayout(self._main_layout)
         
@@ -129,8 +128,6 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.loaded_model.connect(self._predict.update_model) # display model info when model is loaded
 
         self._select_cols.make_regression.connect(self.handle_regression)
-
-
 
 
     @Slot(pd.DataFrame)
