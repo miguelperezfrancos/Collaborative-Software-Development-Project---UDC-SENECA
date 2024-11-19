@@ -161,8 +161,6 @@ class MainWindow(QMainWindow):
 
         if num_nan == 0:
 
-            pix = self._graph.canvas.devicePixelRatioF()
-
             try:
                 self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
                 self._graph.setVisible(True)
