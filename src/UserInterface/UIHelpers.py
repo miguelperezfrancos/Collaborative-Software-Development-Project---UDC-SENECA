@@ -15,7 +15,8 @@ from  PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QMessageBox,
-    QTextEdit
+    QTextEdit,
+    QGridLayout
 )
 
 from PySide6.QtCore import Qt
@@ -67,10 +68,10 @@ def create_description_box() -> QTextEdit:
 
     return textEdit
 
-def create_text_box() -> QLineEdit:
+def create_text_box(enabled:bool) -> QLineEdit:
 
     text_box = QLineEdit()
-    text_box.setEnabled(False)
+    text_box.setEnabled(enabled)
     text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
    
     return text_box
@@ -86,7 +87,7 @@ def set_layout(layout, items: list):
     """
         
     for i in items:
-        if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout):
+        if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout) or isinstance(i, QGridLayout):
             layout.addLayout(i)
         else:
             layout.addWidget(i)

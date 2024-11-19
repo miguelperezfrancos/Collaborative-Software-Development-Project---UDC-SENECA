@@ -52,8 +52,8 @@ class MainWindow(QMainWindow):
         self._table = helper.create_virtual_table()  # Assuming this function returns a QWidget
         self._select_cols = ChooseColumn()
         self._preprocess = PrepMenu()
-        self._model_info = RepModel()
         self._graph = RegressionGraph()
+        self._model_info = RepModel()
         self._predict = Predict()
 
         self._model_info.setVisible(False)
@@ -71,8 +71,9 @@ class MainWindow(QMainWindow):
         ])
 
         #layout for model representation
-        self._model_layout = QVBoxLayout()
-        helper.set_layout(layout=self._model_layout, items=[
+        self._model_h_layout = QHBoxLayout()
+        self._model_v_layout = QVBoxLayout()
+        helper.set_layout(layout=self._model_v_layout, items=[
             self._model_info,
             self._predict
         ])
@@ -80,7 +81,8 @@ class MainWindow(QMainWindow):
         self._model_two_layout = QHBoxLayout()
         helper.set_layout(layout= self._model_two_layout, items=[
             self._graph,
-            self._model_layout
+            self._model_v_layout,
+            self._model_h_layout
         ])
 
         #layout for create model button
@@ -183,6 +185,21 @@ class MainWindow(QMainWindow):
         to what type of file is loaded by user.
         """
 
+        if not show:
+            nl = self._model_h_layout
+            ol = self._model_v_layout
+
+        if show:
+            ol = self._model_h_layout
+            nl = self._model_v_layout
+
+        # Cambiar los widgets de layouts
+        ol.removeWidget(self._model_info)
+        ol.removeWidget(self._predict)
+        nl.addWidget(self._model_info)
+        nl.addWidget(self._predict)
+
+        # encender/apagar widgets
         self._table.setVisible(show)
         self._select_cols.setVisible(show)
         self._preprocess.setVisible(show)

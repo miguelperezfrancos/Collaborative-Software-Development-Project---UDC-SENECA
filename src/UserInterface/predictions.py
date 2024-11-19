@@ -2,7 +2,8 @@ from PySide6.QtWidgets import (
     QWidget,
     QLabel,
     QVBoxLayout,
-    QHBoxLayout
+    QHBoxLayout,
+    QGridLayout
 )
 import sys
 import os 
@@ -42,25 +43,27 @@ class Predict(QWidget):
 
         self._model = None
         self._x_label = QLabel()
-        self._x_input = helper.create_text_box()
-        self._x_input.setEnabled(True)
-        self._result = QLabel()
+        self._x_input = helper.create_text_box(enabled=True)
+        self._result_label = QLabel()
         self._predict_button = helper.create_button(text='predict', event=self._predict)
+
+        
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self._predict_button)
         button_layout.setAlignment(Qt.AlignRight)
 
-        input_ly = QHBoxLayout()
-        input_ly.addWidget(self._x_label)
-        input_ly.addWidget(self._x_input)
-        input_ly.setAlignment(Qt.AlignCenter)
-
+        input_ly = QGridLayout()
+        input_ly.addWidget(self._x_label, 0, 0)
+        input_ly.addWidget(self._x_input, 0, 1)
+        input_ly.addWidget(self._result_label, 1, 0, 1, 1)
+        
         helper.set_layout(layout=layout, items=[
             input_ly,
-            self._result,
             button_layout
         ])
+
+        layout.setAlignment(Qt.AlignCenter)
         
         self.setVisible(False)
   
@@ -68,10 +71,9 @@ class Predict(QWidget):
     @Slot(Model)
     def update_model(self, model: Model):
         self._model = model
-        text = f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.x_name} = </b><br>"
+        text = f"{self._model.x_name}"
         self._x_label.setText(text)
-        font = QFont("Arial", 12, QFont.Bold)  # Cambiar la fuente a Arial, tamaño 12 y en negrita
-        self._x_label.setFont(font)
+        self._x_input.setText('')
 
     def _predict(self):
 
@@ -79,6 +81,6 @@ class Predict(QWidget):
         
         try:
             rpred = self._model.slope * float(input_value) + self._model.intercept
-            self._result.setText(f'Prediction result: {rpred}')
+            self._result_label.setText(f'{self._model.y_name}: {rpred}')
         except:
             helper.show_error_message('ERROR: you must enter a valid number')

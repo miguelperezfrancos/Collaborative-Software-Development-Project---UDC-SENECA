@@ -41,7 +41,7 @@ class PrepMenu(QWidget):
         self._preprocessing_opts.addButton(self._mean_option)
         self._preprocessing_opts.addButton(self._median_option)
 
-        self._input_number = helper.create_text_box()
+        self._input_number = helper.create_text_box(enabled=False)
         self._input_number.setVisible(False)
         self._apply_button = helper.create_button(text='Apply', event=self.on_apply_button)
         self._apply_button.setEnabled(False)
