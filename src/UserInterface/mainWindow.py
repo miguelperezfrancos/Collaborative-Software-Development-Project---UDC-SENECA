@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         # specify some requirements
         self._table.setMinimumHeight(250)
         self._graph.setMinimumHeight(450)
+        self._graph.canvas.setMaximumWidth(self.width() // 2)
 
         # Processing options layout
         self._cp_layout = QHBoxLayout()
