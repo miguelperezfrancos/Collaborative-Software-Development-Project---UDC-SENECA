@@ -1,13 +1,15 @@
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
-    QFileDialog
+    QFileDialog,
+    QSizePolicy
 )
 
 from PySide6.QtCore import Signal
 import UserInterface.UIHelpers as helper
-from dataManagement.fileReader import FileReader
+from src.dataManagement import FileReader
 import pandas as pd
+from src.dataManagement import load_model, Model
 
 
 class ChooseFile(QWidget):
@@ -17,6 +19,8 @@ class ChooseFile(QWidget):
     """
 
     file_selected = Signal(pd.DataFrame)
+    loaded_model = Signal(Model)
+    hide_show = Signal(bool)
 
     def __init__(self):
 
@@ -26,18 +30,29 @@ class ChooseFile(QWidget):
 
         self._file_indicator = helper.create_label(text="File path: ")
         self._path_label = helper.create_label(text="")
-        self._open_file_button = helper.create_button(text="Open File Explorer", event=self.open_file_dialog)
+        self._open_dataset_button = helper.create_button(text="Load Dataset", event=self._load_dataSet)
+        self._load_model_button = helper.create_button(text="Load Model", event = self._load_model_event)
+
+        self._file_indicator.setObjectName("filepath")
+        self._path_label.setObjectName("filepath")
+
+        # Adjust some apperance settings for the widgets
+        self._open_dataset_button.setMaximumSize(170, 50)
+        self._load_model_button.setMaximumSize(170, 50)
+        self._path_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         helper.set_layout(layout=layout, items=[
             self._file_indicator,
             self._path_label,
-            self._open_file_button
+            self._open_dataset_button,
+            self._load_model_button
         ])
 
         self.setLayout(layout)
+        self.setMaximumHeight(75)
 
 
-    def open_file_dialog(self):
+    def _load_dataSet(self):
 
         """
         This function defines the events that will take place
@@ -56,11 +71,11 @@ class ChooseFile(QWidget):
 
             try:
                 self._path_label.setText(f"{file_path}")
-                self.load_file(path=file_path)
+                self.read_dataSet(path=file_path)
             except:
                 pass
 
-    def load_file(self, path: str):
+    def read_dataSet(self, path: str):
 
         """
         Loads the content of the file at the given path into the table widget.
@@ -79,6 +94,24 @@ class ChooseFile(QWidget):
         try:
             df = reader.parse_file(path)
             self.file_selected.emit(df)
+            self.hide_show.emit(True)
 
-        except:  # Catch any other unknown errors
-            self._show_error_message('ERROR: Unknown error')    
+        except Exception as e:  # Catch any other unknown errors
+            helper.show_error_message('ERROR: {e}') 
+
+    def _load_model_event(self):
+
+        options = QFileDialog.Options()
+        allowed_extensions = "Compatible files (*.joblib)"
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select File: ", "", allowed_extensions, options=options)
+
+        # If a file is selected, load it into the table
+        if file_path:
+
+            try:
+                model = load_model(file_path=file_path)
+                self._path_label.setText(f"{file_path}")
+                self.hide_show.emit(False)
+                self.loaded_model.emit(model)   
+            except:
+                pass

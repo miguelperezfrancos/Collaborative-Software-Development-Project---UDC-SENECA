@@ -8,19 +8,140 @@ from sklearn.metrics import r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 
 
-class Regression():
+class Model():
+
+    """
+    This class creates a regression model from
+    a data set and an input of independent and target values.
+    """
 
     def __init__(self):
 
-        self._model = None
-        self._pred_line = None
+        # attributes that are going to be saved
+        self._formula = None
         self._y_name = None
         self._x_name = None
+        self._slope = None
+        self._intercept = None
+        self._description = None
+        self._r2 = None
+        self._mse = None
+
+        #attributes that are not going to be saved
+        self._pred_line = None
         self._independent_value = None
         self._target_value = None
+
+    # Property and setter for formula
+    @property
+    def formula(self):
+        return self._formula
+    
+    @formula.setter
+    def formula(self, value):
+        self._formula = value
+    
+    # Property and setter for _model
+    @property
+    def model(self):
+        return self._model
+
+    @model.setter
+    def model(self, value):
+        self._model = value
+
+    # Property and setter for r2
+    @property
+    def r2(self):
+        return self._r2
+
+    @r2.setter
+    def r2(self, value):
+        self._r2 = value
+
+    # property and setter for mse
+    @property
+    def mse(self):
+        return self._mse
+
+    @mse.setter
+    def mse(self, value):
+        self._mse = value
+
+    # Property and setter for _pred_line
+    @property
+    def pred_line(self):
+        return self._pred_line
+
+    @pred_line.setter
+    def pred_line(self, value):
+        self._pred_line = value
+
+    # Property and setter for _y_name
+    @property
+    def y_name(self):
+        return self._y_name
+
+    @y_name.setter
+    def y_name(self, value):
+        self._y_name = value
+
+    # Property and setter for _x_name
+    @property
+    def x_name(self):
+        return self._x_name
+
+    @x_name.setter
+    def x_name(self, value):
+        self._x_name = value
+
+    # Property and setter for _independent_value
+    @property
+    def independent_value(self):
+        return self._independent_value
+
+    @independent_value.setter
+    def independent_value(self, value):
+        self._independent_value = value
+
+    # Property and setter for _target_value
+    @property
+    def target_value(self):
+        return self._target_value
+
+    @target_value.setter
+    def target_value(self, value):
+        self._target_value = value
+
+    # Property and setter for the slope
+    @property
+    def slope(self):
+        return self._slope
+
+    @slope.setter
+    def slope(self, value):
+        self._slope = value
+
+    # Property and setter for the intercept
+    @property
+    def intercept(self):
+        return self._intercept
+
+    @intercept.setter
+    def intercept(self, value):
+        self._intercept = value
+
+    #Property and setter for description
+    @property
+    def description(self):
+        return self._description
+    
+    @description.setter
+    def description(self, value):
+        self._description = value
         
 
-    def make_model(self, data: pd.DataFrame, input_col: str, output_col: str):
+    def create_from_data(self, data: pd.DataFrame, input_col: str, output_col: str):
         """
         This function creates a linear regression model.
 
@@ -43,43 +164,16 @@ class Regression():
         r_model.fit(self._independent_value, self._target_value)
         y_pred = r_model.predict(X=self._independent_value)
 
-        # asign the model to the class variables
-        self._model = r_model
+        # asign the model, slope and intercept to the class variables
         self._pred_line = y_pred
+        self._slope = r_model.coef_[0]
+        self._intercept = r_model.intercept_
 
-    def get_regression_line(self):
-        """
-        This function returns the regression line definition as a string.
+        #assign r2 and mse
+        self._mse = mean_squared_error(self._target_value, self._pred_line)
+        self._r2 = r2_score(self._target_value, self._pred_line)
+        self._formula = f'{self._y_name} = {self._slope:.2f} * {self._x_name} + {self._intercept:.2f}'
 
-        Returns:
-            model_line (str): string containing the regression model line
-        """
-        slope = self._model.coef_[0]
-        intercept = self._model.intercept_
-
-        model_line = f'{self._y_name} = {slope:.2f} * {self._x_name} + {intercept:.2f}'
-
-        return model_line
-
-    def get_r_squared(self):
-        """
-        This funciton returns the R² measure of our regression model.
-
-        Returns:
-            r_squared
-        """
-        r2 = r2_score(self._target_value, self._pred_line)
-        return r2
-
-    def get_MSE(self):
-        """
-        This funciton returns the mean squared error (MSE) measure of our regression model.
-
-        Returns:
-            MSE
-        """
-        MSE = mean_squared_error(self._target_value, self._pred_line)
-        return MSE
 
     def get_plot(self):
 
@@ -87,25 +181,33 @@ class Regression():
         This function creates a graph for the linear regression it has made.
         """
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.scatter(self._independent_value, self._target_value, color='blue', label='Actual Data')
-        ax.plot(self._independent_value, self._pred_line, color='red', label='Regression Line')
-        
-        # Display formula, R^2, and MSE on the plot
-        formula_text = self.get_regression_line()
-        r2 = self.get_r_squared()
-        mse = self.get_MSE()
+        # Crear la figura con un fondo transparente y mantener las dimensiones
+        fig, ax = plt.subplots(figsize=(10, 6), facecolor=(1, 1, 1, 0))  # Fondo de la figura transparente
 
-        ax.text(0.05, 0.95, f"Prediction Formula: {formula_text}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.90, f"R^2: {r2:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        ax.text(0.05, 0.85, f"MSE: {mse:.2f}", transform=ax.transAxes, fontsize=12, verticalalignment='top')
-        
-        # Labels and title
-        ax.set_xlabel(self._x_name)
-        ax.set_ylabel(self._y_name)
-        ax.set_title("Linear Regression Plot")
-        ax.legend()
-        ax.grid(True)
-        
-        return fig  # Return the figure object
-    
+        # Datos de ejemplo
+        ax.scatter(self._independent_value, self._target_value, s= 10, color='#c2ffff', alpha=0.7)
+        ax.plot(self._independent_value, self._pred_line, color='#E74C3C')
+
+        # Etiquetas y título con colores personalizados
+        ax.set_xlabel(self._x_name, color='#a0a0a0')  # Color de la etiqueta del eje X
+        ax.set_ylabel(self._y_name, color='#a0a0a0')  # Color de la etiqueta del eje Y
+
+        # Cambiar el color de los ticks de los ejes
+        ax.tick_params(axis='x', colors='#a0a0a0')  # Color de los ticks del eje X
+        ax.tick_params(axis='y', colors='#a0a0a0')  # Color de los ticks del eje Y
+
+        # Eliminar las cajas de los bordes (spines)
+        ax.spines['top'].set_visible(False)  # Eliminar el borde superior
+        ax.spines['right'].set_visible(False)  # Eliminar el borde derecho
+        ax.spines['left'].set_visible(True)  # Mantener el borde izquierdo
+        ax.spines['bottom'].set_visible(True)  # Mantener el borde inferior
+
+        # Etiquetas y título
+        ax.grid(False)
+        plt.tight_layout()
+
+        # Hacer el fondo de los ejes transparente
+        ax.patch.set_alpha(0.0)  # Fondo de los ejes completamente transparente
+
+        # Retornar la figura
+        return fig

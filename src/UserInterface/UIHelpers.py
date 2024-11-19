@@ -14,68 +14,38 @@ from  PySide6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
     QVBoxLayout,
+    QMessageBox,
+    QTextEdit,
+    QGridLayout
 )
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 
 def create_label(text: str) -> QLabel:
 
     label = QLabel(text)
-
-    label.setStyleSheet("""
-        QLabel {
-            background-color: #FFFDD0;  
-            color: #333;                
-            font-size: 14px;           
-            font-weight: bold;         
-            border: 1px solid #d1d1d1; 
-            border-radius: 7px;      
-            padding: 8px;             
-            margin-top: 5px;          
-        }
-    """)
-
-    label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+    label.setFont(QFont("Arial", 12))  # Fuente similar a Chrome
+    label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+    label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     return label
+
         
 def create_button(text: str, event) -> QPushButton:
 
     button = QPushButton(text)
     button.clicked.connect(event)
-
-    button.setStyleSheet("""
-        QPushButton {
-            background-color: #007BFF;  
-            color: white;                
-            font-size: 18px;            
-            font-weight: bold;          
-            border: none;               
-            border-radius: 20px;        
-            padding: 12px 30px;         
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
-            transition: background-color 0.3s ease;   
-        }
-        QPushButton:hover {
-            background-color: #0056b3;  
-        }
-        QPushButton:pressed {
-            background-color: #003d80;   
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
-        }""")
+    button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     
     return button
         
 def create_combo_box(default_item, event) -> QComboBox:
 
     combo_box = QComboBox()
-    combo_box.setStyleSheet("""
-        QComboBox {
-            padding: 8px;
-            font-size: 14px;
-        }""")
-    
     combo_box.addItem(default_item)
     combo_box.currentIndexChanged.connect(event)
+    combo_box.setMaximumWidth(400)
     return combo_box
 
 def create_virtual_table():
@@ -90,11 +60,20 @@ def create_radio_button(text:str, event=None) -> QRadioButton:
     radio_button.setEnabled(False)
     return radio_button
 
-def create_text_box() -> QLineEdit:
+def create_description_box() -> QTextEdit:
+
+    textEdit = QTextEdit()
+    textEdit.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    textEdit.setAlignment(Qt.AlignVCenter)  # Centrar el texto verticalmente
+
+    return textEdit
+
+def create_text_box(enabled:bool) -> QLineEdit:
 
     text_box = QLineEdit()
-    text_box.setEnabled(False)
+    text_box.setEnabled(enabled)
     text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+   
     return text_box
 
 def set_layout(layout, items: list):
@@ -108,7 +87,21 @@ def set_layout(layout, items: list):
     """
         
     for i in items:
-        if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout):
+        if isinstance(i, QHBoxLayout) or isinstance(i, QVBoxLayout) or isinstance(i, QGridLayout):
             layout.addLayout(i)
         else:
             layout.addWidget(i)
+
+def show_error_message(message: str):
+        
+        """
+        This method launches an error message.
+        """
+        # Create the message box
+        error_msg = QMessageBox()
+        error_msg.setIcon(QMessageBox.Critical)  # Set the icon to "Critical" for an error
+        error_msg.setWindowTitle("Error")
+        error_msg.setText("An error occurred!")
+        error_msg.setInformativeText(f'{message}')
+        error_msg.setStandardButtons(QMessageBox.Ok)  # Add the OK button
+        error_msg.exec()  # Display the message box
