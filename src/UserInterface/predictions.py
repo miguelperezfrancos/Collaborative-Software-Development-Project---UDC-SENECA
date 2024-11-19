@@ -61,20 +61,6 @@ class Predict(QWidget):
             self._result,
             button_layout
         ])
-
-        # Estilos
-        self.setStyleSheet("""
-            QWidget#container {
-                border: 2px solid #2C3E50;
-                border-radius: 10px;
-                background-color: #31312D;
-            }
-            
-            QWidget#container > QLabel {
-                border: none;
-                color: white;
-                padding: 5px;
-            }""")
         
         self.setVisible(False)
   

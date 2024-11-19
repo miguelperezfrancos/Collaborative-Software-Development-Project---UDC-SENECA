@@ -33,6 +33,9 @@ class ChooseFile(QWidget):
         self._open_dataset_button = helper.create_button(text="Load Dataset", event=self._load_dataSet)
         self._load_model_button = helper.create_button(text="Load Model", event = self._load_model_event)
 
+        self._file_indicator.setObjectName("filepath")
+        self._path_label.setObjectName("filepath")
+
         # Adjust some apperance settings for the widgets
         self._open_dataset_button.setMaximumSize(170, 50)
         self._load_model_button.setMaximumSize(170, 50)

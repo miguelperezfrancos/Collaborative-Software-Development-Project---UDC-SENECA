@@ -31,20 +31,6 @@ class RepModel(QWidget):
         # Crear un widget contenedor principal
         self.container = QWidget()
         self.container.setObjectName("container")
-
-        self.container.setStyleSheet("""
-            QWidget#container {
-                border: 2px solid #2C3E50;
-                border-radius: 10px;
-                background-color: #31312D;
-            }
-
-            QWidget#container > QLabel {
-            border: none;
-            color: white;
-            padding: 5px;
-            }
-        """)
         
         # Crear el layout principal
         main_layout = QVBoxLayout()

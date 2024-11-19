@@ -38,12 +38,6 @@ class MainWindow(QMainWindow):
         self._content_widget.setLayout(self._main_layout)
         self._content_widget.setObjectName("contentWidget")
 
-        # set dark theme on default
-        self._content_widget.setStyleSheet("""
-            QWidget#contentWidget {
-                background-color: #1E1E1E; /* Fondo gris oscuro */
-            }
-        """)
 
         # Scroll area
         self.scroll_area = QScrollArea()

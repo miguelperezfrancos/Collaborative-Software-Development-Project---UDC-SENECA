@@ -25,20 +25,6 @@ from UserInterface.VirtualTable import VirtualTableModel, VirtualTableView
 def create_label(text: str) -> QLabel:
 
     label = QLabel(text)
-
-
-    label.setStyleSheet("""
-        QLabel {
-            background-color: #282828; 
-            color: #e8eaed;                
-            font-size: 14px;                  
-            border: 1px solid #5f6368; 
-            border-radius: 15px;      
-            padding: 8px;             
-            margin-top: 5px;          
-        }
-    """)
-
     label.setFont(QFont("Arial", 12))  # Fuente similar a Chrome
     label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
     label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -50,46 +36,15 @@ def create_button(text: str, event) -> QPushButton:
     button = QPushButton(text)
     button.clicked.connect(event)
     button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-    button.setStyleSheet("""
-        QPushButton {
-            background-color: #1E88E5;  
-            color: white;                
-            font-size: 15px;            
-            font-weight: bold;          
-            border: none;               
-            border-radius: 20px;        
-            padding: 11px 30px;         
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);  
-            transition: background-color 0.3s ease;   
-        }
-        QPushButton:hover {
-            background-color: #0056b3;  
-        }
-        QPushButton:pressed {
-            background-color: #003d80;   
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
-        }
-                         
-        QPushButton:disabled {
-            background-color: #a0a0a0;
-            color: #666666;
-            box-shadow: none;
-        }""")
     
     return button
         
 def create_combo_box(default_item, event) -> QComboBox:
 
     combo_box = QComboBox()
-    combo_box.setStyleSheet("""
-        QComboBox {
-            padding: 8px;
-            font-size: 14px;
-        }""")
-    
     combo_box.addItem(default_item)
     combo_box.currentIndexChanged.connect(event)
+    combo_box.setMaximumWidth(400)
     return combo_box
 
 def create_virtual_table():
@@ -110,23 +65,6 @@ def create_description_box() -> QTextEdit:
     textEdit.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     textEdit.setAlignment(Qt.AlignVCenter)  # Centrar el texto verticalmente
 
-
-    textEdit.setStyleSheet("""
-        QTextEdit {
-            height: 60px;  /* Ajusta la altura */
-            padding: 6px;  /* Añade espacio interno */
-            border: 2px dashed #1E88E5;  /* Borde rallado */
-            border-radius: 10px;  /* Bordes redondeados */
-            color: white;  /* Color del texto */
-            background-color: #333333;  /* Fondo oscuro */
-            margin-top: 25px;                  /* Margen superior */
-            margin-bottom: 25px;               /* Margen inferior */
-        }
-        QTextEdit:focus {
-            border: 2px dashed #0056b3;  /* Color del borde al enfocar */
-        }
-    """)
-
     return textEdit
 
 def create_text_box() -> QLineEdit:
@@ -134,17 +72,7 @@ def create_text_box() -> QLineEdit:
     text_box = QLineEdit()
     text_box.setEnabled(False)
     text_box.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-    text_box.setStyleSheet("""
-        QLineEdit {
-            border: none;
-            border-bottom: 1px solid #FFFFFF;  /* Línea inferior como borde */
-            background-color: transparent;     /* Fondo transparente */
-            color: white;                      /* Color del texto */
-            padding: 2px;                      /* Espaciado interno */
-        }
-        QLineEdit:focus {
-            border-bottom: 1px solid #007bff;  /* Color diferente cuando tiene foco */
-        }""")
+   
     return text_box
 
 def set_layout(layout, items: list):

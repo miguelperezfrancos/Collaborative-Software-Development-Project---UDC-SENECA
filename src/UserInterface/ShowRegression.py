@@ -42,19 +42,6 @@ class RegressionGraph(QWidget):
         # Añadir el canvas al layout interno
         self._layout.addWidget(self.canvas)
 
-        # Establecer el estilo
-        self.setStyleSheet("""
-            QWidget#container {
-                border: 2px solid #2C3E50;
-                border-radius: 10px;
-                background-color: #31312D;
-            }
-            
-            FigureCanvas {
-                border: none;
-            }
-        """)
-
 
     def make_regression(self, data, x, y):
         # Create the regression model and graph

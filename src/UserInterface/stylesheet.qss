@@ -1,17 +1,22 @@
-QWidget#contentWidget {
-    background-color: #1E1E1E; /* Fondo gris oscuro */
+QWidget#contentWidget { /* App background */
+    background-color: #1E1E1E; 
 }
 
 QWidget#container {
     border: 2px solid #2C3E50;
     border-radius: 10px;
-    background-color: #31312D;
+    background-color: #1E1E1E;
 }
 
 QWidget#container > QLabel {
     border: none;
     color: white;
     padding: 5px;
+}
+
+QLabel#title {
+    font-family: Arial;
+    font-size: 16px;
 }
 
 FigureCanvas {
@@ -75,7 +80,7 @@ QPushButton:disabled {
     box-shadow: none;
 }
 
-QLabel {
+QLabel#filepath{
     background-color: #282828; 
     color: #e8eaed;                
     font-size: 14px;                  

@@ -24,9 +24,12 @@ class PrepMenu(QWidget):
         self._manager = DataManager()
 
         # Declare layouts
-        self._main_layout = QHBoxLayout()
+        main_layout = QVBoxLayout()
+        self._bts_ly = QHBoxLayout()
         self._opts_layout = QGridLayout()
 
+        self._title = helper.create_label(text="Preprocessing options")
+        self._title.setObjectName('title')
         self._remove_option = helper.create_radio_button(text='Remove row')
         self._constant_option = helper.create_radio_button(text='Replace with a number')
         self._mean_option = helper.create_radio_button(text='Replace with mean')
@@ -47,8 +50,11 @@ class PrepMenu(QWidget):
         # Connect signals
         self._constant_option.toggled.connect(self.toggle_input)
 
-        # build layout
-        self._opts_layout.setHorizontalSpacing(10)
+        # build layouts
+        title_ly = QHBoxLayout()
+        title_ly.addWidget(self._title)
+
+        self._opts_layout.setHorizontalSpacing(2)
         self._opts_layout.setVerticalSpacing(10)
 
         self._opts_layout.addWidget(self._constant_option, 0, 0)  # Primera fila, primera columna
@@ -62,10 +68,16 @@ class PrepMenu(QWidget):
         self._button_layout.addWidget(self._apply_button)
         self._button_layout.setAlignment(Qt.AlignBottom)
 
-        self._main_layout.addLayout(self._opts_layout)
-        self._main_layout.addLayout(self._button_layout)
+        self._bts_ly.addLayout(self._opts_layout)
+        self._bts_ly.addLayout(self._button_layout)
 
-        self.setLayout(self._main_layout)
+        helper.set_layout(layout=main_layout, items = [
+            title_ly,
+            self._bts_ly
+        ])
+
+        main_layout.setAlignment(Qt.AlignCenter)
+        self.setLayout(main_layout)
     
 
     @Slot(bool)

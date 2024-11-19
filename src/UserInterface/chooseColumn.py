@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
-    QMessageBox
+    QMessageBox,
+    QHBoxLayout
 )
 
 from PySide6.QtCore import Signal, Slot, Qt
@@ -20,19 +21,26 @@ class ChooseColumn(QWidget):
         super().__init__()
 
         layout = QVBoxLayout()
-
+        title_ly = QHBoxLayout()
+        
+        self._title = helper.create_label(text='Column selection')
+        self._title.setObjectName('title')
         self._input_menu = helper.create_combo_box(default_item= "Select an input column", event=self.on_combo_box1_changed)
         self._output_menu = helper.create_combo_box(default_item="Select an output column", event=self.on_combo_box2_changed)
         self.create_model = helper.create_button(text="Generate model", event=self.on_create_model)
         self.selected.connect(self.enable_button)
 
+        title_ly.addWidget(self._title)
+        title_ly.setAlignment(Qt.AlignCenter)
+
         helper.set_layout(layout=layout, items= [
+            title_ly,
             self._input_menu,
             self._output_menu
         ])
 
         layout.setAlignment(Qt.AlignTop)
-
+        layout.setAlignment(Qt.AlignCenter)
         self.setLayout(layout)
 
 
