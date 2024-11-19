@@ -3,7 +3,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QFileDialog,
-    QMessageBox
+    QMessageBox,
+    QHBoxLayout
 )
 import sys
 import os 
@@ -13,7 +14,7 @@ sys.path.append(repo_root)
 from src.dataManagement import Model, save_model
 import UserInterface.UIHelpers as helper
 from PySide6.QtGui import QFont
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Qt
 import UserInterface.UIHelpers as helper
 from src.dataManagement import Model
 
@@ -27,6 +28,37 @@ class RepModel(QWidget):
     def __init__(self):
         super().__init__()
 
+        # Crear un widget contenedor principal
+        self.container = QWidget()
+        self.container.setObjectName("container")
+
+        self.container.setStyleSheet("""
+            QWidget#container {
+                border: 2px solid #2C3E50;
+                border-radius: 10px;
+                background-color: #31312D;
+            }
+
+            QWidget#container > QLabel {
+            border: none;
+            color: white;
+            padding: 5px;
+            }
+        """)
+        
+        # Crear el layout principal
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)  # Eliminar márgenes del layout principal
+        self.setLayout(main_layout)
+        
+        # Agregar el contenedor al layout principal
+        main_layout.addWidget(self.container)
+        
+        # Layout interno para los componentes
+        internal_layout = QVBoxLayout()
+        internal_layout.setContentsMargins(10, 10, 10, 10)  # Padding interno
+        self.container.setLayout(internal_layout)
+        
         #model that is working with
         self._model = Model()
         
@@ -37,16 +69,18 @@ class RepModel(QWidget):
         self.save_button = helper.create_button(text = "Save Model", event = self._save_model)
         #graph data
         self._model_info = QLabel()
-  
-        # Add a horizontal layout for the save button
-        layout = QVBoxLayout()
-        layout.addWidget(self._model_info)
-        layout.addWidget(self.description_input)
-        layout.addWidget(self.save_button)
+
+        button_ly = QHBoxLayout()
+        button_ly.addWidget(self.save_button)
+        button_ly.setAlignment(Qt.AlignRight)
+
+        # Agregar los widgets al layout interno
+        internal_layout.addWidget(self._model_info)
+        internal_layout.addWidget(self.description_input)
+        internal_layout.addLayout(button_ly)
         
-        # Set up layout
-        layout.addSpacing(1)
-        self.setLayout(layout)
+        # Alinear todo al centro
+        internal_layout.setAlignment(Qt.AlignCenter)
 
     @Slot(Model)
     def _update_model(self, model: Model):
@@ -73,7 +107,7 @@ class RepModel(QWidget):
         text += f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}</font><br>"  # MSE con un color rojo atractivo
     
         # Only loaded model have a description, if it does, we adapt the widget
-        if self._model.description:
+        if self._model.description is not None:
             text += f"<font size='6' color='#E74C3C'>{self._model.description}</font>" 
             self.description_input.setVisible(False)
             self.save_button.setVisible(False)

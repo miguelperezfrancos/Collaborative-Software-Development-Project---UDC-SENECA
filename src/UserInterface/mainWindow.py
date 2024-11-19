@@ -36,14 +36,21 @@ class MainWindow(QMainWindow):
         self._main_layout = QVBoxLayout()
         self._content_widget = QWidget()
         self._content_widget.setLayout(self._main_layout)
+        self._content_widget.setObjectName("contentWidget")
+
+        self._content_widget.setStyleSheet("""
+            QWidget#contentWidget {
+                background-color: #323232; /* Fondo gris oscuro */
+            }
+        """)
 
         # Scroll area
-        scroll_area = QScrollArea()
-        scroll_area.setWidget(self._content_widget)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self._content_widget)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
 
         # Create other widgets
         self._choose_file_menu = ChooseFile()
@@ -60,7 +67,6 @@ class MainWindow(QMainWindow):
         # specify some requirements
         self._table.setMinimumHeight(250)
         self._graph.setMinimumHeight(450)
-        self._graph.canvas.setMaximumWidth(self.width() // 2)
 
         # Processing options layout
         self._cp_layout = QHBoxLayout()
@@ -96,9 +102,11 @@ class MainWindow(QMainWindow):
         self._main_layout.addLayout(self._model_two_layout)
 
         # Set the scroll area as the central widget
-        self.setCentralWidget(scroll_area)
+        self.setCentralWidget(self.scroll_area)
         self._content_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
         
+
         # Window layout
         self.setLayout(self._main_layout)
         
@@ -121,6 +129,8 @@ class MainWindow(QMainWindow):
         self._choose_file_menu.loaded_model.connect(self._predict.update_model) # display model info when model is loaded
 
         self._select_cols.make_regression.connect(self.handle_regression)
+
+
 
 
     @Slot(pd.DataFrame)
@@ -157,6 +167,8 @@ class MainWindow(QMainWindow):
         num_nan += self._dmanager.detect(columns[1])
 
         if num_nan == 0:
+
+            pix = self._graph.canvas.devicePixelRatioF()
 
             try:
                 self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])

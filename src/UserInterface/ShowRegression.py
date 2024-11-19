@@ -18,15 +18,42 @@ class RegressionGraph(QWidget):
     is_model = Signal(Model)
 
     def __init__(self):
+        
         super().__init__()
+
+        # Crear el contenedor principal
+        self.container = QWidget()
+        self.container.setObjectName("container")
+        
+        # Layout principal
+        main_layout = QHBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(main_layout)
+        main_layout.addWidget(self.container)
+
+        # Layout interno
+        self._layout = QHBoxLayout()
+        self._layout.setContentsMargins(10, 10, 10, 10)
+        self.container.setLayout(self._layout)
 
         self.canvas = FigureCanvas(Figure())
         self._model = Model()
           
-        # Set up layout
-        self._layout = QHBoxLayout()
+        # Añadir el canvas al layout interno
         self._layout.addWidget(self.canvas)
-        self.setLayout(self._layout)
+
+        # Establecer el estilo
+        self.setStyleSheet("""
+            QWidget#container {
+                border: 2px solid #2C3E50;
+                border-radius: 10px;
+                background-color: #31312D;
+            }
+            
+            FigureCanvas {
+                border: none;
+            }
+        """)
 
 
     def make_regression(self, data, x, y):

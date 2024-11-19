@@ -1,14 +1,15 @@
 from PySide6.QtWidgets import (
     QWidget,
     QLabel,
-    QVBoxLayout
+    QVBoxLayout,
+    QHBoxLayout
 )
 import sys
 import os 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(repo_root)
-
-from PySide6.QtCore import Slot
+from PySide6.QtGui import QFont
+from PySide6.QtCore import Slot, Qt
 import UserInterface.UIHelpers as helper
 from src.dataManagement import Model
 
@@ -24,7 +25,21 @@ class Predict(QWidget):
 
         super().__init__()
 
+        # Crear widget contenedor principal
+        self.container = QWidget()
+        self.container.setObjectName("container")
+        
+        # Layout principal que contendrá el container
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(main_layout)
+        main_layout.addWidget(self.container)
+
+        # Layout interno para los componentes
         layout = QVBoxLayout()
+        layout.setContentsMargins(10, 10, 10, 10)
+        self.container.setLayout(layout)
+
         self._model = None
         self._x_label = QLabel()
         self._x_input = helper.create_text_box()
@@ -32,20 +47,45 @@ class Predict(QWidget):
         self._result = QLabel()
         self._predict_button = helper.create_button(text='predict', event=self._predict)
 
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(self._predict_button)
+        button_layout.setAlignment(Qt.AlignRight)
+
+        input_ly = QHBoxLayout()
+        input_ly.addWidget(self._x_label)
+        input_ly.addWidget(self._x_input)
+        input_ly.setAlignment(Qt.AlignCenter)
+
         helper.set_layout(layout=layout, items=[
-            self._x_label,
-            self._x_input,
+            input_ly,
             self._result,
-            self._predict_button
+            button_layout
         ])
 
+        # Estilos
+        self.setStyleSheet("""
+            QWidget#container {
+                border: 2px solid #2C3E50;
+                border-radius: 10px;
+                background-color: #31312D;
+            }
+            
+            QWidget#container > QLabel {
+                border: none;
+                color: white;
+                padding: 5px;
+            }""")
+        
         self.setVisible(False)
-        self.setLayout(layout)
+  
 
     @Slot(Model)
     def update_model(self, model: Model):
         self._model = model
-        self._x_label.setText(self._model.x_name)
+        text = f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.x_name} = </b><br>"
+        self._x_label.setText(text)
+        font = QFont("Arial", 12, QFont.Bold)  # Cambiar la fuente a Arial, tamaño 12 y en negrita
+        self._x_label.setFont(font)
 
     def _predict(self):
 
