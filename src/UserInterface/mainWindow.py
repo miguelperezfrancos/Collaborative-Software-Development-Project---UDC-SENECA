@@ -20,6 +20,7 @@ from src.UserInterface import(ChooseColumn,
                           RepModel)
 
 import UserInterface.UIHelpers as helper
+from UserInterface.predictions import Predict
 
 
 class MainWindow(QMainWindow):
@@ -51,6 +52,7 @@ class MainWindow(QMainWindow):
         self._preprocess = PrepMenu()
         self._model_info = RepModel()
         self._graph = RegressionGraph()
+        self._predict = Predict()
 
         self._model_info.setVisible(False)
         self._graph.setVisible(False)
@@ -67,10 +69,16 @@ class MainWindow(QMainWindow):
         ])
 
         #layout for model representation
-        self._model_layout = QHBoxLayout()
+        self._model_layout = QVBoxLayout()
         helper.set_layout(layout=self._model_layout, items=[
+            self._model_info,
+            self._predict
+        ])
+
+        self._model_two_layout = QHBoxLayout()
+        helper.set_layout(layout= self._model_two_layout, items=[
             self._graph,
-            self._model_info
+            self._model_layout
         ])
 
         #layout for create model button
@@ -84,7 +92,7 @@ class MainWindow(QMainWindow):
         self._main_layout.addWidget(self._table)
         self._main_layout.addLayout(self._cp_layout)
         self._main_layout.addLayout(self._gen_button_ly)
-        self._main_layout.addLayout(self._model_layout)
+        self._main_layout.addLayout(self._model_two_layout)
 
         # Set the scroll area as the central widget
         self.setCentralWidget(scroll_area)
@@ -107,6 +115,9 @@ class MainWindow(QMainWindow):
 
         self._graph.is_model.connect(self._model_info._update_model) # display model info when model in generated
         self._choose_file_menu.loaded_model.connect(self._model_info._update_model) # display model info when model is loaded
+
+        self._graph.is_model.connect(self._predict.update_model) # display model info when model in generated
+        self._choose_file_menu.loaded_model.connect(self._predict.update_model) # display model info when model is loaded
 
         self._select_cols.make_regression.connect(self.handle_regression)
 
@@ -150,10 +161,12 @@ class MainWindow(QMainWindow):
                 self._graph.make_regression(data=self._dmanager.data, x=columns[0], y=columns[1])
                 self._graph.setVisible(True)
                 self._model_info.setVisible(True)
+                self._predict.setVisible(True)
             except Exception as e:
                 helper.show_error_message(f'Unexpected error: {e}')
                 self._graph.setVisible(False)
                 self._model_info.setVisible(False)
+                self._predict.setVisible(False)
 
         else:
             helper.show_error_message(f'Data contains NaN values: please, apply preeprofess before generating model.')
@@ -173,3 +186,4 @@ class MainWindow(QMainWindow):
         self._select_cols.create_model.setVisible(show) # generate model button
         self._graph.setVisible(False)
         self._model_info.setVisible(not show)
+        self._predict.setVisible(not show)

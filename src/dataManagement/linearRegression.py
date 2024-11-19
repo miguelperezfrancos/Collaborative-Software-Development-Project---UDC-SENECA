@@ -182,7 +182,7 @@ class Model():
         """
 
         # Crear la figura con un fondo transparente y mantener las dimensiones
-        fig, ax = plt.subplots(figsize=(10, 6), facecolor=(1, 1, 1, 0))  # Fondo de la figura transparente
+        fig, ax = plt.subplots(figsize=(7.5, 4.5), facecolor=(1, 1, 1, 0))  # Fondo de la figura transparente
 
         # Datos de ejemplo
         ax.scatter(self._independent_value, self._target_value, s= 10, color='#c2ffff', alpha=0.7)

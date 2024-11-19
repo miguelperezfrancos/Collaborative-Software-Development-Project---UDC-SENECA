@@ -29,9 +29,6 @@ class RepModel(QWidget):
 
         #model that is working with
         self._model = Model()
-
-        # Create layout
-        layout = QVBoxLayout()
         
         # Text input for description
         self.description_input = helper.create_description_box()
@@ -48,6 +45,7 @@ class RepModel(QWidget):
         layout.addWidget(self.save_button)
         
         # Set up layout
+        layout.addSpacing(1)
         self.setLayout(layout)
 
     @Slot(Model)
@@ -71,7 +69,7 @@ class RepModel(QWidget):
         """
 
         text = f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}</b><br>"  # Fórmula en negrita y tamaño grande
-        text += f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}</font><br>"  # R² con un color verde bonito
+        text += f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}    </font>"  # R² con un color verde bonito
         text += f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}</font><br>"  # MSE con un color rojo atractivo
     
         # Only loaded model have a description, if it does, we adapt the widget

@@ -28,6 +28,7 @@ class RegressionGraph(QWidget):
         self._layout.addWidget(self.canvas)
         self.setLayout(self._layout)
 
+
     def make_regression(self, data, x, y):
         # Create the regression model and graph
         self._model.create_from_data(data, x, y)

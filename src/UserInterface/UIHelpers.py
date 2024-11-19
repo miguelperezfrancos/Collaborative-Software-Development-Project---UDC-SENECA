@@ -107,7 +107,7 @@ def create_radio_button(text:str, event=None) -> QRadioButton:
 def create_description_box() -> QTextEdit:
 
     textEdit = QTextEdit()
-    textEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    textEdit.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     textEdit.setAlignment(Qt.AlignVCenter)  # Centrar el texto verticalmente
 
 
@@ -168,7 +168,6 @@ def show_error_message(message: str):
         """
         This method launches an error message.
         """
-        
         # Create the message box
         error_msg = QMessageBox()
         error_msg.setIcon(QMessageBox.Critical)  # Set the icon to "Critical" for an error
