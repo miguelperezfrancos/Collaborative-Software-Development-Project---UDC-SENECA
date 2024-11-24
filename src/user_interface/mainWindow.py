@@ -310,8 +310,6 @@ class MainWindow(QMainWindow):
                 helper.show_error_message(f'Unexpected error: {e}')
                 if not self._graph.isVisible():
                     self._show_model_components(False)
-                else:
-                    pass
         else:
             helper.show_error_message(
                 'Data contains NaN values: please, apply preprocess '
