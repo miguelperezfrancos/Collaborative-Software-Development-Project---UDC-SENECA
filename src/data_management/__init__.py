@@ -1,0 +1,13 @@
+# dataManagement/__init__.py
+from .dataManager import DataManager
+from .fileReader import FileReader
+from .linearRegression import Model
+from .modelFileManager import save_model, load_model
+
+__all__ = [
+    "DataManager",
+    "FileReader",
+    "Model",
+    "save_model",
+    "load_model"
+]
