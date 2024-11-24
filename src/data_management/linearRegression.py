@@ -5,6 +5,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 
+class UnexpectedError(Exception):
+    """Exception raised for unexpected errors."""
+    pass
+
 
 class Model:
     """Creates and manages linear regression models from datasets."""
@@ -134,26 +138,39 @@ class Model:
             input_col: Name of the independent variable column.
             output_col: Name of the dependent variable column.
         """
-        self._x_name = input_col
-        self._y_name = output_col
 
-        self._independent_value = data[[input_col]]
-        self._target_value = data[output_col]
+        try:
+            self._x_name = input_col
+            self._y_name = output_col
 
-        r_model = LinearRegression()
-        r_model.fit(self._independent_value, self._target_value)
-        y_pred = r_model.predict(X=self._independent_value)
+            # Update description when creating new model
+            self._description = None
 
-        self._pred_line = y_pred
-        self._slope = r_model.coef_[0]
-        self._intercept = r_model.intercept_
+            self._independent_value = data[[input_col]]
+            self._target_value = data[output_col]
 
-        self._mse = mean_squared_error(self._target_value, self._pred_line)
-        self._r2 = r2_score(self._target_value, self._pred_line)
-        self._formula = (
-            f'{self._y_name} = {self._slope:.2f} * {self._x_name} + '
-            f'{self._intercept:.2f}'
-        )
+            r_model = LinearRegression()
+            r_model.fit(self._independent_value, self._target_value)
+            y_pred = r_model.predict(X=self._independent_value)
+
+            self._pred_line = y_pred
+            self._slope = r_model.coef_[0]
+            self._intercept = r_model.intercept_
+
+            self._mse = mean_squared_error(self._target_value, self._pred_line)
+            self._r2 = r2_score(self._target_value, self._pred_line)
+            self._formula = (
+                f'{self._y_name} = {self._slope:.2f} * {self._x_name} + '
+                f'{self._intercept:.2f}'
+            )
+
+        except Exception as e:
+
+            for attr in self.__dict__:
+                setattr(self, attr, None)
+
+            raise UnexpectedError(e)
+
 
     def get_plot(self) -> plt.Figure:
         """Create and return a visualization of the regression model.
