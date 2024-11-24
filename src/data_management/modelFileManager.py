@@ -69,5 +69,6 @@ def load_model(file_path: str) -> Model | None:
         return model
 
     except Exception as e:
+        raise ValueError('Unable to read file')
         print(f"Error loading model: {e}")
         return None

@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 
 # Local imports
 import user_interface.ui_helpers as helper
-from src.data_management import FileReader, Model, load_model
+from src.data_management import FileReader, Model, load_model, ParseError
 
 
 class ChooseFile(QWidget):
@@ -99,8 +99,8 @@ class ChooseFile(QWidget):
 
         if file_path:
             try:
-                self._path_label.setText(f"{file_path}")
                 self.read_dataset(path=file_path)
+                self._path_label.setText(f"{file_path}")
             except Exception:
                 pass
 
@@ -121,6 +121,7 @@ class ChooseFile(QWidget):
             self.hide_show.emit(True)
         except Exception as e:
             helper.show_error_message(f"ERROR: {e}")
+            raise ParseError('couldn not read file')
 
     def _load_model_event(self):
         """Open a file dialog to select and load a model file.
@@ -146,4 +147,4 @@ class ChooseFile(QWidget):
                 self.hide_show.emit(False)
                 self.loaded_model.emit(model)
             except Exception:
-                pass
+                helper.show_error_message(f"Could not read model file")

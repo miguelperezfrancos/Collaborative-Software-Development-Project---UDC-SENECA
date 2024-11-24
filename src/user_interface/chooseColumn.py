@@ -56,6 +56,8 @@ class ChooseColumn(QWidget):
             text="Generate model",
             event=self.on_create_model
         )
+
+        self.create_model.setEnabled(False)
         
         self.selected.connect(self.enable_button)
 
@@ -149,7 +151,8 @@ class ChooseColumn(QWidget):
 
     @Slot(bool)
     def enable_button(self, enabled):
-        """Enable or disable the create model button.
+        """Enable or disable the create model button
+        if both columns are selected.
 
         Args:
             enabled: Whether the button should be enabled.
