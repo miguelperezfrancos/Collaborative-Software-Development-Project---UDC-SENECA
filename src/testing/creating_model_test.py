@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 from src.data_management import Model, UnexpectedError
+import numpy as np
 
 class TestLinearRegressionModel(unittest.TestCase):
 
@@ -52,54 +53,122 @@ class TestLinearRegressionModel(unittest.TestCase):
 
     def test_invalid_column_names(self):
         """Test handling of invalid column names."""
+        # Primero creamos un modelo válido
+        self.model.create_from_data(self.data, 'x', 'y')
+        
+        # Guardamos los valores anteriores
+        previous_values = {attr: getattr(self.model, attr) for attr in vars(self.model)}
+        
+        # Probamos con columna x inválida
         with self.assertRaises(UnexpectedError):
             self.model.create_from_data(self.data, 'invalid_x', 'y')
         
-        # Verificar que todos los atributos son None
+        # Verificar que se mantienen los valores anteriores
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
+            else:
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
         
-        # Reiniciar el modelo para la segunda prueba
-        self.model = Model()
-        
+        # Probamos con columna y inválida
         with self.assertRaises(UnexpectedError):
             self.model.create_from_data(self.data, 'x', 'invalid_y')
         
-        # Verificar que todos los atributos son None
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
+            else:
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
+
 
     def test_empty_data(self):
         """Test behavior with empty dataset."""
+        # Primero creamos un modelo válido
+        self.model.create_from_data(self.data, 'x', 'y')
+        
+        # Guardamos los valores anteriores
+        previous_values = {attr: getattr(self.model, attr) for attr in vars(self.model)}
+        
         empty_data = pd.DataFrame({'x': [], 'y': []})
         with self.assertRaises(UnexpectedError):
             self.model.create_from_data(empty_data, 'x', 'y')
         
-        # Verificar que todos los atributos son None
+        # Verificar que se mantienen los valores anteriores
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
-
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
+            else:
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
+                
     def test_unaligned_column_sizes(self):
         """Test behavior with misaligned column sizes."""
+        # Primero creamos un modelo válido
+        self.model.create_from_data(self.data, 'x', 'y')
+        
+        # Guardamos los valores anteriores
+        previous_values = {attr: getattr(self.model, attr) for attr in vars(self.model)}
+        
         x_series = pd.Series([1, 2], name='x')
         y_series = pd.Series([2, 4, 6], name='y')
-        self.unaligned_data = pd.concat([x_series, y_series], axis=1)
+        unaligned_data = pd.concat([x_series, y_series], axis=1)
         with self.assertRaises(UnexpectedError):
-            self.model.create_from_data(self.unaligned_data, 'x', 'y')
+            self.model.create_from_data(unaligned_data, 'x', 'y')
         
-        # Verificar que todos los atributos son None
+        # Verificar que se mantienen los valores anteriores
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
+            else:
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
 
     def test_non_numeric_data(self):
         """Test behavior with non-numeric data."""
+        # Primero creamos un modelo válido
+        self.model.create_from_data(self.data, 'x', 'y')
+        
+        # Guardamos los valores anteriores
+        previous_values = {attr: getattr(self.model, attr) for attr in vars(self.model)}
+        
         non_numeric_data = pd.DataFrame({'x': ['a', 'b', 'c'], 'y': [2, 4, 6]})
         with self.assertRaises(UnexpectedError):
             self.model.create_from_data(non_numeric_data, 'x', 'y')
         
-        # Verificar que todos los atributos son None
+        # Verificar que se mantienen los valores anteriores
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
+            else:
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
 
     def test_getters_setters(self):
         """Test individual getters and setters."""
@@ -166,8 +235,14 @@ class TestLinearRegressionModel(unittest.TestCase):
                 
     
     def test_model_clean_after_error(self):
-        """Test that creating a new model after a corrupted one doesn't retain None values."""
-        # Crear datos no alineados primero
+        """Test that creating a new model after a corrupted attempt maintains previous values."""
+        # Crear primer modelo exitoso
+        self.model.create_from_data(self.data, 'x', 'y')
+        
+        # Guardar valores anteriores
+        previous_values = {attr: getattr(self.model, attr) for attr in vars(self.model)}
+        
+        # Intentar crear con datos no alineados
         x_series = pd.Series([1, 2], name='x')
         y_series = pd.Series([2, 4, 6], name='y')
         unaligned_data = pd.concat([x_series, y_series], axis=1)
@@ -176,23 +251,18 @@ class TestLinearRegressionModel(unittest.TestCase):
         with self.assertRaises(UnexpectedError):
             self.model.create_from_data(unaligned_data, 'x', 'y')
         
-        # make sure all attributes are None
+        # Verificar que se mantienen los valores anteriores
+        # Verificar que se mantienen los valores anteriores
         for attr in vars(self.model):
-            self.assertIsNone(getattr(self.model, attr))
-        
-        # Crear un nuevo modelo con datos diferentes
-        new_data = pd.DataFrame({
-            'a': [10, 20, 30, 38],
-            'b': [1, 2, 3, 4]
-        })
-        self.model.create_from_data(new_data, 'a', 'b')
-        
-        for attr in vars(self.model):
-            if attr == '_description':
-                pass
+            current_value = getattr(self.model, attr)
+            previous_value = previous_values[attr]
+            
+            if isinstance(current_value, (pd.Series, pd.DataFrame, np.ndarray)):
+                pd.testing.assert_series_equal(current_value, previous_value) if isinstance(current_value, pd.Series) else \
+                np.testing.assert_array_equal(current_value, previous_value)
             else:
-                self.assertIsNotNone(getattr(self.model, attr), 
-                                f"{attr} no debería ser None después de una creación exitosa")
+                self.assertEqual(current_value, previous_value,
+                            f"El atributo {attr} debería mantener su valor anterior")
 
     
 

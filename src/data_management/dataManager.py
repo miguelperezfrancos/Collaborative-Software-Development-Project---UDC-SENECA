@@ -70,7 +70,6 @@ class DataManager:
             Number of NaN values in the column
         """
         nan_count = self._data[column].isna().sum()
-        print(nan_count)
         return nan_count
 
     def delete(self, columns: List[str]) -> None:
@@ -96,6 +95,7 @@ class DataManager:
         """
         nan_cols = [col for col in columns if self.detect(col) > 0]
 
+
         if value == 'mean':
             replacement_values = [self._data[col].mean() for col in nan_cols]
         elif value == 'median':
@@ -110,5 +110,5 @@ class DataManager:
         try:
             new_df = self._data.fillna(col_value_dict)
             self._data = new_df
-        except Exception:
-            pass  # Maintain current state if replacement fails
+        except:
+            raise Exception  # Maintain current state if replacement fails
