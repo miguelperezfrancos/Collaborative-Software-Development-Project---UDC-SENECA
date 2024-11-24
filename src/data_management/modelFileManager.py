@@ -44,7 +44,7 @@ def save_model(file_path: str, formula: str, input: str, output: str,
         print(f'Error saving model: {e}')
 
 
-def load_model(file_path: str) -> Model | None:
+def load_model(file_path: str) -> Model:
     """Load a saved model from a file.
 
     Args:
@@ -70,5 +70,3 @@ def load_model(file_path: str) -> Model | None:
 
     except Exception as e:
         raise ValueError('Unable to read file')
-        print(f"Error loading model: {e}")
-        return None
