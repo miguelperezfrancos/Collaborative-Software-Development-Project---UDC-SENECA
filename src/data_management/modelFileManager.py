@@ -27,6 +27,14 @@ def save_model(file_path: str, formula: str, input: str, output: str,
     Returns:
         None
     """
+
+    params = [file_path, formula, input, output, r2, mse, description,
+              slope, intercept]
+    
+    for p in params:
+        if p is None:
+            raise Exception('could not save model')
+
     model_data = {
         'formula': formula,
         'x': input,
@@ -41,7 +49,7 @@ def save_model(file_path: str, formula: str, input: str, output: str,
     try:
         joblib.dump(model_data, file_path)
     except Exception as e:
-        print(f'Error saving model: {e}')
+        raise Exception('could not save model')
 
 
 def load_model(file_path: str) -> Model:

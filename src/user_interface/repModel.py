@@ -92,7 +92,7 @@ class RepModel(QWidget):
         """Update displayed model information and adjust widget layout."""
 
         print(self._model.description)
-        
+
         text = (
             f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}"
             f"</b><br>"
@@ -102,8 +102,6 @@ class RepModel(QWidget):
             f"</font><br>"
         )
 
-        
-    
         if self._model.description is not None:
             text += (f"<font size='6' color='#E74C3C'>"
                     f"{self._model.description}</font>")
@@ -150,9 +148,9 @@ class RepModel(QWidget):
                 "Saving Model",
                 "Model successfully saved"
             )
-        except Exception as e:
+        except Exception:
             QMessageBox.information(
                 self,
                 "Saving model",
-                f"Unexpected error occurred: {e}"
+                f"Unexpected error occurred"
             )
