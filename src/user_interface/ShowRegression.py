@@ -3,7 +3,7 @@
 import os
 import sys
 from PySide6.QtWidgets import QWidget, QHBoxLayout
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Slot
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -18,14 +18,12 @@ import user_interface.ui_helpers as helper
 class RegressionGraph(QWidget):
     """Widget class for displaying regression graphs."""
 
-    is_model = Signal(Model)
 
     def __init__(self):
         """Initialize the regression graph widget."""
         super().__init__()
         
         self._setup_ui()
-        self._model = Model()
 
     def _setup_ui(self):
         """Set up the UI components."""
@@ -48,7 +46,8 @@ class RegressionGraph(QWidget):
         self.canvas = FigureCanvas(Figure())
         self._layout.addWidget(self.canvas)
 
-    def make_regression(self, data, x, y):
+    @Slot(Model)
+    def make_graph(self, model: Model) -> None:
         """Create and display regression model visualization.
         
         Args:
@@ -57,13 +56,10 @@ class RegressionGraph(QWidget):
             y: Name of the dependent variable column.
         """
         # Create regression model and get plot
-        self._model.create_from_data(data, x, y)
-        graph = self._model.get_plot()
+        graph = model.get_plot()
         
         # Update canvas with new plot
         self.canvas.figure.clf()
         self.canvas.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.canvas.figure = graph
         self.canvas.draw()
-
-        self.is_model.emit(self._model)

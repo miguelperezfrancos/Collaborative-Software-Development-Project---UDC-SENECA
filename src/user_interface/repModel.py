@@ -90,6 +90,9 @@ class RepModel(QWidget):
 
     def _get_graph_data(self):
         """Update displayed model information and adjust widget layout."""
+
+        print(self._model.description)
+        
         text = (
             f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}"
             f"</b><br>"
@@ -98,6 +101,8 @@ class RepModel(QWidget):
             f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}"
             f"</font><br>"
         )
+
+        
     
         if self._model.description is not None:
             text += (f"<font size='6' color='#E74C3C'>"

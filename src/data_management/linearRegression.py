@@ -140,20 +140,20 @@ class Model:
         """
 
         try:
+            #Fit the model first so it doesn't change the pre-existing model
+            r_model = LinearRegression()
+            r_model.fit(data[[input_col]], data[output_col])
+
+            #Start to update
             self._x_name = input_col
             self._y_name = output_col
-
-            # Update description when creating new model
             self._description = None
 
             self._independent_value = data[[input_col]]
             self._target_value = data[output_col]
-
-            r_model = LinearRegression()
-            r_model.fit(self._independent_value, self._target_value)
             y_pred = r_model.predict(X=self._independent_value)
-
             self._pred_line = y_pred
+
             self._slope = r_model.coef_[0]
             self._intercept = r_model.intercept_
 
@@ -166,11 +166,7 @@ class Model:
 
         except Exception as e:
 
-            for attr in self.__dict__:
-                setattr(self, attr, None)
-
             raise UnexpectedError(e)
-
 
     def get_plot(self) -> plt.Figure:
         """Create and return a visualization of the regression model.

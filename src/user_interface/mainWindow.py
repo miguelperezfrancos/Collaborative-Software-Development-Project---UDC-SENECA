@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QSizePolicy,
 )
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 import pandas as pd
 
 from src.data_management import DataManager, Model
@@ -51,6 +51,8 @@ class MainWindow(QMainWindow):
         _content_widget (QWidget): Container widget for the main layout
     """
 
+    is_model = Signal(Model)
+
     def __init__(self):
         """
         Initialize the main window and set up the UI components.
@@ -65,6 +67,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 1000, 550)
 
         self._data_manager = DataManager()
+        self._model = Model()
 
         # Set up main layout and content widget
         self._main_layout = QVBoxLayout()
@@ -208,13 +211,14 @@ class MainWindow(QMainWindow):
         self._preprocess.processed_data.connect(self._table.set_data)
 
         # Model info connections
-        self._graph.is_model.connect(self._model_info._update_model)
+        self.is_model.connect(self._graph.make_graph)
+        self.is_model.connect(self._model_info._update_model)
         self._choose_file_menu.loaded_model.connect(
             self._model_info._update_model
         )
 
         # Prediction connections
-        self._graph.is_model.connect(self._predict.update_model)
+        self.is_model.connect(self._predict.update_model)
         self._choose_file_menu.loaded_model.connect(
             self._predict.update_model
         )
@@ -295,15 +299,19 @@ class MainWindow(QMainWindow):
 
         if num_nan == 0:
             try:
-                self._graph.make_regression(
+                self._model.create_from_data(
                     data=self._data_manager.data,
-                    x=columns[0],
-                    y=columns[1]
+                    input_col=columns[0],
+                    output_col=columns[1]
                 )
+                self.is_model.emit(self._model)
                 self._show_model_components(True)
             except Exception as e:
                 helper.show_error_message(f'Unexpected error: {e}')
-                self._show_model_components(False)
+                if not self._graph.isVisible():
+                    self._show_model_components(False)
+                else:
+                    pass
         else:
             helper.show_error_message(
                 'Data contains NaN values: please, apply preprocess '
