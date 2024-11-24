@@ -7,6 +7,10 @@ from pathlib import Path
 import time
 
 
+class ParseError(Exception):
+    """Custom error for unsupported file formats."""
+    pass
+
 class FormatError(Exception):
     """Custom error for unsupported file formats."""
     pass
@@ -65,16 +69,16 @@ class FileReader:
             return df
 
         except FormatError:
-            print('ERROR: unsupported file format')
+            raise ParseError('ERROR: unsupported file format')
         except pd.errors.EmptyDataError:
-            print('ERROR: This file might be empty or corrupted')
+            raise ParseError('ERROR: This file might be empty or corrupted')
         except pd.errors.ParserError:
-            print('ERROR: this file could not be parsed')
+            raise ParseError('ERROR: this file could not be parsed')
         except sqlite3.DatabaseError:
-            print("ERROR: an error occurred with your database")
+            raise ParseError('ERROR: an error occurred with your database')
         except sqlite3.OperationalError:
-            print('ERROR: could not access your database')
+            raise ParseError('ERROR: could not access your database')
         except FileNotFoundError:
-            print('ERROR: file not found')
+            raise ParseError('ERROR: file not found')
         except Exception as e:
-            print(f'ERROR: unknown error {e}')
+            raise ParseError(f'ERROR: unknown error, could not read file')
