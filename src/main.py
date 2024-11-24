@@ -1,4 +1,4 @@
-from UserInterface import MainWindow
+from user_interface import MainWindow
 import sys
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QFile, QTextStream
@@ -13,7 +13,7 @@ def main():
     app = QApplication(sys.argv)
 
     # Cargar el archivo QSS
-    file = QFile("src/UserInterface/stylesheet.qss")
+    file = QFile("src/user_interface/stylesheet.qss")
     file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(file)
     app.setStyleSheet(stream.readAll())
