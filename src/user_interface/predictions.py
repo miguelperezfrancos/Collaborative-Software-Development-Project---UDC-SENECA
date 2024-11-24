@@ -87,6 +87,7 @@ class Predict(QWidget):
         text = f"{self._model.x_name}"
         self._x_label.setText(text)
         self._x_input.setText('')
+        self._result_label.setText('')
 
     def _predict(self):
         """Make a prediction using the current model and input value."""
