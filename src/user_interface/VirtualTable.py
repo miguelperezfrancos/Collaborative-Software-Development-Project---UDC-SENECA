@@ -6,7 +6,7 @@ user's data sets. This is done by separating the data from the visualization.
 """
 
 import pandas as pd
-from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QTableView, QAbstractScrollArea
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Slot
 
 
@@ -113,6 +113,9 @@ class VirtualTableView(QTableView):
         super().__init__()
         self.setModel(model)
         self.setVerticalScrollMode(QTableView.ScrollPerPixel)
+        self.setVerticalScrollMode(QTableView.ScrollPerPixel)
+        self.setHorizontalScrollMode(QTableView.ScrollPerPixel)  
+        self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
     @Slot(pd.DataFrame)
     def set_data(self, data):
