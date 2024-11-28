@@ -107,6 +107,7 @@ class RepModel(QWidget):
                     f"{self._model.description}</font>")
             self.description_input.setVisible(False)
             self.save_button.setVisible(False)
+
         else:
             self.description_input.setText('')
             self.description_input.setVisible(True)
