@@ -1,4 +1,3 @@
-
 # Introduction
 
 This documentation was created to help you learn:
@@ -13,7 +12,7 @@ This documentation was created to help you learn:
 
 The purpose of Linear regression is to use one set of data to predict new output data. The predicted data can then be used to plan for future decisions and plans.
 
-You can use Linear Regression Pro to upload a dataset. The app will then:
+You can use Linear Regression Pro to upload a dataset, which will then:
 
 - build a graph to show the relationship between the input and output values.
 - display the linear regression model’s formula.
@@ -306,7 +305,6 @@ _Figure 3 Dataset display and file path_
 6. Click **Apply**.  
     A dialog with the message “\[input column name\] and \[output column name\] no longer have null values” appears.
 7. Click **OK**.
-    
     You are now ready to [create a linear regression model](#_Creating_a_linear).
 
 ## Creating a linear regression model
