@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
     """
 
     is_model = Signal(Model)
+    do_preprocess = Signal(bool)
 
     def __init__(self):
         """
@@ -204,7 +205,7 @@ class MainWindow(QMainWindow):
 
         # Column selection connections
         self._select_cols.send_selection.connect(self.show_nan_values)
-        self._select_cols.selected.connect(self._preprocess.activate_menu)
+        self._select_cols.selected.connect(self.activate_preprocess)
 
         # Preprocessing connections
         self._preprocess.preprocess_request.connect(self.handle_preprocess)
@@ -260,6 +261,26 @@ class MainWindow(QMainWindow):
                 f'{col_name} has {num_nan} unknown values, '
                 'you might want to pre-process your data.'
             )
+
+    @Slot(bool)
+    def activate_preprocess(self, selected):
+
+        if selected:
+
+            columns = self._select_cols.selection()
+            nan = 0
+
+            for c in columns:
+                if c in self._data_manager.data.columns:
+                    nan += self._data_manager.detect(c)
+
+            if nan > 0:
+                self._preprocess.activate_menu(True)
+            else:
+                self._preprocess.activate_menu(False)
+
+        else:
+            self._preprocess.activate_menu(False)
 
     @Slot()
     def handle_preprocess(self):

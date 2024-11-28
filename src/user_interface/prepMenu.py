@@ -102,7 +102,6 @@ class PrepMenu(QWidget):
             items=[title_layout, self._buttons_layout]
         )
 
-    @Slot(bool)
     def activate_menu(self, enabled: bool):
         """Enable or disable menu elements.
         
