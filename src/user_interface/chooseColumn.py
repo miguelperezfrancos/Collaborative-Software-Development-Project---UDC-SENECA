@@ -78,9 +78,12 @@ class ChooseColumn(QWidget):
         layout.setAlignment(Qt.AlignCenter)
         self.setLayout(layout)
 
+        self.setEnabled(False)
+
     @Slot(pd.DataFrame)
     def update_selection(self, data):
         """Update combo boxes with column names from the data.
+        and enables menu.
 
         Args:
             data: DataFrame containing columns to populate combo boxes.
@@ -95,6 +98,8 @@ class ChooseColumn(QWidget):
             menu.clear()
             menu.addItem(default)
             menu.addItems(items)
+
+        self.setEnabled(True)
 
     def check_selection(self, menu):
         """Verify that different columns are selected for input and output.
