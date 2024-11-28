@@ -97,7 +97,7 @@ class RepModel(QWidget):
             f"<b style='font-size: 16pt; color: #c2ffff'>{self._model.formula}"
             f"</b><br>"
             f"<font size='6' color='#16A085'>R²: {self._model.r2:.3f}    "
-            f"</font>"
+            f"</font></b><br>"
             f"<font size='6' color='#E74C3C'>MSE: {self._model.mse:.3f}"
             f"</font><br>"
         )

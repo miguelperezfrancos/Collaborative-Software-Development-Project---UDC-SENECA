@@ -16,7 +16,7 @@ QWidget#container > QLabel {
 
 QLabel#title {
     font-family: Arial;
-    color:white;
+    color:#e8eaed;
     font-size: 16px;
 }
 
@@ -93,4 +93,10 @@ QLabel#filepath{
     border-radius: 15px;      
     padding: 8px;             
     margin-top: 5px;          
+}
+
+QLabel#prediction{
+    color: #e8eaed;
+    font-size: 14px;
+    font: Arial;
 }
