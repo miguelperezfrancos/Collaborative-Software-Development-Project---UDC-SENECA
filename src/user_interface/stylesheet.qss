@@ -16,11 +16,16 @@ QWidget#container > QLabel {
 
 QLabel#title {
     font-family: Arial;
+    color:white;
     font-size: 16px;
 }
 
 FigureCanvas {
     border: none;
+}
+
+QRadioButton {
+    color:white;
 }
 
 QLineEdit {
