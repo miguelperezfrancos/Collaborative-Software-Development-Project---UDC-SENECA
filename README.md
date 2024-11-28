@@ -1,130 +1,96 @@
-# Project overview
+# Introduction
 
-This repository shows a project completed by the development team at the University of Coruna and the technical writer at Seneca Polytechnic. The team members used COIL collaboration to create a linear regression app call Linear Regression Pro.
+This documentation was created to help you learn:
 
-## Documentation audience
+- why Linear Regression Pro was created.
+- the applications of Linear Regression Pro.
+- how to get started with Linear Regression Pro.
+- the key features of Linear Regression Pro.
+- how to contact the documentation author for additional information.
 
-This documentation aims to provide all the information needed for developers and technical writers to work on the Linear Regression Pro app. The content is written in English, but international contributors are welcome.
+# An overview of Linear Regression Pro
 
-# COIL collaboration
+The purpose of Linear regression is to use one set of data to predict new output data. The predicted data can then be used to plan for future decisions and plans.
 
-Collaborative Online International Learning (COIL) is an online learning method where students from different international and educational backgrounds work together to create a project. By using online communication tools, the students have the opportunity to grow their collective knowledge and ability to work with diverse peers. The current team consists of developers from Coruna, Spain, and a technical writer from Toronto, Canada.
+You can use Linear Regression Pro to upload a dataset. The app will then:
 
-The goals of the development team are to:
+- build a graph to show the relationship between the input and output values.
+- display the linear regression model’s formula.
+- create prediction function to predict new output values.
 
-- Plan and complete weekly sprint user stories and tasks.
-- Write and revise code to create Linear Regression Pro’s features.
-- Update the technical writer with new information as needed.
-- Participate in weekly sprint retrospectives.
+The functions of the Linear Regression Pro are to:
 
-The goals of the technical writer are to:
+- preprocess the dataset to replace any null values.
+- create and save the linear regression’s model, formula and description.
+- open the saved linear regression model to use the prediction function.
+- enter new input values and receive predicted output values based on the model.
 
-- Get weekly updates about Linear Regression Pro from the development team.
-- Understand Linear Regression Pro’s existing and new features.
-- Create clear documentation that aligns with the Linear Regression Pro.
-- Participate in weekly sprint retrospectives.
+## Linear Regression Pro target audience
 
-Table 1 shows the project tools that are used.
-
-| Tool Used         | Purpose                                                     |
-|-------------------|-------------------------------------------------------------|
-| WhatsApp          | For regular communication and video calls regarding the project updates. |
-| Taiga             | For planning the sprint tasks.                              |
-| VS Code           | For writing and testing the code.                           |
-| Python            | For using the modules in the code.                          |
-| GitHub            | For storing the code and documentation.                     |
-| Microsoft Word    | For writing documentation.                                  |
-| Microsoft Excel   | For storing the datasets in .csv file.                      |
-
-**Table 1:** The project tools used to create Linear Regression Pro.
-
-# The agile development process
-
-The agile development process is software development process that focuses on achieving small, iterative tasks called sprints.
-
-The tasks for the project are created by the stakeholder. Each sprint lasts one week and involves planning, designing, building, testing and reviewing the project tasks. This is a flexible process that allows any issues to be communicated immediately, so changes and improvements can be made quickly and consistently.
-
-Each sprint follows this format:
-
-1. The developers plan and work on the tasks that are needed to move the project forward.
-2. The tasks are reflected on their Taiga agile project management platform.
-3. After the tasks are completed, the developers and technical writer meet by video call on WhatsApp.
-4. The scrum master (one of the developers) leads a discussion on the tasks completed during the sprint, potential solutions, and next steps.
-
-If there are any issues that cannot be solved by the team, the stakeholder or product manager can be contacted.
-
-In total, there are 8 sprints in this project, each spanning 1 week-long.
-
-Table 2 shows the role and responsibilities of each team member.
-
-| Role              | Name                          | Responsibilities                                                                 |
-|-------------------|-------------------------------|---------------------------------------------------------------------------------|
-| Product Owner     | Alberto                       | - Define the software requirements                                              |
-|                   |                               | - Create the product backlog and tasks                                          |
-|                   |                               | - Clarify requirements as needed                                                 |
-| Scrum Master      | Alberto, Guillermo             | - Lead the weekly scrums                                                         |
-|                   |                               | - Ensure each team member has what they need to complete their tasks            |
-|                   |                               | - Lead discussions to resolve issues that may arise                              |
-|                   |                               | - Answer questions from team members as needed                                  |
-| Technical Writer  | Grace                         | - Write and update documentation for the software based on feedback from managers, users, and developers |
-|                   |                               | - Interview developers to gain knowledge about the software                       |
-|                   |                               | - Use technical writing best practices in the documentation                       |
-|                   |                               | - Keep track of hours and tasks in Taiga                                        |
-|                   |                               | - Review information on GitHub from developers                                  |
-|                   |                               | - Participate in weekly scrums                                                  |
-| Developer         | Miguel, Rafael, Guillermo, Rodrigo | - Work with other developers to follow the tasks in the product backlog         |
-|                   |                               | - Add the tasks to each sprint and estimate each task’s difficulty and timeline  |
-|                   |                               | - Keep track of tasks and timeline on Taiga                                      |
-|                   |                               | - Write and update files on GitHub                                              |
-|                   |                               | - Write code to develop the software according to the requirements               |
-|                   |                               | - Participate in weekly scrums                                                  |
-
-**Table 2:** The roles and responsibilities for the project.
-
-# The goals of Linear Regression Pro
-
-Linear Regression Pro is an English desktop app that uses one set of data to predict another set of data. Once a .csv dataset file is uploaded, Linear Regression Pro will then:
-
-- Build a linear regression model to show the relationship between the input and output data
-- Display the model’s formula, MSE and r<sup>2</sup> value
-- Show a graph of the data
-- Save the dataset as a linear regression model
-- Open a previously saved linear regression model to continue using it in the app
-- Calculate predicted outputs based on the linear regression model
-
-## Linear Regression Pro audience
-
-This app was created for corporate companies who need to use their medium-sized datasets to predict output. They will use the predicted output to make future business decisions and plans.
+Linear Regression Pro was developed for corporate organizations that rely on data to drive their decisions and future plans. This app provides a way to analyze datasets and make accurate predictions. Linear Regression Pro has a user-friendly interface and simplifies complex data for a wide range of audiences, so that they can benefit from its predictive modeling.
 
 ## Linear Regression Pro system requirements
 
 Both macOS 15 and Windows 11 computer systems are compatible for this project and Linear Regression Pro.
 
-# Linear Regression Pro and helpful concepts
+# Key concepts in Linear Regression Pro
 
-Linear Regression Pro comprises of various concepts. To deepen your understanding of the app’s purpose, explore the following concepts:
+Linear Regression Pro incorporates a range of key concepts. To deepen your understanding of the Linear Regression Pro’s purpose, explore the following concepts:
 
 - [What is linear regression?](#_What_is_linear)
 - [What is linear regression used for?](#_What_is_linear_1)
-- [What is machine learning?](#_What_is_machine)
 
 ## What is linear regression?
 
-Linear regression is a model that uses the value of one variable to predict the value of another variable. These values can be graphed into a straight line called a linear regression.
+Linear regression is a model that uses the value of one variable to predict the value of another variable. To create a linear regression model, you need a dataset that includes several pairs of quantitative input and output values. You can then represent the relationship between the input and output values with a straight line called “a linear regression line”.
 
-The simplest linear regression is represented by the formula y= mx+b, where y= the output value, x= the input value, b= the y-axis intercept.
+Figure 1 shows an example of a dataset represented by a linear regression line.
 
-The linear regression formula and the input value are used to predict the output value. The linear regression also produces two important data points, the mean square error (MSE) and the coefficient of determination (r<sup>2</sup>).
+(insert figure 1 here)
 
-**Note:** A linear regression assumes that the relationship of the x and y variable is linear, though this may not always be the most accurate representation.
+_Figure 1 An example of a linear regression line_
+
+The simplest linear regression formula is represented by the formula y= B<sub>1</sub>x + B<sub>0</sub>, where:
+
+- y= the output value
+- x= the input value
+- B<sub>0</sub>\= the y-axis intercept
+- B<sub>1</sub> \= the slope
+
+The linear regression model uses the input value and linear regression formula to predict the corresponding output value.
+
+The linear regression model also produces two important data points:
+
+- the mean square error (MSE)
+- the coefficient of determination (R<sup>2</sup>)
+
+The MSE and R<sup>2</sup> evaluate how accurately the linear regression formula represents the dataset, as the predicted output values can vary in accuracy.
+
+A linear regression assumes that the relationship of the input and output values is linear, but this assumption may not always be the most accurate representation. To improve the accuracy of a linear regression model, ensure that the dataset:
+
+- values are accurate.
+- does not contain extreme data points (outliers).
+- contains sufficient data points.
+- represents a wide range of values.
 
 ### What is the mean squared error (MSE)?
 
-The mean squared error (MSE) represents the distance between each point to the regression line and squaring it. The distance between each point and the regression line represents the errors, so the MSE is the mean squared error of a set of data. The lower the MSE, the lower the error.
+The mean squared error (MSE) represents the distance between each point to the regression line and squaring it. The distance between each point and the regression line represents the errors, so the MSE is the mean squared error of a set of data. The smaller the MSE, the lower the error.
 
-### What is the coefficient of determination (r<sup>2</sup>)?
+### What is the coefficient of determination (R<sup>2</sup>)?
 
-The predictions made by the linear regression are not 100% accurate. To determine the accuracy, the coefficient of determination value must be considered. The coefficient of determination is a number from 0 to 1 that shows the variance that the dependent variable can be explained by the input value. For example, an r<sup>2</sup> of 0.2 indicates that there is a 20% of the variance of the predicted output that is explained by the input value. The higher the r<sup>2</sup>, the more accurate the linear regression represents the dataset.
+The predictions made by the linear regression are not 100% accurate. To determine the accuracy, the coefficient of determination value must be considered. The coefficient of determination is a number from 0 to 1 that shows the variance that the dependent variable can be explained by the input value. For example, an r<sup>2</sup> of 0.2 indicates that there is a 20% of the variance of the predicted output that is explained by the input value. The larger the R<sup>2</sup>, the more accurate the linear regression represents the dataset.
+
+Table 1 shows how to use MSE and R<sup>2</sup> to analyze the linear regression model accuracy.
+
+| If  | Then |
+| --- | --- |
+| MSE is small | The model is more accurate. |
+| MSE is large | The model is less accurate. |
+| R<sup>2</sup> is small | The model is less accurate. |
+| R<sup>2</sup> is large | The model is more accurate. |
+
+_Table 1 Model accuracy based on MSE and R<sup>2</sup>_
 
 ## What is linear regression used for?
 
@@ -140,17 +106,26 @@ Linear regressions can be used when a dataset is available to predict another da
 - Forecasted precipitation based on weather data.
 - Plant growth based on amount of water.
 
-## What is machine learning?
+# Getting started with Linear Regression Pro
 
-Machine learning is a subset of artificial intelligence. While artificial intelligence (AI) refers to a wide range of technologies that can perform tasks that are usually done by human intelligence, machine learning uses a specific dataset to identify patterns and make predictions.
+In this section, you will learn how to:
 
-For example, Linear Regression Pro uses machine learning to process the input data to predict the relevant output data. The more input data given to the model, the more accurately machine learning can learn patterns and predict trends.
+- install Linear Regression Pro.
+- create your input dataset.
+- navigate the user interface.
 
-# Making updates in Linear Regression Pro
+## Installing Linear Regression Pro
 
-The code for Linear Regression Pro is stored in the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA). To update the code, you will need to install Python, Visual Studio Code, the Linear Regression Pro code and the required Python libraries.
+Linear Regression Pro is available as open-source [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
-## Installing Python
+To install Linear Regression Pro, you will first need to install:
+
+- Python.
+- Visual Studio Code.
+- Linear Regression Pro code from the GitHub repository.
+- Python libraries.
+
+### Installing Python
 
 You will need to install Python on your device before installing Linear Regression Pro.
 
@@ -166,7 +141,7 @@ You will need to install Python on your device before installing Linear Regressi
 5. Click **Now**.
     Python is installed onto your device.
 
-# Installing Visual Studio Code
+### Installing Visual Studio Code
 
 Visual Studio Code (VS Code) is the software needed to open, edit, run and debug Python codes.
 
@@ -178,14 +153,13 @@ Visual Studio Code (VS Code) is the software needed to open, edit, run and debug
 3. Select _I accept the agreement_ and click **Next**.
 4. Choose the folder you would like to keep VS Code and click **Next**.
 5. Check _Add to PATH_ and click **Next**.
+    **Note:** _Add to PATH_ allows you to launch VS Code from the command line.
 6. Click **Install**.  
     VS Code installs onto your device.
 7. Click **Finish**.
     VS code is installed and is ready to launch.
 
-**Note:** _Add to PATH_ allows you to launch VS Code from the command line.
-
-# Installing Linear Regression Pro
+### Installing Linear Regression Pro
 
 After installing Python and VS Code, you will download the app from the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
@@ -200,7 +174,7 @@ After installing Python and VS Code, you will download the app from the [GitHub 
 4. Expand the folder.  
     The folder containing the linear regression app is ready to be used.
 
-# Downloading Python modules
+### Downloading Python modules
 
 To run the app on your device, you will need to download some modules that contain the necessary information.
 
@@ -220,100 +194,187 @@ The modules are as follows:
 3. Go to **View** > **Terminal**.
 4. Type _pip install Pyside6_ and press **Enter** on the keyboard.  
     The module Pyside6 downloads.
-5. Repeat step 4 for each module.  
-    Repeat step 4 for each module: _Pandas, UserInterface, Matplotlib, Scikit-learn_.  
+5. Repeat step 4 for each module: _Pandas, UserInterface, Matplotlib, Scikit-learn_.  
     Once all the modules are downloaded, proceed to [Running the linear regression app](#_Running_the_linear).
 
-# Running Linear Regression Pro
+### Running Linear Regression Pro
 
 After installing Python, VS Code, the Python modules and the linear regression app, you are ready to add the dataset and run the app.
 
 **Note:** The dataset must be in .csv file.
 
-**To open the app**
+**To run Linear Regression Pro**
 
 1. Open **VS Code**.
 2. Go to **File** > **New Folder** > Select the folder containing the app.
 3. Click the _main.py_ file in the side bar.  
     The _main.py_ code appears.
 4. Click the **Run Python file** button.
-    The linear regression app opens. The code is ready to be revised, updated and debugged as needed.
 
-# Considerations for Linear Regression Pro updates
+The linear regression app opens. The code is ready to be revised, updated and debugged as needed.
 
-Linear Regression Pro is an open-source desktop app that can be updated by anyone. If you are joining this project, please keep the following considerations and guidelines during and after the 8 sprints are completed. This process should be continued for future debugging and future version releases.
+## Creating the input dataset
 
-## Considerations for developers
+To create your model, you must have at least two quantitative sets of data. The input dataset must be organized into columns in a spreadsheet editor such as Microsoft Excel.
 
-This app is written using Python. We recommend using VS code to write, edit and revise the code during each sprint. Each update must include debugging, and a summary of changes made. The list of changes and new updates must be updated in the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA) and sent to the technical writer(s) for documentation.
+All input dataset files must be saved in one of the following formats:
 
-## Considerations for technical writers
+- .csv
+- .xlsx
+- .xls
+- .sqlite
+- .db
 
-The technical writer is responsible for using technical writing best practices to continuously update the documentation. We recommend preparing a list of questions about the Linear Regression Pro before going to each meeting with the developers, so that you will be able to accurately describe the features and updates of the app. Any new documentation must be written in Markdown on the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
+**Note:** If you upload a file that is not in an accepted format, an error message will appear and prevent you from proceeding.
 
-# Guidelines for contributing to Linear Regression Pro
+**To convert an Excel into a .csv**
 
-Thank you for taking part of this project! Please kindly follow the specific guidelines for both the development and documentation teams.
+1. Open **Excel**.
+2. Click **File** > **Save as**.
+    A window appears with the file name text box and file format.
+1. Click the **File type drop-down** and select _.csv_.
+2. Click **Save**.  
+    The dataset is saved as a .csv and is ready to be used in the app.
 
-## Guidelines for developers
+## Overview of the user interface
 
-- To clone the repository, clone your fork to your local machine: git clone <https://github.com/your-username/your-repository.git>
-- To create a new branch for your changes, create a new branch for your feature or bug fix: git checkout -b your-feature-branch
-  - Name your new branch as the following: _your name_feature_feature that you are working on_
-- To add the latest changes to your local machine: git pull origin <_name of the branch you want to pull: main/other developer's branch_\>
-- Test your code before committing and run all existing tests to ensure nothing breaks.
+Linear Regression Pro’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. ![A screenshot of a computer
 
-### Guidelines for writing clean code
+(insert figure 2 here) 
 
-- Adhere to the PEP 8 coding style guidelines.
-- Keep functions and methods concise.
-- Ensure your code is well-commented where necessary.
-- Avoid hardcoding values.
-- Ensure your code is modular and maintainable.
+_Figure 2 The user interface_
 
-### Guidelines for submitting a Pull Request (PR)
+Table 2 shows the definition for each button on the user interface.
 
-1. Commit and push your changes using this format: git commit -m "Brief description of the changes"
-2. Push changes to the right branch in GitHub: git push origin your-feature-branch
-3. Open a Pull Request (PR) from your feature branch to the main branch. In the PR description, clearly explain:
-    - The purpose of the changes.
-    - Any issues or features your PR addresses (referencing issue numbers where applicable).
-    - Any special steps required to test the changes.
+| Button | Function |
+| --- | --- |
+| Load Dataset | Open your dataset file. |
+| Load Model | Open previously saved models. |
+| Select an input column | Select your dataset’s independent variable. |
+| Select an output column | Select your dataset’s dependent variable. |
+| Replace with a number | If the dataset is missing value(s), you can replace the cell with a custom number. |
+| Replace with mean | If the dataset is missing value(s), you can replace the cell with the mean. |
+| Replace with median | If the dataset is missing value(s), you can replace the cell with the median. |
+| Remove row | If the dataset is missing value(s), you omit the row. |
 
-## Guidelines for technical writers
+_Table 2 The buttons on the user interface._
 
-- Clone the repository by cloning it to your machine, following the same steps as the development team.
-- Work on the README.md, create a new branch for documentation updates: git checkout -b update-readme
-- Commit your changes by using clear commit messages such as: git commit -m "Update README.md with installation instructions"
-- Push your changes and open a Pull Request with the title "Update README.md: \[Description\]".
+# Creating your first Linear Regression Pro model
 
-### Guidelines for updating the README.md
+In this section, you will learn how to:
 
-- Include sections for project overview, installation, usage, and contribution guidelines.
-- Ensure instructions are purposeful, concise and clear for both developers and users.
-- Use Markdown syntax properly and keep a consistent style.
-- Ensure any technical terms or concepts are correctly explained.
+- preprocess a dataset.
+- create a linear regression model.
+- save a linear regression model.
+- open a linear regression model.
+- generate predictions using a linear regression model.
 
-### Guidelines for updating GitHub Pages
+## Preprocessing a dataset
 
-- All documentation updates for GitHub Pages are made within the docs/ directory.
-- To create a new branch, work on a new branch for updating GitHub Pages content: git checkout -b update-github-pages
-- When adding new guides or sections, create a new Markdown file (.md) inside the docs/ folder and update any navigation or index files.
-- Maintain consistency by following the existing structure of the GitHub Pages site.
-  - Use the same headings and formatting styles.
-  - Keep the language purposeful, clear and concise.
-- Preview your changes before submitting them.
-- To submit a Pull Request, push your branch and open a Pull Request with the title "GitHub Pages Update: \[Description of Changes\]".
+Before creating a linear regression model, it is important to preprocess the dataset. If a dataset has missing (null) data in the cells, you may lose significant information that is needed to create an accurate linear regression analysis. Preprocessing the dataset removes the null values, preserves valuable data and ensures more accurate results.
 
-## General contribution guidelines
+**Note:** If you do not preprocess the data before creating the linear regression model, an error dialog with the message “Data contains NaN values: please, apply preprocessing before generating model”.
 
-- Every pull request will be reviewed by at least one member of the team before merging. Make sure your PR is clearly explained and ready for review.
-- Be open to feedback and revisions, whether it's for code, documentation, or formatting.
+**To preprocess a dataset**
 
-## Issues and communication
+1. Click **Load Dataset**.  
+    The File Explorer opens.
+2. Select your desired dataset and click **open**.  
+    Figure 3 shows the dataset appears as a table and the file path is displayed.
+    (insert figure 3 here)
 
-For any doubts, concerns or discussions, do not hesitate to reach to the team: [gtien@myseneca.ca](mailto:gtien@myseneca.ca).
+_Figure 3 Dataset display and file path_
+    
+**Note:** The dataset cannot be edited from Linear Regression Pro. If you need to edit the dataset, you must do it from your original spreadsheet.
 
-# Contact information
+3. Select the _input column_.  
+    **Note:** You can only select one input column.
+4. Select the _output column_.
 
-For additional information that is not addressed in this documentation, please contact the technical writer team: [gtien@myseneca.ca](mailto:gtien@myseneca.ca).
+**Note:** You can only select one output column.
+- If you selected a column that contains null values, a dialog with the message “\[column name\] has \[number of unknown values\] unknown values, you might want to pre-process your data.” appears, continue to step 5.
+- If you did not select a column that contains null value, no dialog appears, continue to [create a linear regression model.](#create)
+
+5. Select one of the pre-processing options:
+
+- _Replace with a number_
+- _Replace with mean_
+- _Replace with median_
+- _Remove row_
+
+6. Click **Apply**.  
+    A dialog with the message “\[input column name\] and \[output column name\] no longer have null values” appears.
+7. Click **OK**.
+    
+    You are now ready to [create a linear regression model](#_Creating_a_linear).
+
+## Creating a linear regression model
+
+Once you upload a spreadsheet dataset into Linear Regression Pro, it can create a linear regression model. Linear Regression Pro analyzes the relationships between the selected input and output values to build the model, formula, MSE and R<sup>2</sup>.
+
+**To create a linear regression model**
+
+1. [Preprocess your dataset.](#_Pre-processing_the_data)
+2. Click **Generate model**.  
+    A dialog with the message “Linear regression model has been generated and plotted” appears.
+3. Click **OK**.  
+    Figure 4 shows that the linear regression model, formula, MSE and R<sup>2</sup> appear.
+
+(insert figure 4 here)
+
+_Figure 4 The linear regression model, formula, MSE and R<sup>2</sup>_
+
+## Saving a linear regression model
+
+To access the linear regression model and its prediction function for future use, you should save it to your device. The model will be saved as a .joblib file. You may also add a model description that provides important context, such as data information, relationships and insights derived from the model. The description will help you or others understand the model’s purpose when you access it in the future.
+
+**To save a linear regression model**
+
+1. [Create a linear regression model](#create).
+2. Enter the _model description_ in the text box.
+3. Click **Save Model**.  
+    The file explorer opens.  
+    **Note:** If you don’t see the “Save Model” button, scroll down.
+4. Enter your _File name_ and select the folder you would like to save it to.
+5. Click **Save**.  
+    The linear regression model is saved as a .joblib. file.
+
+## Opening a saved linear regression model
+
+You can open a [previously saved Linear Regression Pro models](#_Saving_a_linear) to use the prediction function for the same dataset. To access your saved linear regression models, you must have saved the model as a .joblib file.
+
+**Note:** When you open a saved linear regression model, you can only access the prediction function. You will not be able to access the graph, change the input data or view the model description. If you need to use these functions, you must upload the dataset and [create the linear regression](#create) again.
+
+**To open a saved linear regression model**
+
+1. Click **Load Model**.
+    The file explorer opens.
+2. Select the _Linear Regression Pro model_ that you would like to open.
+3. Click **Open**.
+    The model’s linear regression formula, R<sup>2</sup>, MSE values and prediction function appear. You can now enter a new input value and receive a predicted output value.
+
+## Generating predictions using a linear regression model
+
+The model uses the learned relationship between the input and output values to calculate and generate output values. This allows you to enter new input values to generate the corresponding predicted output values. Generating these predictions can help you make decisions and future plans.
+
+**To generate predictions using a linear regression model**
+
+1. [Create a linear regression model](#create) or [open a saved linear regression model](#_Opening_a_saved).
+
+Figure 5 shows the prediction function that appears.
+
+(insert figure 5 here)
+
+_Figure 5 Making predictions using the linear regression model_
+
+1. Enter your new _input value_ in the text field.
+2. Click **predict**.
+    The predicted output value is generated.
+
+# Updates to documentation
+
+The Linear Regression Pro documentation will remain up to date with the latest features, improvements and bug fixes. After Linear Regression Pro version release, the documentation will be updated to reflect the changes. The latest version of Linear Regression Pro documentation will always be available on our GitHub repository.
+
+# Additional support and inquiries
+
+For additional information that is not addressed in this documentation or if you have any suggestions, we would be happy to hear from you. Please contact the technical writer team: [gtien@myseneca.ca](mailto:gtien@myseneca.ca).
