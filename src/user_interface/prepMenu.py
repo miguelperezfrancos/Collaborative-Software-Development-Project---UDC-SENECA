@@ -43,6 +43,7 @@ class PrepMenu(QWidget):
         """Set up UI elements of the preprocessing menu."""
         self._title = helper.create_label(text="Preprocessing options")
         self._title.setObjectName('title')
+        self._title.setEnabled(False)
         
         self._remove_option = helper.create_radio_button(
             text='Remove row')
@@ -108,14 +109,15 @@ class PrepMenu(QWidget):
         Args:
             enabled: Boolean indicating if menu should be enabled.
         """
-        for button in [
+        for element in [
+            self._title,
             self._constant_option,
             self._mean_option,
             self._median_option,
             self._remove_option,
             self._apply_button
         ]:
-            button.setEnabled(enabled)
+            element.setEnabled(enabled)
 
         self.toggle_input(checked=False)
         

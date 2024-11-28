@@ -20,6 +20,12 @@ QLabel#title {
     font-size: 16px;
 }
 
+QLabel#title:disabled {
+    font-family: Arial;
+    color:#454545;
+    font-size: 16px;
+}
+
 FigureCanvas {
     border: none;
 }
@@ -27,6 +33,11 @@ FigureCanvas {
 QRadioButton {
     color:white;
 }
+
+QRadioButton:disabled {
+    color:#454545;
+}
+
 
 QLineEdit {
     border: none;
