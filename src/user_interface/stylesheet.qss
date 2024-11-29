@@ -1,4 +1,4 @@
-QWidget#contentWidget { /* App background */
+QWidget#content_widget { /* App background */
     background-color: #323232; 
 }
 
