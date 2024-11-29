@@ -2,40 +2,40 @@
 
 This documentation was created to help you learn:
 
-- why Linear Regression Pro was created.
-- the applications of Linear Regression Pro.
-- how to get started with Linear Regression Pro.
-- the key features of Linear Regression Pro.
+- why TrendLine was created.
+- the applications of TrendLine.
+- how to get started with TrendLine.
+- the key features of TrendLine.
 - how to contact the documentation author for additional information.
 
-# An overview of Linear Regression Pro
+# An overview of TrendLine
 
 The purpose of Linear regression is to use one set of data to predict new output data. The predicted data can then be used to plan for future decisions and plans.
 
-You can use Linear Regression Pro to upload a dataset, which will then:
+You can use TrendLine to upload a dataset, which will then:
 
 - build a graph to show the relationship between the input and output values.
 - display the linear regression model’s formula.
 - create prediction function to predict new output values.
 
-The functions of the Linear Regression Pro are to:
+The functions of the TrendLine are to:
 
 - preprocess the dataset to replace any null values.
 - create and save the linear regression’s model, formula and description.
 - open the saved linear regression model to use the prediction function.
 - enter new input values and receive predicted output values based on the model.
 
-## Linear Regression Pro target audience
+## TrendLine target audience
 
-Linear Regression Pro was developed for corporate organizations that rely on data to drive their decisions and future plans. This app provides a way to analyze datasets and make accurate predictions. Linear Regression Pro has a user-friendly interface and simplifies complex data for a wide range of audiences, so that they can benefit from its predictive modeling.
+TrendLine was developed for corporate organizations that rely on data to drive their decisions and future plans. This app provides a way to analyze datasets and make accurate predictions. TrendLine has a user-friendly interface and simplifies complex data for a wide range of audiences, so that they can benefit from its predictive modeling.
 
-## Linear Regression Pro system requirements
+## TrendLine system requirements
 
-Both macOS 15 and Windows 11 computer systems are compatible for this project and Linear Regression Pro.
+Both macOS 15 and Windows 11 computer systems are compatible for this project and TrendLine.
 
-# Key concepts in Linear Regression Pro
+# Key concepts in TrendLine
 
-Linear Regression Pro incorporates a range of key concepts. To deepen your understanding of the Linear Regression Pro’s purpose, explore the following concepts:
+TrendLine incorporates a range of key concepts. To deepen your understanding of the TrendLine’s purpose, explore the following concepts:
 
 - [What is linear regression?](#_What_is_linear)
 - [What is linear regression used for?](#_What_is_linear_1)
@@ -106,28 +106,28 @@ Linear regressions can be used when a dataset is available to predict another da
 - Forecasted precipitation based on weather data.
 - Plant growth based on amount of water.
 
-# Getting started with Linear Regression Pro
+# Getting started with TrendLine
 
 In this section, you will learn how to:
 
-- install Linear Regression Pro.
+- install TrendLine.
 - create your input dataset.
 - navigate the user interface.
 
-## Installing Linear Regression Pro
+## Installing TrendLine
 
-Linear Regression Pro is available as open-source [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
+TrendLine is available as open-source [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
-To install Linear Regression Pro, you will first need to install:
+To install TrendLine, you will first need to install:
 
 - Python.
 - Visual Studio Code.
-- Linear Regression Pro code from the GitHub repository.
+- TrendLine code from the GitHub repository.
 - Python libraries.
 
 ### Installing Python
 
-You will need to install Python on your device before installing Linear Regression Pro.
+You will need to install Python on your device before installing TrendLine.
 
 **To install Python**
 
@@ -159,13 +159,13 @@ Visual Studio Code (VS Code) is the software needed to open, edit, run and debug
 7. Click **Finish**.
     VS code is installed and is ready to launch.
 
-### Installing Linear Regression Pro
+### Installing TrendLine
 
 After installing Python and VS Code, you will download the app from the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
-**Note:** If the app has been updated, you must repeat these steps to reinstall Linear Regression Pro using the updated version from GitHub.
+**Note:** If the app has been updated, you must repeat these steps to reinstall TrendLine using the updated version from GitHub.
 
-**To install Linear Regression Pro**
+**To install TrendLine**
 
 1. Go to the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 2. Click **<> Code**.
@@ -197,13 +197,13 @@ The modules are as follows:
 5. Repeat step 4 for each module: _Pandas, UserInterface, Matplotlib, Scikit-learn_.  
     Once all the modules are downloaded, proceed to [Running the linear regression app](#_Running_the_linear).
 
-### Running Linear Regression Pro
+### Running TrendLine
 
 After installing Python, VS Code, the Python modules and the linear regression app, you are ready to add the dataset and run the app.
 
 **Note:** The dataset must be in .csv file.
 
-**To run Linear Regression Pro**
+**To run TrendLine**
 
 1. Open **VS Code**.
 2. Go to **File** > **New Folder** > Select the folder containing the app.
@@ -238,7 +238,7 @@ All input dataset files must be saved in one of the following formats:
 
 ## Overview of the user interface
 
-Linear Regression Pro’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. ![A screenshot of a computer
+TrendLine’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. ![A screenshot of a computer
 
 (insert figure 2 here) 
 
@@ -259,7 +259,7 @@ Table 2 shows the definition for each button on the user interface.
 
 _Table 2 The buttons on the user interface._
 
-# Creating your first Linear Regression Pro model
+# Creating your first TrendLine model
 
 In this section, you will learn how to:
 
@@ -284,24 +284,19 @@ Before creating a linear regression model, it is important to preprocess the dat
     (insert figure 3 here)
 
 _Figure 3 Dataset display and file path_
-    
-**Note:** The dataset cannot be edited from Linear Regression Pro. If you need to edit the dataset, you must do it from your original spreadsheet.
+**Note:** The dataset cannot be edited from TrendLine. If you need to edit the dataset, you must do it from your original spreadsheet.
 
 3. Select the _input column_.  
     **Note:** You can only select one input column.
 4. Select the _output column_.
-
 **Note:** You can only select one output column.
 - If you selected a column that contains null values, a dialog with the message “\[column name\] has \[number of unknown values\] unknown values, you might want to pre-process your data.” appears, continue to step 5.
 - If you did not select a column that contains null value, no dialog appears, continue to [create a linear regression model.](#create)
-
 5. Select one of the pre-processing options:
-
 - _Replace with a number_
 - _Replace with mean_
 - _Replace with median_
 - _Remove row_
-
 6. Click **Apply**.  
     A dialog with the message “\[input column name\] and \[output column name\] no longer have null values” appears.
 7. Click **OK**.
@@ -309,7 +304,7 @@ _Figure 3 Dataset display and file path_
 
 ## Creating a linear regression model
 
-Once you upload a spreadsheet dataset into Linear Regression Pro, it can create a linear regression model. Linear Regression Pro analyzes the relationships between the selected input and output values to build the model, formula, MSE and R<sup>2</sup>.
+Once you upload a spreadsheet dataset into TrendLine, it can create a linear regression model. TrendLine analyzes the relationships between the selected input and output values to build the model, formula, MSE and R<sup>2</sup>.
 
 **To create a linear regression model**
 
@@ -340,7 +335,7 @@ To access the linear regression model and its prediction function for future use
 
 ## Opening a saved linear regression model
 
-You can open a [previously saved Linear Regression Pro models](#_Saving_a_linear) to use the prediction function for the same dataset. To access your saved linear regression models, you must have saved the model as a .joblib file.
+You can open a [previously saved TrendLine models](#_Saving_a_linear) to use the prediction function for the same dataset. To access your saved linear regression models, you must have saved the model as a .joblib file.
 
 **Note:** When you open a saved linear regression model, you can only access the prediction function. You will not be able to access the graph, change the input data or view the model description. If you need to use these functions, you must upload the dataset and [create the linear regression](#create) again.
 
@@ -348,7 +343,7 @@ You can open a [previously saved Linear Regression Pro models](#_Saving_a_linear
 
 1. Click **Load Model**.
     The file explorer opens.
-2. Select the _Linear Regression Pro model_ that you would like to open.
+2. Select the _TrendLine model_ that you would like to open.
 3. Click **Open**.
     The model’s linear regression formula, R<sup>2</sup>, MSE values and prediction function appear. You can now enter a new input value and receive a predicted output value.
 
@@ -372,7 +367,7 @@ _Figure 5 Making predictions using the linear regression model_
 
 # Updates to documentation
 
-The Linear Regression Pro documentation will remain up to date with the latest features, improvements and bug fixes. After Linear Regression Pro version release, the documentation will be updated to reflect the changes. The latest version of Linear Regression Pro documentation will always be available on our GitHub repository.
+The TrendLine documentation will remain up to date with the latest features, improvements and bug fixes. After TrendLine version release, the documentation will be updated to reflect the changes. The latest version of TrendLine documentation will always be available on our GitHub repository.
 
 # Additional support and inquiries
 
