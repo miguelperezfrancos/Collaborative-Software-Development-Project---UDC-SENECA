@@ -53,7 +53,7 @@ class ChooseColumn(QWidget):
         )
         
         self.create_model = helper.create_button(
-            text="Generate model",
+            text="Generate Model",
             event=self.on_create_model
         )
 

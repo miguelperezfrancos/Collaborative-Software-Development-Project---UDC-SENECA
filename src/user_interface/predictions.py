@@ -55,7 +55,7 @@ class Predict(QWidget):
         self._result_label = QLabel()
         self._result_label.setObjectName('prediction')
         self._predict_button = helper.create_button(
-            text='predict',
+            text='Predict',
             event=self._predict
         )
 

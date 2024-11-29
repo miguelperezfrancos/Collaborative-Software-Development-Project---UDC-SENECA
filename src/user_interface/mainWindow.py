@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
 
-        self.setWindowTitle('Linear Regression')
+        self.setWindowTitle('TrendLine')
         self.setGeometry(100, 100, 1000, 550)
 
         self._data_manager = DataManager()
