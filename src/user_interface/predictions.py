@@ -103,4 +103,4 @@ class Predict(QWidget):
                 f'{self._model.y_name}: {prediction:.3f}'
             )
         except ValueError:
-            helper.show_error_message('ERROR: you must enter a valid number')
+            helper.show_error_message('you must enter a valid number')

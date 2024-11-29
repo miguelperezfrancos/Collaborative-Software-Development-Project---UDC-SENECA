@@ -171,5 +171,5 @@ class PrepMenu(QWidget):
 
         except Exception as e:
             helper.show_error_message(
-                message=f"Preprocess could not be completed: {e}"
+                message=f"preprocess could not be completed: {e}"
             )
