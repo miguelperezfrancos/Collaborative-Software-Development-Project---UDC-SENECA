@@ -131,4 +131,5 @@ QTableCornerButton::section {
 
 QTableView::item {
     border: 0.1px solid #5f6368; /* Grosor de las líneas */
+    color: #e8eaed;
 }
