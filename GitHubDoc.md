@@ -1,10 +1,10 @@
 # Project overview
 
-This repository shows a project completed by the development team at the University of Coruna and the technical writer at Seneca Polytechnic. The team members used COIL collaboration to create a linear regression app call Linear Regression Pro.
+This repository shows a project completed by the development team at the University of Coruna and the technical writer at Seneca Polytechnic. The team members used COIL collaboration to create a linear regression app call TrendLine.
 
 ## Documentation audience
 
-This documentation aims to provide all the information needed for developers and technical writers to work on the Linear Regression Pro app. The content is written in English, but international contributors are welcome.
+This documentation aims to provide all the information needed for developers and technical writers to work on the TrendLine app. The content is written in English, but international contributors are welcome.
 
 # COIL collaboration
 
@@ -13,15 +13,15 @@ Collaborative Online International Learning (COIL) is an online learning method 
 The goals of the development team are to:
 
 - Plan and complete weekly sprint user stories and tasks.
-- Write and revise code to create Linear Regression Pro’s features.
+- Write and revise code to create TrendLine’s features.
 - Update the technical writer with new information as needed.
 - Participate in weekly sprint retrospectives.
 
 The goals of the technical writer are to:
 
-- Get weekly updates about Linear Regression Pro from the development team.
-- Understand Linear Regression Pro’s existing and new features.
-- Create clear documentation that aligns with the Linear Regression Pro.
+- Get weekly updates about TrendLine from the development team.
+- Understand TrendLine’s existing and new features.
+- Create clear documentation that aligns with the TrendLine.
 - Participate in weekly sprint retrospectives.
 
 Table 1 shows the project tools that are used.
@@ -36,7 +36,7 @@ Table 1 shows the project tools that are used.
 | Microsoft Word    | For writing documentation.                                  |
 | Microsoft Excel   | For storing the datasets in .csv file.                      |
 
-**Table 1:** The project tools used to create Linear Regression Pro.
+**Table 1:** The project tools used to create TrendLine.
 
 # The agile development process
 
@@ -81,9 +81,9 @@ Table 2 shows the role and responsibilities of each team member.
 
 **Table 2:** The roles and responsibilities for the project.
 
-# The goals of Linear Regression Pro
+# The goals of TrendLine
 
-Linear Regression Pro is an English desktop app that uses one set of data to predict another set of data. Once a .csv dataset file is uploaded, Linear Regression Pro will then:
+TrendLine is an English desktop app that uses one set of data to predict another set of data. Once a .csv dataset file is uploaded, TrendLine will then:
 
 - Build a linear regression model to show the relationship between the input and output data
 - Display the model’s formula, MSE and r<sup>2</sup> value
@@ -92,17 +92,17 @@ Linear Regression Pro is an English desktop app that uses one set of data to pre
 - Open a previously saved linear regression model to continue using it in the app
 - Calculate predicted outputs based on the linear regression model
 
-## Linear Regression Pro audience
+## TrendLine audience
 
 This app was created for corporate companies who need to use their medium-sized datasets to predict output. They will use the predicted output to make future business decisions and plans.
 
-## Linear Regression Pro system requirements
+## TrendLine system requirements
 
-Both macOS 15 and Windows 11 computer systems are compatible for this project and Linear Regression Pro.
+Both macOS 15 and Windows 11 computer systems are compatible for this project and TrendLine.
 
-# Linear Regression Pro and helpful concepts
+# TrendLine and helpful concepts
 
-Linear Regression Pro comprises of various concepts. To deepen your understanding of the app’s purpose, explore the following concepts:
+TrendLine comprises of various concepts. To deepen your understanding of the app’s purpose, explore the following concepts:
 
 - [What is linear regression?](#_What_is_linear)
 - [What is linear regression used for?](#_What_is_linear_1)
@@ -144,15 +144,15 @@ Linear regressions can be used when a dataset is available to predict another da
 
 Machine learning is a subset of artificial intelligence. While artificial intelligence (AI) refers to a wide range of technologies that can perform tasks that are usually done by human intelligence, machine learning uses a specific dataset to identify patterns and make predictions.
 
-For example, Linear Regression Pro uses machine learning to process the input data to predict the relevant output data. The more input data given to the model, the more accurately machine learning can learn patterns and predict trends.
+For example, TrendLine uses machine learning to process the input data to predict the relevant output data. The more input data given to the model, the more accurately machine learning can learn patterns and predict trends.
 
-# Making updates in Linear Regression Pro
+# Making updates in TrendLine
 
-The code for Linear Regression Pro is stored in the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA). To update the code, you will need to install Python, Visual Studio Code, the Linear Regression Pro code and the required Python libraries.
+The code for TrendLine is stored in the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA). To update the code, you will need to install Python, Visual Studio Code, the TrendLine code and the required Python libraries.
 
 ## Installing Python
 
-You will need to install Python on your device before installing Linear Regression Pro.
+You will need to install Python on your device before installing TrendLine.
 
 **To install Python**
 
@@ -185,13 +185,13 @@ Visual Studio Code (VS Code) is the software needed to open, edit, run and debug
 
 **Note:** _Add to PATH_ allows you to launch VS Code from the command line.
 
-# Installing Linear Regression Pro
+# Installing TrendLine
 
 After installing Python and VS Code, you will download the app from the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
-**Note:** If the app has been updated, you must repeat these steps to reinstall Linear Regression Pro using the updated version from GitHub.
+**Note:** If the app has been updated, you must repeat these steps to reinstall TrendLine using the updated version from GitHub.
 
-**To install Linear Regression Pro**
+**To install TrendLine**
 
 1. Go to the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 2. Click **<> Code**.
@@ -224,7 +224,7 @@ The modules are as follows:
     Repeat step 4 for each module: _Pandas, UserInterface, Matplotlib, Scikit-learn_.  
     Once all the modules are downloaded, proceed to [Running the linear regression app](#_Running_the_linear).
 
-# Running Linear Regression Pro
+# Running TrendLine
 
 After installing Python, VS Code, the Python modules and the linear regression app, you are ready to add the dataset and run the app.
 
@@ -239,9 +239,9 @@ After installing Python, VS Code, the Python modules and the linear regression a
 4. Click the **Run Python file** button.
     The linear regression app opens. The code is ready to be revised, updated and debugged as needed.
 
-# Considerations for Linear Regression Pro updates
+# Considerations for TrendLine updates
 
-Linear Regression Pro is an open-source desktop app that can be updated by anyone. If you are joining this project, please keep the following considerations and guidelines during and after the 8 sprints are completed. This process should be continued for future debugging and future version releases.
+TrendLine is an open-source desktop app that can be updated by anyone. If you are joining this project, please keep the following considerations and guidelines during and after the 8 sprints are completed. This process should be continued for future debugging and future version releases.
 
 ## Considerations for developers
 
@@ -249,9 +249,9 @@ This app is written using Python. We recommend using VS code to write, edit and 
 
 ## Considerations for technical writers
 
-The technical writer is responsible for using technical writing best practices to continuously update the documentation. We recommend preparing a list of questions about the Linear Regression Pro before going to each meeting with the developers, so that you will be able to accurately describe the features and updates of the app. Any new documentation must be written in Markdown on the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
+The technical writer is responsible for using technical writing best practices to continuously update the documentation. We recommend preparing a list of questions about the TrendLine before going to each meeting with the developers, so that you will be able to accurately describe the features and updates of the app. Any new documentation must be written in Markdown on the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
 
-# Guidelines for contributing to Linear Regression Pro
+# Guidelines for contributing to TrendLine
 
 Thank you for taking part of this project! Please kindly follow the specific guidelines for both the development and documentation teams.
 
