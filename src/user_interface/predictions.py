@@ -55,7 +55,7 @@ class Predict(QWidget):
         self._result_label = QLabel()
         self._result_label.setObjectName('prediction')
         self._predict_button = helper.create_button(
-            text='predict',
+            text='Predict',
             event=self._predict
         )
 
@@ -103,4 +103,4 @@ class Predict(QWidget):
                 f'{self._model.y_name}: {prediction:.3f}'
             )
         except ValueError:
-            helper.show_error_message('ERROR: you must enter a valid number')
+            helper.show_error_message('you must enter a valid number')
