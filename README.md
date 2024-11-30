@@ -46,7 +46,7 @@ Linear regression is a model that uses the value of one variable to predict the 
 
 Figure 1 shows an example of a dataset represented by a linear regression line.
 
-(insert figure 1 here)
+![A linear regression model](images/linearRegressionExamplev1.png)
 
 _Figure 1 An example of a linear regression line_
 
@@ -108,110 +108,23 @@ Linear regressions can be used when a dataset is available to predict another da
 
 # Getting started with TrendLine
 
-In this section, you will learn how to:
-
-- install TrendLine.
-- create your input dataset.
-- navigate the user interface.
+In this section, you will learn how to install TrendLine, create your input dataset and get familiar with the user interface.
 
 ## Installing TrendLine
 
-TrendLine is available as open-source [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
-
-To install TrendLine, you will first need to install:
-
-- Python.
-- Visual Studio Code.
-- TrendLine code from the GitHub repository.
-- Python libraries.
-
-### Installing Python
-
-You will need to install Python on your device before installing TrendLine.
-
-**To install Python**
-
-1. Download the [latest version of Python](https://www.python.org/downloads/) for your device.  
-    The Setup installer appears.
-2. Check the _Add Python to PATH_ box.
-3. Click **Customize installation**.
-    1. Check the _pip box_.
-    2. Click **Next**.
-4. Check any necessary boxes and select the install location.
-5. Click **Now**.
-    Python is installed onto your device.
-
-### Installing Visual Studio Code
-
-Visual Studio Code (VS Code) is the software needed to open, edit, run and debug Python codes.
-
-**To install VS Code**
-
-1. Download the [latest version of Visual Studio Code](https://code.visualstudio.com/Download) for your device.  
-    The installer downloads an .exe file.
-2. Open the **.exe file**.
-3. Select _I accept the agreement_ and click **Next**.
-4. Choose the folder you would like to keep VS Code and click **Next**.
-5. Check _Add to PATH_ and click **Next**.
-    **Note:** _Add to PATH_ allows you to launch VS Code from the command line.
-6. Click **Install**.  
-    VS Code installs onto your device.
-7. Click **Finish**.
-    VS code is installed and is ready to launch.
-
-### Installing TrendLine
-
-After installing Python and VS Code, you will download the app from the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
-
-**Note:** If the app has been updated, you must repeat these steps to reinstall TrendLine using the updated version from GitHub.
+To run TrendLine, you must install it on your computer. Follow the steps below to install it:
 
 **To install TrendLine**
 
-1. Go to the [GitHub repository](https://github.com/miguelperezfrancos/Collaborative-Software-Development-Project---UDC-SENECA).
-2. Click **<> Code**.
-    A pop-up with the cloning options appears.
-3. Click **Download ZIP**.
-4. Expand the folder.  
-    The folder containing the linear regression app is ready to be used.
+1. Go to [TrendLine](#www.trendline.com).
+2. Click **Download**.  
+   The `.exe` file will be downloaded onto your computer.
+3. Open the `.exe` file.  
+   The installer will open.
+4. Follow the prompts to complete the installation.  
+   A checkmark will appear when the installation is complete.
 
-### Downloading Python modules
-
-To run the app on your device, you will need to download some modules that contain the necessary information.
-
-The modules are as follows:
-
-- Pyside6
-- Pandas
-- UserInterface
-- Matplotlib
-- Scikit-learn
-
-**To download Python modules**
-
-1. Open **VS Code**.
-2. Go to **File** > **New Folder** > select the folder containing the app.  
-    The app’s code opens in VS Code.
-3. Go to **View** > **Terminal**.
-4. Type _pip install Pyside6_ and press **Enter** on the keyboard.  
-    The module Pyside6 downloads.
-5. Repeat step 4 for each module: _Pandas, UserInterface, Matplotlib, Scikit-learn_.  
-    Once all the modules are downloaded, proceed to [Running the linear regression app](#_Running_the_linear).
-
-### Running TrendLine
-
-After installing Python, VS Code, the Python modules and the linear regression app, you are ready to add the dataset and run the app.
-
-**Note:** The dataset must be in .csv file.
-
-**To run TrendLine**
-
-1. Open **VS Code**.
-2. Go to **File** > **New Folder** > Select the folder containing the app.
-3. Click the _main.py_ file in the side bar.  
-    The _main.py_ code appears.
-4. Click the **Run Python file** button.
-
-The linear regression app opens. The code is ready to be revised, updated and debugged as needed.
+You are now ready to use **TrendLine**.
 
 ## Creating the input dataset
 
@@ -238,7 +151,7 @@ All input dataset files must be saved in one of the following formats:
 
 ## Overview of the user interface
 
-TrendLine’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. ![A screenshot of a computer
+TrendLine’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. 
 
 (insert figure 2 here) 
 
@@ -320,7 +233,7 @@ _Figure 4 The linear regression model, formula, MSE and R<sup>2</sup>_
 
 ## Saving a linear regression model
 
-To access the linear regression model and its prediction function for future use, you should save it to your device. The model will be saved as a .joblib file. You may also add a model description that provides important context, such as data information, relationships and insights derived from the model. The description will help you or others understand the model’s purpose when you access it in the future.
+To access the linear regression model and its prediction function for future use, you should save it to your computer. The model will be saved as a .joblib file. You may also add a model description that provides important context, such as data information, relationships and insights derived from the model. The description will help you or others understand the model’s purpose when you access it in the future.
 
 **To save a linear regression model**
 
