@@ -27,18 +27,18 @@ The functions of the TrendLine are to:
 
 ## TrendLine target audience
 
-TrendLine was developed for corporate organizations that rely on data to drive their decisions and future plans. This app provides a way to analyze datasets and make accurate predictions. TrendLine has a user-friendly interface and simplifies complex data for a wide range of audiences, so that they can benefit from its predictive modeling.
+TrendLine was developed for corporate organizations that rely on using data to drive their decisions and future plans. TrendLine provides a way to analyze datasets and make accurate predictions. It features a user-friendly interface that simplifies complex data and predictive modeling for a wide range of audiences.
 
 ## TrendLine system requirements
 
-Both macOS 15 and Windows 11 computer systems are compatible for this project and TrendLine.
+TrendLine is compatible with both macOS 15 and Windows 11 operating systems. 
 
 # Key concepts in TrendLine
 
 TrendLine incorporates a range of key concepts. To deepen your understanding of the TrendLine’s purpose, explore the following concepts:
 
-- [What is linear regression?](#_What_is_linear)
-- [What is linear regression used for?](#_What_is_linear_1)
+- [What is linear regression?](#what-is-linear-regression)
+- [What is linear regression used for?](#what-is-linear-regression-used_for)
 
 ## What is linear regression?
 
@@ -46,7 +46,7 @@ Linear regression is a model that uses the value of one variable to predict the 
 
 Figure 1 shows an example of a dataset represented by a linear regression line.
 
-![A linear regression model](images/linearRegressionExamplev1.png)
+![A linear regression model](images/linearRegressionExample.png)
 
 _Figure 1 An example of a linear regression line_
 
@@ -79,9 +79,9 @@ The mean squared error (MSE) represents the distance between each point to the r
 
 ### What is the coefficient of determination (R<sup>2</sup>)?
 
-The predictions made by the linear regression are not 100% accurate. To determine the accuracy, the coefficient of determination value must be considered. The coefficient of determination is a number from 0 to 1 that shows the variance that the dependent variable can be explained by the input value. For example, an r<sup>2</sup> of 0.2 indicates that there is a 20% of the variance of the predicted output that is explained by the input value. The larger the R<sup>2</sup>, the more accurate the linear regression represents the dataset.
+The predictions made by the linear regression are not 100% accurate. To determine the accuracy, the coefficient of determination value must be considered. The coefficient of determination is a number from 0 to 1 that shows the variance that the dependent variable can be explained by the input value. For example, an R<sup>2</sup> of 0.2 indicates that there is a 20% of the variance of the predicted output that is explained by the input value. The larger the R<sup>2</sup>, the more accurate the linear regression represents the dataset.
 
-Table 1 shows how to use MSE and R<sup>2</sup> to analyze the linear regression model accuracy.
+Table 1 shows how to use MSE and R<sup>2</sup> to analyze the linear regression model accuracy. If the model is less accurate, the predictions will also be less accurate. If a linear regression model produces a large MSE and small R<sup>2</sup>, the user must conduct more analysis to determine if the predictions are reliable. 
 
 | If  | Then |
 | --- | --- |
@@ -91,6 +91,13 @@ Table 1 shows how to use MSE and R<sup>2</sup> to analyze the linear regression 
 | R<sup>2</sup> is large | The model is more accurate. |
 
 _Table 1 Model accuracy based on MSE and R<sup>2</sup>_
+
+**Use case**
+1.	Tonia uploads a dataset with two quantitative variables (age and number of divorces) into TrendLine. 
+2.	TrendLine produces a formula with the values MSE= 6 and R2= 0.1. 
+3.	Because the model produced a large MSE and small R<sup>2</sup>, the formula and model are not considered accurate.
+4.	Tonia must conduct further analysis to determine if model generates predictions that are reliable. 
+
 
 ## What is linear regression used for?
 
@@ -112,7 +119,7 @@ In this section, you will learn how to install TrendLine, create your input data
 
 ## Installing TrendLine
 
-To run TrendLine, you must install it on your computer. Follow the steps below to install it:
+To run TrendLine, you must install it on your computer. 
 
 **To install TrendLine**
 
@@ -123,8 +130,7 @@ To run TrendLine, you must install it on your computer. Follow the steps below t
    The installer will open.
 4. Follow the prompts to complete the installation.  
    A checkmark will appear when the installation is complete.
-
-You are now ready to use **TrendLine**.
+   You are now ready to use **TrendLine**.
 
 ## Creating the input dataset
 
@@ -143,7 +149,7 @@ All input dataset files must be saved in one of the following formats:
 **To convert an Excel into a .csv**
 
 1. Open **Excel**.
-2. Click **File** > **Save as**.
+2. Click **File** > **Save as**.  
     A window appears with the file name text box and file format.
 1. Click the **File type drop-down** and select _.csv_.
 2. Click **Save**.  
@@ -151,10 +157,13 @@ All input dataset files must be saved in one of the following formats:
 
 ## Overview of the user interface
 
-TrendLine’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. Figure 2 shows the user interface. 
+TrendLine’s user interface contains various buttons and functions. Getting familiar with the layout and key elements will help you navigate the interface more efficiently. 
 
-(insert figure 2 here) 
+**Note:** To ensure you follow the steps in the correct order, the text will become visible in sequence. The Column selection text will become visible after you load the dataset. The Preprocessing text will become visible after you select the input and output columns.
 
+Figure 2 shows the user interface. 
+
+![A linear regression model](images/userInterface.png)
 _Figure 2 The user interface_
 
 Table 2 shows the definition for each button on the user interface.
@@ -192,16 +201,16 @@ Before creating a linear regression model, it is important to preprocess the dat
 
 1. Click **Load Dataset**.  
     The File Explorer opens.
-2. Select your desired dataset and click **open**.  
+2. Select your desired dataset and click **Open**.  
     Figure 3 shows the dataset appears as a table and the file path is displayed.
-    (insert figure 3 here)
-
-_Figure 3 Dataset display and file path_
-**Note:** The dataset cannot be edited from TrendLine. If you need to edit the dataset, you must do it from your original spreadsheet.
+   ![A linear regression model](images/tableAndFilePath.png)
+_Figure 3 Dataset displaying the table and file path_
+    
+    **Note:** The dataset cannot be edited from TrendLine. If you need to edit the dataset, you must do it from your original spreadsheet.
 
 3. Select the _input column_.  
     **Note:** You can only select one input column.
-4. Select the _output column_.
+4. Select the _output column_.  
 **Note:** You can only select one output column.
 - If you selected a column that contains null values, a dialog with the message “\[column name\] has \[number of unknown values\] unknown values, you might want to pre-process your data.” appears, continue to step 5.
 - If you did not select a column that contains null value, no dialog appears, continue to [create a linear regression model.](#create)
@@ -212,7 +221,7 @@ _Figure 3 Dataset display and file path_
 - _Remove row_
 6. Click **Apply**.  
     A dialog with the message “\[input column name\] and \[output column name\] no longer have null values” appears.
-7. Click **OK**.
+7. Click **OK**.  
     You are now ready to [create a linear regression model](#_Creating_a_linear).
 
 ## Creating a linear regression model
@@ -222,13 +231,11 @@ Once you upload a spreadsheet dataset into TrendLine, it can create a linear reg
 **To create a linear regression model**
 
 1. [Preprocess your dataset.](#_Pre-processing_the_data)
-2. Click **Generate model**.  
+2. Click **Generate Model**.  
     A dialog with the message “Linear regression model has been generated and plotted” appears.
 3. Click **OK**.  
     Figure 4 shows that the linear regression model, formula, MSE and R<sup>2</sup> appear.
-
-(insert figure 4 here)
-
+![A linear regression model](images/linearRegressionModelFormula.png)
 _Figure 4 The linear regression model, formula, MSE and R<sup>2</sup>_
 
 ## Saving a linear regression model
@@ -254,11 +261,12 @@ You can open a [previously saved TrendLine models](#_Saving_a_linear) to use the
 
 **To open a saved linear regression model**
 
-1. Click **Load Model**.
+1. Click **Load Model**.  
     The file explorer opens.
 2. Select the _TrendLine model_ that you would like to open.
-3. Click **Open**.
-    The model’s linear regression formula, R<sup>2</sup>, MSE values and prediction function appear. You can now enter a new input value and receive a predicted output value.
+3. Click **Open**.  
+    The model’s linear regression formula, R<sup>2</sup>, MSE values and prediction function appear.   
+    You can now enter a new input value and receive a predicted output value.
 
 ## Generating predictions using a linear regression model
 
@@ -267,20 +275,16 @@ The model uses the learned relationship between the input and output values to c
 **To generate predictions using a linear regression model**
 
 1. [Create a linear regression model](#create) or [open a saved linear regression model](#_Opening_a_saved).
-
 Figure 5 shows the prediction function that appears.
-
-(insert figure 5 here)
-
-_Figure 5 Making predictions using the linear regression model_
-
-1. Enter your new _input value_ in the text field.
-2. Click **predict**.
+![A linear regression model](images/makingPredictionsWithTheModel.png)
+    _Figure 5 Making predictions using the linear regression model_
+2. Enter your new _input value_ in the text field.
+3. Click **Predict**.
     The predicted output value is generated.
 
 # Updates to documentation
 
-The TrendLine documentation will remain up to date with the latest features, improvements and bug fixes. After TrendLine version release, the documentation will be updated to reflect the changes. The latest version of TrendLine documentation will always be available on our GitHub repository.
+The TrendLine documentation will remain up to date with the latest features, improvements and bug fixes. After each new TrendLine version is released, the documentation will be updated to reflect the changes. The latest version of TrendLine documentation will always be available on our GitHub repository.
 
 # Additional support and inquiries
 
