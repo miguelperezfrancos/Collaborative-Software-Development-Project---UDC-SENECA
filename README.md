@@ -38,7 +38,7 @@ TrendLine is compatible with both macOS 15 and Windows 11 operating systems.
 TrendLine incorporates a range of key concepts. To deepen your understanding of the TrendLine’s purpose, explore the following concepts:
 
 - [What is linear regression?](#what-is-linear-regression)
-- [What is linear regression used for?](#what-is-linear-regression-used_for)
+- [What is linear regression used for?](#what-is-linear-regression-used-for)
 
 ## What is linear regression?
 
@@ -125,8 +125,8 @@ To run TrendLine, you must install it on your computer.
 
 1. Go to [TrendLine](#www.trendline.com).
 2. Click **Download**.  
-   The `.exe` file will be downloaded onto your computer.
-3. Open the `.exe` file.  
+   The .exe file will be downloaded onto your computer.
+3. Open the .exe file.  
    The installer will open.
 4. Follow the prompts to complete the installation.  
    A checkmark will appear when the installation is complete.
@@ -153,7 +153,7 @@ All input dataset files must be saved in one of the following formats:
     A window appears with the file name text box and file format.
 1. Click the **File type drop-down** and select _.csv_.
 2. Click **Save**.  
-    The dataset is saved as a .csv and is ready to be used in the app.
+    The dataset is saved as a .csv and is ready to be used in the TrendLine.
 
 ## Overview of the user interface
 
@@ -212,9 +212,9 @@ _Figure 3 Dataset displaying the table and file path_
     **Note:** You can only select one input column.
 4. Select the _output column_.  
 **Note:** You can only select one output column.
-- If you selected a column that contains null values, a dialog with the message “\[column name\] has \[number of unknown values\] unknown values, you might want to pre-process your data.” appears, continue to step 5.
-- If you did not select a column that contains null value, no dialog appears, continue to [create a linear regression model.](#create)
-5. Select one of the pre-processing options:
+- If you selected a column that contains null values, a dialog with the message “\[column name\] has \[number of unknown values\] unknown values, you might want to preprocess your data.” appears, continue to step 5.
+- If you did not select a column that contains null value, no dialog appears, continue to [create a linear regression model.](#creating-a-linear-regression-model)
+5. Select one of the preprocessing options:
 - _Replace with a number_
 - _Replace with mean_
 - _Replace with median_
@@ -222,7 +222,7 @@ _Figure 3 Dataset displaying the table and file path_
 6. Click **Apply**.  
     A dialog with the message “\[input column name\] and \[output column name\] no longer have null values” appears.
 7. Click **OK**.  
-    You are now ready to [create a linear regression model](#_Creating_a_linear).
+    You are now ready to [create a linear regression model](#creating-a-linear-regression-model).
 
 ## Creating a linear regression model
 
@@ -230,7 +230,7 @@ Once you upload a spreadsheet dataset into TrendLine, it can create a linear reg
 
 **To create a linear regression model**
 
-1. [Preprocess your dataset.](#_Pre-processing_the_data)
+1. [Preprocess your dataset.](#preprocessing-a-dataset)
 2. Click **Generate Model**.  
     A dialog with the message “Linear regression model has been generated and plotted” appears.
 3. Click **OK**.  
@@ -255,9 +255,9 @@ To access the linear regression model and its prediction function for future use
 
 ## Opening a saved linear regression model
 
-You can open a [previously saved TrendLine models](#_Saving_a_linear) to use the prediction function for the same dataset. To access your saved linear regression models, you must have saved the model as a .joblib file.
+You can open a [previously saved TrendLine model](#saving-a-linear-regression-model) to use the prediction function for the same dataset. To access your saved linear regression models, you must have saved the model as a .joblib file.
 
-**Note:** When you open a saved linear regression model, you can only access the prediction function. You will not be able to access the graph, change the input data or view the model description. If you need to use these functions, you must upload the dataset and [create the linear regression](#create) again.
+**Note:** When you open a saved linear regression model, you can only access the prediction function. You will not be able to access the graph, change the input data or view the model description. If you need to use these functions, you must upload the dataset and [create the linear regression](#creating-a-linear-regression-model) again.
 
 **To open a saved linear regression model**
 
@@ -274,7 +274,7 @@ The model uses the learned relationship between the input and output values to c
 
 **To generate predictions using a linear regression model**
 
-1. [Create a linear regression model](#create) or [open a saved linear regression model](#_Opening_a_saved).
+1. [Create a linear regression model](#creating-a-linear-regression-model) or [open a saved linear regression model](#opening-a-saved-linear-regression-model).
 Figure 5 shows the prediction function that appears.
 ![A linear regression model](images/makingPredictionsWithTheModel.png)
     _Figure 5 Making predictions using the linear regression model_
