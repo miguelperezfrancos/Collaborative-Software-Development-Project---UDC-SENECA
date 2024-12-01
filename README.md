@@ -31,7 +31,10 @@ TrendLine was developed for corporate organizations that rely on using data to d
 
 ## TrendLine system requirements
 
-TrendLine is compatible with both macOS 15 and Windows 11 operating systems. 
+To ensure a smooth user experience, TrendLine is intended for use on desktop and laptop computers and is not compatible with mobile devices. TrendLine supports the latest versions of:
+- macOS. 
+- Windows. 
+- Linux. 
 
 # Key concepts in TrendLine
 
