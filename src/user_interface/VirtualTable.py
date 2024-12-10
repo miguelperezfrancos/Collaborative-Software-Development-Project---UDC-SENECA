@@ -6,7 +6,7 @@ user's data sets. This is done by separating the data from the visualization.
 """
 
 import pandas as pd
-from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QTableView, QHeaderView
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Slot
 
 
@@ -104,15 +104,40 @@ class VirtualTableView(QTableView):
     to enable this feature.
     """
 
-    def __init__(self, model: VirtualTableModel):
-        """Initialize the table view.
+    def __init__(self, model: VirtualTableModel, 
+                 min_column_width=100):
+        """Initialize the table view with dynamic column sizing.
 
         Args:
             model (VirtualTableModel): Data model for the table.
+            min_column_width (int): Minimum width for columns.
+            max_column_width (int): Maximum width before horizontal scrolling.
         """
         super().__init__()
         self.setModel(model)
         self.setVerticalScrollMode(QTableView.ScrollPerPixel)
+        
+        # Configure horizontal header for interactive resizing
+        horizontal_header = self.horizontalHeader()
+        horizontal_header.setMinimumSectionSize(min_column_width)
+        horizontal_header.setStretchLastSection(False)
+        
+        # Store width parameters
+        self._min_column_width = min_column_width
+        
+        # Connect to model reset to adjust columns initially
+        model.modelReset.connect(self._adjust_columns)
+
+    def _adjust_columns(self):
+        """Dynamically adjust column widths based on content and width constraints."""
+        for col in range(self.model().columnCount()):
+            # Get current column width
+            current_width = self.columnWidth(col)
+            
+            # Enforce minimum width
+            if current_width < self._min_column_width:
+                self.setColumnWidth(col, self._min_column_width)
+
 
     @Slot(pd.DataFrame)
     def set_data(self, data):

@@ -18,7 +18,6 @@ def main():
     stream = QTextStream(file)
     app.setStyleSheet(stream.readAll())
     
-
     # Create and show the main window
     interface = MainWindow()
     interface.show()

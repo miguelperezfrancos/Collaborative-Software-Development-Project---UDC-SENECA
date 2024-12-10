@@ -49,10 +49,13 @@ class Predict(QWidget):
         # Initialize instance variables
         self._model = None
         self._x_label = QLabel()
+        self._x_label.setObjectName('prediction')
         self._x_input = helper.create_text_box(enabled=True)
+        self._x_input.setPlaceholderText('Enter a value.')
         self._result_label = QLabel()
+        self._result_label.setObjectName('prediction')
         self._predict_button = helper.create_button(
-            text='predict',
+            text='Predict',
             event=self._predict
         )
 
@@ -77,19 +80,19 @@ class Predict(QWidget):
         self.setVisible(False)
 
     @Slot(Model)
-    def update_model(self, model: Model):
+    def update_model(self, model: Model) -> None:
         """Update the model used for predictions.
 
         Args:
             model (Model): New model to use for predictions.
         """
         self._model = model
-        text = f"{self._model.x_name}"
+        text = f"{self._model.x_name}:"
         self._x_label.setText(text)
         self._x_input.setText('')
         self._result_label.setText('')
 
-    def _predict(self):
+    def _predict(self) -> None:
         """Make a prediction using the current model and input value."""
         input_value = self._x_input.text()
         
@@ -97,7 +100,7 @@ class Predict(QWidget):
             prediction = (self._model.slope * float(input_value) +
                          self._model.intercept)
             self._result_label.setText(
-                f'{self._model.y_name}: {prediction}'
+                f'{self._model.y_name}: {prediction:.3f}'
             )
         except ValueError:
-            helper.show_error_message('ERROR: you must enter a valid number')
+            helper.show_error_message('you must enter a valid number')

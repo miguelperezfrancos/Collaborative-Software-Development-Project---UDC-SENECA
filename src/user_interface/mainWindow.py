@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
     """
 
     is_model = Signal(Model)
+    do_preprocess = Signal(bool)
 
     def __init__(self):
         """
@@ -63,7 +64,7 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
 
-        self.setWindowTitle('Linear Regression')
+        self.setWindowTitle('TrendLine')
         self.setGeometry(100, 100, 1000, 550)
 
         self._data_manager = DataManager()
@@ -204,7 +205,7 @@ class MainWindow(QMainWindow):
 
         # Column selection connections
         self._select_cols.send_selection.connect(self.show_nan_values)
-        self._select_cols.selected.connect(self._preprocess.activate_menu)
+        self._select_cols.selected.connect(self.activate_preprocess)
 
         # Preprocessing connections
         self._preprocess.preprocess_request.connect(self.handle_preprocess)
@@ -261,6 +262,26 @@ class MainWindow(QMainWindow):
                 'you might want to pre-process your data.'
             )
 
+    @Slot(bool)
+    def activate_preprocess(self, selected):
+
+        if selected:
+
+            columns = self._select_cols.selection()
+            nan = 0
+
+            for c in columns:
+                if c in self._data_manager.data.columns:
+                    nan += self._data_manager.detect(c)
+
+            if nan > 0:
+                self._preprocess.activate_menu(True)
+            else:
+                self._preprocess.activate_menu(False)
+
+        else:
+            self._preprocess.activate_menu(False)
+
     @Slot()
     def handle_preprocess(self):
         """
@@ -307,7 +328,7 @@ class MainWindow(QMainWindow):
                 self.is_model.emit(self._model)
                 self._show_model_components(True)
             except Exception as e:
-                helper.show_error_message(f'Unexpected error: {e}')
+                helper.show_error_message(f'unexpected error: {e}')
                 if not self._graph.isVisible():
                     self._show_model_components(False)
         else:

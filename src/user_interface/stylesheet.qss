@@ -1,4 +1,4 @@
-QWidget#contentWidget { /* App background */
+QWidget#content_widget { /* App background */
     background-color: #323232; 
 }
 
@@ -16,12 +16,28 @@ QWidget#container > QLabel {
 
 QLabel#title {
     font-family: Arial;
+    color:#e8eaed;
+    font-size: 16px;
+}
+
+QLabel#title:disabled {
+    font-family: Arial;
+    color:#454545;
     font-size: 16px;
 }
 
 FigureCanvas {
     border: none;
 }
+
+QRadioButton {
+    color:white;
+}
+
+QRadioButton:disabled {
+    color:#454545;
+}
+
 
 QLineEdit {
     border: none;
@@ -88,4 +104,32 @@ QLabel#filepath{
     border-radius: 15px;      
     padding: 8px;             
     margin-top: 5px;          
+}
+
+QLabel#prediction{
+    color: #e8eaed;
+    font-size: 14px;
+    font: Arial;
+}
+
+QTableView {
+    background-color: #282828; /* Color de fondo gris claro */
+    gridline-color: #3b3b3b; /* Color de las líneas de la cuadrícula */
+}
+
+
+QHeaderView::section {
+    background-color: #171616; /* Fondo de la cabecera */
+    color: #e8eaed; /* Texto de la cabecera */
+    border: 0.5px solid #282828; /* Simula las líneas de la cabecera */
+}
+
+QTableCornerButton::section {
+    background-color: #171616; /* Fondo transparente */
+    border: none; /* Sin bordes */
+}
+
+QTableView::item {
+    border: 0.1px solid #5f6368; /* Grosor de las líneas */
+    color: #e8eaed;
 }
