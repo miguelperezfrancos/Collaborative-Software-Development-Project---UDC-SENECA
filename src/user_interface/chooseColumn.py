@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 # Local imports
-import src.user_interface.ui_helpers as helper
+from user_interface import ui_helpers as helper
 
 
 class ChooseColumn(QWidget):

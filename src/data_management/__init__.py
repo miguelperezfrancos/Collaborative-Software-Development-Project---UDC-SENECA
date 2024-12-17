@@ -1,8 +1,8 @@
 # dataManagement/__init__.py
-from .dataManager import DataManager
-from .fileReader import FileReader, ParseError
-from .linearRegression import Model, UnexpectedError
-from .modelFileManager import save_model, load_model
+from data_management.dataManager import DataManager
+from data_management.fileReader import FileReader, ParseError
+from data_management.linearRegression import Model, UnexpectedError
+from data_management.modelFileManager import save_model, load_model
 
 __all__ = [
     "DataManager",

@@ -24,16 +24,16 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Slot, Signal
 import pandas as pd
 
-from src.data_management import DataManager, Model
-from src.user_interface import (
+from data_management import DataManager, Model
+from user_interface import (
     ChooseColumn,
     ChooseFile,
     PrepMenu,
     RegressionGraph,
     RepModel,
 )
-import src.user_interface.ui_helpers as helper
-from src.user_interface.predictions import Predict
+import user_interface.ui_helpers as helper
+from user_interface.predictions import Predict
 
 
 class MainWindow(QMainWindow):

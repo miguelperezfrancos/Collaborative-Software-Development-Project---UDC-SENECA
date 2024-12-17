@@ -1,11 +1,10 @@
-# UserInterface/__init__.py
-from .chooseColumn import ChooseColumn
-from .ShowRegression import RegressionGraph
-from .openFile import ChooseFile
-from .prepMenu import PrepMenu
-from .repModel import RepModel
-from .VirtualTable import VirtualTableModel, VirtualTableView
-from .mainWindow import MainWindow
+from user_interface.chooseColumn import ChooseColumn
+from user_interface.ShowRegression import RegressionGraph
+from user_interface.openFile import ChooseFile
+from user_interface.prepMenu import PrepMenu
+from user_interface.repModel import RepModel
+from user_interface.VirtualTable import VirtualTableModel, VirtualTableView
+from user_interface.mainWindow import MainWindow
 
 
 __all__ = [

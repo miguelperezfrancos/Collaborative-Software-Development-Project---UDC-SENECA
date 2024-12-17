@@ -11,7 +11,7 @@ from matplotlib.figure import Figure
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(REPO_ROOT)
 
-from src.data_management import Model, save_model
+from data_management import Model, save_model
 import user_interface.ui_helpers as helper
 
 

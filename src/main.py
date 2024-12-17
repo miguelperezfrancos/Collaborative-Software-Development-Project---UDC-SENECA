@@ -1,3 +1,19 @@
+"""Module for selecting input and output columns for regression analysis."""
+
+# Standard library imports
+import pandas as pd
+
+# Third-party imports
+from PySide6.QtCore import Signal, Slot, Qt
+from PySide6.QtWidgets import (
+    QHBoxLayout,
+    QMessageBox,
+    QVBoxLayout,
+    QWidget,
+)
+
+# Local imports
+from user_interface import ui_helpers as helper
 from user_interface import MainWindow
 import sys
 from PySide6.QtWidgets import QApplication
