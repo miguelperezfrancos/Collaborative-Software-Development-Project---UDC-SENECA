@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from src.data_management import Model, UnexpectedError
+from data_management import Model, UnexpectedError
 import numpy as np
 
 
