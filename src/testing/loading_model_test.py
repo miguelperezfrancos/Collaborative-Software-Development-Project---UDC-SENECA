@@ -3,11 +3,13 @@ import os
 from data_management.modelFileManager import save_model, load_model
 from data_management import Model
 
+
 class TestModelFileManager(unittest.TestCase):
     def setUp(self):
         self.test_dir = "/Users/rafa/Documents/Uni/Cuatri3/software_engineering/sample_data"
         self.test_file = os.path.join(self.test_dir, "test_model.joblib")
-        self.corrupted_file = os.path.join(self.test_dir, "corrupted_model.joblib")
+        self.corrupted_file = os.path.join(
+            self.test_dir, "corrupted_model.joblib")
 
     def tearDown(self):
         # Limpiamos archivos de prueba después de cada test
@@ -29,7 +31,7 @@ class TestModelFileManager(unittest.TestCase):
         )
 
         modelo_cargado = load_model(self.test_file)
-        
+
         self.assertEqual(modelo_cargado.formula, "2x + 1")
         self.assertEqual(modelo_cargado.x_name, "x")
         self.assertEqual(modelo_cargado.y_name, "y")
@@ -80,6 +82,7 @@ class TestModelFileManager(unittest.TestCase):
                 slope=2.0,
                 intercept=1.0
             )
+
 
 if __name__ == '__main__':
     unittest.main()
